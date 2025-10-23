@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<medicamentos>
+    <medicamento>
+        <codigo>123</codigo>
+        <nombre>Aspirina</nombre>
+        <presentacion>100mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>321</codigo>
+        <nombre>Gravol</nombre>
+        <presentacion>Frasco líquido</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>456</codigo>
+        <nombre>Acetaminofén</nombre>
+        <presentacion>100mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>654</codigo>
+        <nombre>Ibuprofeno</nombre>
+        <presentacion>50mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>6767</codigo>
+        <nombre>Dorival</nombre>
+        <presentacion>Líquido</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>789</codigo>
+        <nombre>Amoxicilina</nombre>
+        <presentacion>500mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>852</codigo>
+        <nombre>Clorfenamina</nombre>
+        <presentacion>10mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>963</codigo>
+        <nombre>Metformina</nombre>
+        <presentacion>850mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>147</codigo>
+        <nombre>Loratadina</nombre>
+        <presentacion>10mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>258</codigo>
+        <nombre>Omeprazol</nombre>
+        <presentacion>20mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>007</codigo>
+        <nombre>Tabcin Noche</nombre>
+        <presentacion>10 mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>391</codigo>
+        <nombre>Tabcin Dia</nombre>
+        <presentacion>60 mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>6100</codigo>
+        <nombre>Vitamina B12</nombre>
+        <presentacion>10 mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>512</codigo>
+        <nombre>Vitamina B6</nombre>
+        <presentacion>10 mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>34</codigo>
+        <nombre>Vitamina B4</nombre>
+        <presentacion>10 MG</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>912</codigo>
+        <nombre>Vitamina b8</nombre>
+        <presentacion>67 mg</presentacion>
+    </medicamento>
+    
+    <medicamento>
+        <codigo>5617</codigo>
+        <nombre>Vitamina b9</nombre>
+        <presentacion>10 mg</presentacion>
+    </medicamento>
+    
+</medicamentos>

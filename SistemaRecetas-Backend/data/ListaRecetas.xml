@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ListaRecetas>
+  <Receta id="1">
+    <Paciente id="119510334" nombre="Alejandro"/>
+    <Personal id="11951444" nombre="Sebas"/>
+    <FechaPrescripcion>2025-09-14</FechaPrescripcion>
+    <FechaRetiro>2026-10-08</FechaRetiro>
+    <Estado>1</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="8" duracion="4" idDetalle="123456" indicacion="Tomar por 4 dias cada noche">
+        <Medicamento codigo="123" nombre="Aspirina" presentacion="100mg"/>
+      </DetalleMedicamento>
+      <DetalleMedicamento cantidad="4" duracion="1" idDetalle="654321" indicacion="Tomar solamente cuando hay mareos">
+        <Medicamento codigo="321" nombre="Gravol" presentacion="Frasco liquido"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="2">
+    <Paciente id="7465443" nombre="Isa"/>
+    <Personal id="159635" nombre="Amparo"/>
+    <FechaPrescripcion>2025-09-15</FechaPrescripcion>
+    <FechaRetiro>2027-04-02</FechaRetiro>
+    <Estado>2</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="4" duracion="1" idDetalle="654321" indicacion="Tomar solamente cuando hay mareos">
+        <Medicamento codigo="321" nombre="Gravol" presentacion="Frasco liquido"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="3">
+    <Paciente id="486543" nombre="Gabriel"/>
+    <Personal id="151444" nombre="Fabiola"/>
+    <FechaPrescripcion>2025-09-16</FechaPrescripcion>
+    <FechaRetiro>2028-03-20</FechaRetiro>
+    <Estado>3</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="8" duracion="4" idDetalle="123457" indicacion="Tomar por 4 dias cada noche">
+        <Medicamento codigo="124" nombre="Ibuprofeno" presentacion="200mg"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="4">
+    <Paciente id="505050" nombre="Raul"/>
+    <Personal id="151444" nombre="Fabiola"/>
+    <FechaPrescripcion>2025-09-17</FechaPrescripcion>
+    <FechaRetiro>2025-10-20</FechaRetiro>
+    <Estado>4</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="2" duracion="1" idDetalle="654322" indicacion="Tomar en caso de dolor leve">
+        <Medicamento codigo="322" nombre="Paracetamol" presentacion="500mg"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="5">
+    <Paciente id="334455" nombre="Laura"/>
+    <Personal id="151445" nombre="Carlos"/>
+    <FechaPrescripcion>2025-09-18</FechaPrescripcion>
+    <FechaRetiro>2026-02-15</FechaRetiro>
+    <Estado>1</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="10" duracion="5" idDetalle="123458" indicacion="Tomar cada 12 horas">
+        <Medicamento codigo="125" nombre="Amoxicilina" presentacion="500mg"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="6">
+    <Paciente id="778899" nombre="Diego"/>
+    <Personal id="151446" nombre="María"/>
+    <FechaPrescripcion>2025-09-19</FechaPrescripcion>
+    <FechaRetiro>2025-12-10</FechaRetiro>
+    <Estado>2</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="6" duracion="3" idDetalle="123459" indicacion="Tomar antes de dormir">
+        <Medicamento codigo="126" nombre="Melatonina" presentacion="3mg"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+  <Receta id="7">
+    <Paciente id="998877" nombre="Camila"/>
+    <Personal id="151447" nombre="Sofía"/>
+    <FechaPrescripcion>2025-09-20</FechaPrescripcion>
+    <FechaRetiro>2026-01-05</FechaRetiro>
+    <Estado>3</Estado>
+    <Detalles>
+      <DetalleMedicamento cantidad="5" duracion="2" idDetalle="123460" indicacion="Tomar con comidas">
+        <Medicamento codigo="127" nombre="Omeprazol" presentacion="20mg"/>
+      </DetalleMedicamento>
+    </Detalles>
+  </Receta>
+</ListaRecetas>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personal>
+    <persona tipo="Administrador">
+        <id>adm001</id>
+        <nombre>Laura González</nombre>
+        <clave>adm0001</clave>
+        <rol>ADMINISTRADOR</rol>
+    </persona>
+    
+    <persona tipo="Administrador">
+        <id>adm002</id>
+        <nombre>Roberto Pérez</nombre>
+        <clave>adm002</clave>
+        <rol>ADMINISTRADOR</rol>
+    </persona>
+    
+    <persona tipo="Administrador">
+        <id>adm003</id>
+        <nombre>Clara Martínez</nombre>
+        <clave>adm003</clave>
+        <rol>ADMINISTRADOR</rol>
+    </persona>
+    
+    <persona tipo="Medico">
+        <id>med001</id>
+        <nombre>Sebas</nombre>
+        <clave>med001</clave>
+        <rol>MEDICO</rol>
+        <especialidad>Cirujano</especialidad>
+    </persona>
+    
+    <persona tipo="Medico">
+        <id>med003</id>
+        <nombre>Fabiola</nombre>
+        <clave>med003</clave>
+        <rol>MEDICO</rol>
+        <especialidad>Cardiología</especialidad>
+    </persona>
+    
+    <persona tipo="Farmaceuta">
+        <id>far001</id>
+        <nombre>Sofía</nombre>
+        <clave>far001</clave>
+        <rol>FARMACEUTICO</rol>
+    </persona>
+    
+    <persona tipo="Farmaceuta">
+        <id>far002</id>
+        <nombre>Moni</nombre>
+        <clave>far002</clave>
+        <rol>FARMACEUTICO</rol>
+    </persona>
+    
+    <persona tipo="Farmaceuta">
+        <id>far003</id>
+        <nombre>Thamy</nombre>
+        <clave>far003</clave>
+        <rol>FARMACEUTICO</rol>
+    </persona>
+    
+    <persona tipo="Medico">
+        <id>7546456</id>
+        <nombre>s</nombre>
+        <clave>7546456</clave>
+        <rol>MEDICO</rol>
+        <especialidad>meter_goles</especialidad>
+    </persona>
+    
+</personal>
