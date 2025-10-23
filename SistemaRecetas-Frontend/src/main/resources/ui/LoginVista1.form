@@ -63,7 +63,7 @@
                   <enabled value="true"/>
                   <font name="Tahoma" size="36"/>
                   <foreground color="-16777216"/>
-                  <icon value="ImagenesCalderon/user.png"/>
+                  <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                   <text value="Usuario: "/>
                 </properties>
               </component>
@@ -163,7 +163,7 @@
                 <properties>
                   <font name="Tahoma" size="36"/>
                   <foreground color="-16777216"/>
-                  <icon value="ImagenesCalderon/contrasena.png"/>
+                  <icon value="imagenes/ImagenesCalderon/contrasena.png"/>
                   <text value="Clave: "/>
                 </properties>
               </component>
@@ -187,7 +187,7 @@
                 <constraints/>
                 <properties>
                   <font size="22"/>
-                  <icon value="ImagenesCalderon/cancelar.png"/>
+                  <icon value="imagenes/ImagenesCalderon/cancelar.png"/>
                   <text value="Cancelar"/>
                 </properties>
               </component>
@@ -207,7 +207,7 @@
                 <constraints/>
                 <properties>
                   <font size="22"/>
-                  <icon value="ImagenesCalderon/comprobado.png"/>
+                  <icon value="imagenes/ImagenesCalderon/comprobado.png"/>
                   <text value="Ingresar"/>
                 </properties>
               </component>
@@ -227,7 +227,7 @@
                 <constraints/>
                 <properties>
                   <font size="22"/>
-                  <icon value="ImagenesCalderon/candados.png"/>
+                  <icon value="imagenes/ImagenesCalderon/candados.png"/>
                   <text value="Cambiar Contraseña"/>
                 </properties>
               </component>
@@ -267,7 +267,7 @@
               <component id="f6b9c" class="javax.swing.JLabel" binding="Foto">
                 <constraints/>
                 <properties>
-                  <icon value="ImagenesCalderon/hospital.png"/>
+                  <icon value="imagenes/ImagenesCalderon/hospital.png"/>
                   <text value=""/>
                 </properties>
               </component>
