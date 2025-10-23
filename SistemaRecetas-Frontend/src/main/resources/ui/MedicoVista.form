@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Vista.MedicoVista">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="1314" height="1105"/>
+    </constraints>
+    <properties>
+      <enabled value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="5ec22" binding="tabbedPane1" default-binding="true">
+        <constraints border-constraint="North"/>
+        <properties>
+          <name value="Preescribir" noi18n="true"/>
+        </properties>
+        <border type="bevel-lowered"/>
+        <children>
+          <grid id="feeb2" binding="PanelPreescribir" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Preescribir"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="b3c2" layout-manager="GridLayoutManager" row-count="13" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="fe44b" binding="Control" layout-manager="GridLayoutManager" row-count="3" column-count="13" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <hspacer id="a7855">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <vspacer id="c78fc">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                            <preferred-size width="81" height="14"/>
+                          </grid>
+                        </constraints>
+                      </vspacer>
+                      <component id="ad08b" class="javax.swing.JLabel" binding="controlLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Control"/>
+                        </properties>
+                      </component>
+                      <component id="bfc49" class="javax.swing.JButton" binding="buscarPacienteButton" default-binding="true">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <horizontalTextPosition value="10"/>
+                          <icon value="Imagenes_Luis/revision-medica.png"/>
+                          <text value="Buscar Paciente"/>
+                        </properties>
+                      </component>
+                      <component id="5a79a" class="javax.swing.JButton" binding="agregarMedicamentoButton" default-binding="true">
+                        <constraints>
+                          <grid row="2" column="4" row-span="1" col-span="9" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <icon value="Imagenes_Luis/medicamento.png"/>
+                          <text value="Agregar Medicamento"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <component id="b0d75" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Receta Medica"/>
+                    </properties>
+                  </component>
+                  <component id="780ee" class="javax.swing.JComboBox" binding="Opciones_Fecha_de_Retiro">
+                    <constraints>
+                      <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <hspacer id="5030f">
+                    <constraints>
+                      <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <hspacer id="cafed">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <hspacer id="1501c">
+                    <constraints>
+                      <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="f024" class="javax.swing.JButton" binding="guardarButton" default-binding="true">
+                    <constraints>
+                      <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/guardar.png"/>
+                      <text value="Guardar"/>
+                    </properties>
+                  </component>
+                  <component id="1d24b" class="javax.swing.JButton" binding="limpiarButton" default-binding="true">
+                    <constraints>
+                      <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/borrar.png"/>
+                      <text value="Limpiar"/>
+                    </properties>
+                  </component>
+                  <component id="2b683" class="javax.swing.JButton" binding="descartarMedicamentoButton" default-binding="true">
+                    <constraints>
+                      <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/descartar-archivo.png"/>
+                      <text value="Descartar Medicamento"/>
+                    </properties>
+                  </component>
+                  <component id="90bac" class="javax.swing.JButton" binding="detallesButton" default-binding="true">
+                    <constraints>
+                      <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <hideActionText value="false"/>
+                      <icon value="Imagenes_Luis/detalles.png"/>
+                      <text value="Detalles"/>
+                    </properties>
+                  </component>
+                  <component id="7d6b6" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Ajustar Preeescripcion"/>
+                    </properties>
+                  </component>
+                  <component id="4cc9" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/calendario.png"/>
+                      <text value="Fecha de Retiro"/>
+                    </properties>
+                  </component>
+                  <scrollpane id="b6625" binding="ScrollPaneMedicamentos">
+                    <constraints>
+                      <grid row="10" column="1" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="fc32d" class="javax.swing.JTable" binding="tablaMedicamentos">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <component id="e135f" class="javax.swing.JLabel" binding="Nombre_del_doctor">
+                    <constraints>
+                      <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/consulta-medica.png"/>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                  <component id="36be7" class="javax.swing.JLabel" binding="FechaRetiro">
+                    <constraints>
+                      <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/reloj.png"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="f5fef" binding="PanelDashboard" layout-manager="GridLayoutManager" row-count="11" column-count="9" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="DashBoard"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="d54c1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="10" left="10" bottom="10" right="10"/>
+                <constraints>
+                  <grid row="8" column="8" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <grid id="d8f1b" binding="Datos" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="8" column="4" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <component id="98175" class="javax.swing.JLabel" binding="Desde">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Desde:"/>
+                </properties>
+              </component>
+              <component id="d1924" class="javax.swing.JComboBox" binding="cmbDesdeAnnio">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model/>
+                </properties>
+              </component>
+              <component id="605a3" class="javax.swing.JComboBox" binding="cmbDesdeMes">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="3622b" class="javax.swing.JLabel" binding="Hasta">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Hasta:"/>
+                </properties>
+              </component>
+              <component id="6ee6a" class="javax.swing.JComboBox" binding="cmbHastaAnio">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="352e3" class="javax.swing.JComboBox" binding="cmbHastaMes">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="bf931" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/medicamento.png"/>
+                  <text value="Medicamentos"/>
+                </properties>
+              </component>
+              <component id="80e0b" class="javax.swing.JComboBox" binding="cmbMedicamento">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="75bb3" class="javax.swing.JButton" binding="btnGenerarRango">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/marca-de-verificacion.png"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="62554" class="javax.swing.JButton" binding="btnLimpiar">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/doble-verificacion.png"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <grid id="aa6e7" binding="Recetas" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="8" row-span="5" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="line"/>
+                <children>
+                  <grid id="aaf1d" binding="graficoReceta" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="etched"/>
+                    <children/>
+                  </grid>
+                  <component id="c62d7" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <icon value="Imagenes_Luis/receta.png"/>
+                      <text value="Recetas"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="ad83f" class="javax.swing.JButton" binding="btnAgregarMesButton" default-binding="true">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/agregar.png"/>
+                  <text value="AgregarFila"/>
+                </properties>
+              </component>
+              <component id="a7ddb" class="javax.swing.JButton" binding="btnQuitarMesButton" default-binding="true">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/borrar.png"/>
+                  <text value="QuitarFila"/>
+                </properties>
+              </component>
+              <scrollpane id="346f0" binding="ScrollPaneDashBoard">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="bevel-raised"/>
+                <children>
+                  <component id="4725" class="javax.swing.JTable" binding="tblDatos">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="9185b" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/me.png"/>
+                  <text value="Medicamento"/>
+                </properties>
+              </component>
+              <grid id="7a3c6" binding="GraficoMedicamento" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="5" row-span="4" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="etched"/>
+                <children/>
+              </grid>
+            </children>
+          </grid>
+          <grid id="697b5" binding="PestanaHistorico" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Historico"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="147af" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ea223" class="javax.swing.JLabel">
+                    <constraints border-constraint="North"/>
+                    <properties>
+                      <icon value="ImagenesCalderon/receta.png"/>
+                      <text value="Recetas"/>
+                    </properties>
+                  </component>
+                  <scrollpane id="6ee3b" binding="ScrollPaneHistoricoRecetas">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="2f65e" class="javax.swing.JTable" binding="tableHistoricoRecetas">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+              <vspacer id="1da5d">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="4597" class="javax.swing.JButton" binding="ButtonBuscarHistorico">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <icon value="Imagenes_Luis/busqueda.png"/>
+                  <text value="Buscar Receta por Medico:"/>
+                </properties>
+              </component>
+              <component id="dde5a" class="javax.swing.JComboBox" binding="cmbBuscarRecetasHistorico">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <grid id="323d0" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="cfa8f" class="javax.swing.JLabel">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <icon value="Imagenes_Luis/medicamento.png"/>
+                      <text value="Medicamentos:"/>
+                    </properties>
+                  </component>
+                  <scrollpane id="4b6ff" binding="ScrollPaneHistoricoMedicamentos">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="39759" class="javax.swing.JTable" binding="tableHistoricoMedicamentos">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="f4f2a" binding="PestanaAcercaDe" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Acerca de"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="5f323" binding="Principal" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="2e170" binding="Panelcito" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="6643e" class="javax.swing.JLabel" binding="Nombre">
+                        <constraints border-constraint="North"/>
+                        <properties>
+                          <background color="-12828863"/>
+                          <enabled value="false"/>
+                          <font name="Arial Rounded MT Bold" size="36"/>
+                          <text value="Preescripcion y Despacho de Recetas"/>
+                          <verticalAlignment value="0"/>
+                        </properties>
+                      </component>
+                      <component id="e9339" class="javax.swing.JLabel" binding="Vicente">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <icon value="Imagenes_Luis/lindo.jpg"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="42006" class="javax.swing.JLabel" binding="Numero">
+                        <constraints border-constraint="South"/>
+                        <properties>
+                          <font name="Arial Rounded MT Bold" size="16"/>
+                          <text value="Direccion: 700 m. sur del Estadio Eladio Rosabal Cordero, Heredia.             Numero: 2562 8100"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+  <inspectionSuppressions>
+    <suppress inspection="FormSpellChecking"/>
+  </inspectionSuppressions>
+</form>
