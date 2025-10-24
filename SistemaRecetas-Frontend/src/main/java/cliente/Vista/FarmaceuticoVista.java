@@ -1,4 +1,4 @@
-package Vista;
+package cliente.Vista;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -6,8 +6,8 @@ import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import Modelo.Usuario;
-import Modelo.Personal;
+
+import cliente.modelo.*;
 
 public class FarmaceuticoVista extends JFrame {
     private JPanel rootPanel1;

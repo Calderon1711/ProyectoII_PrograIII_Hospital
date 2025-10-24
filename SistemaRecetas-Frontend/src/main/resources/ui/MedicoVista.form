@@ -54,6 +54,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
+                          <icon value="imagenes/Imagenes_Luis/control.png"/>
                           <text value="Control"/>
                         </properties>
                       </component>
@@ -63,7 +64,7 @@
                         </constraints>
                         <properties>
                           <horizontalTextPosition value="10"/>
-                          <icon value="Imagenes_Luis/revision-medica.png"/>
+                          <icon value="imagenes/Imagenes_Luis/revision-medica.png"/>
                           <text value="Buscar Paciente"/>
                         </properties>
                       </component>
@@ -72,7 +73,7 @@
                           <grid row="2" column="4" row-span="1" col-span="9" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <icon value="Imagenes_Luis/medicamento.png"/>
+                          <icon value="imagenes/Imagenes_Luis/medicamento.png"/>
                           <text value="Agregar Medicamento"/>
                         </properties>
                       </component>
@@ -83,6 +84,7 @@
                       <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <icon value="imagenes/Imagenes_Luis/receta.png"/>
                       <text value="Receta Medica"/>
                     </properties>
                   </component>
@@ -112,7 +114,7 @@
                       <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/guardar.png"/>
+                      <icon value="imagenes/Imagenes_Luis/guardar.png"/>
                       <text value="Guardar"/>
                     </properties>
                   </component>
@@ -121,7 +123,7 @@
                       <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/borrar.png"/>
+                      <icon value="imagenes/Imagenes_Luis/borrar.png"/>
                       <text value="Limpiar"/>
                     </properties>
                   </component>
@@ -130,7 +132,7 @@
                       <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/descartar-archivo.png"/>
+                      <icon value="imagenes/Imagenes_Luis/descartar-archivo.png"/>
                       <text value="Descartar Medicamento"/>
                     </properties>
                   </component>
@@ -140,7 +142,7 @@
                     </constraints>
                     <properties>
                       <hideActionText value="false"/>
-                      <icon value="Imagenes_Luis/detalles.png"/>
+                      <icon value="imagenes/Imagenes_Luis/detalles.png"/>
                       <text value="Detalles"/>
                     </properties>
                   </component>
@@ -157,7 +159,7 @@
                       <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/calendario.png"/>
+                      <icon value="imagenes/Imagenes_Luis/calendario.png"/>
                       <text value="Fecha de Retiro"/>
                     </properties>
                   </component>
@@ -179,7 +181,7 @@
                       <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/consulta-medica.png"/>
+                      <icon value="imagenes/Imagenes_Luis/consulta-medica.png"/>
                       <text value="Label"/>
                     </properties>
                   </component>
@@ -188,7 +190,7 @@
                       <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/reloj.png"/>
+                      <icon value="imagenes/Imagenes_Luis/reloj.png"/>
                       <text value=""/>
                     </properties>
                   </component>
@@ -269,7 +271,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/medicamento.png"/>
+                  <icon value="imagenes/Imagenes_Luis/medicamento.png"/>
                   <text value="Medicamentos"/>
                 </properties>
               </component>
@@ -284,7 +286,7 @@
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/marca-de-verificacion.png"/>
+                  <icon value="imagenes/Imagenes_Luis/marca-de-verificacion.png"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -293,7 +295,7 @@
                   <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/doble-verificacion.png"/>
+                  <icon value="imagenes/Imagenes_Luis/doble-verificacion.png"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -319,7 +321,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="Imagenes_Luis/receta.png"/>
+                      <icon value="imagenes/Imagenes_Luis/receta.png"/>
                       <text value="Recetas"/>
                     </properties>
                   </component>
@@ -330,7 +332,7 @@
                   <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/agregar.png"/>
+                  <icon value="imagenes/Imagenes_Luis/agregar.png"/>
                   <text value="AgregarFila"/>
                 </properties>
               </component>
@@ -339,7 +341,7 @@
                   <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/borrar.png"/>
+                  <icon value="imagenes/Imagenes_Luis/borrar.png"/>
                   <text value="QuitarFila"/>
                 </properties>
               </component>
@@ -361,7 +363,7 @@
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/me.png"/>
+                  <icon value="imagenes/Imagenes_Luis/me.png"/>
                   <text value="Medicamento"/>
                 </properties>
               </component>
@@ -394,7 +396,7 @@
                   <component id="ea223" class="javax.swing.JLabel">
                     <constraints border-constraint="North"/>
                     <properties>
-                      <icon value="ImagenesCalderon/receta.png"/>
+                      <icon value="imagenes/Imagenes_Luis/receta.png"/>
                       <text value="Recetas"/>
                     </properties>
                   </component>
@@ -421,7 +423,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="Imagenes_Luis/busqueda.png"/>
+                  <icon value="imagenes/Imagenes_Luis/busqueda.png"/>
                   <text value="Buscar Receta por Medico:"/>
                 </properties>
               </component>
@@ -441,7 +443,7 @@
                   <component id="cfa8f" class="javax.swing.JLabel">
                     <constraints border-constraint="Center"/>
                     <properties>
-                      <icon value="Imagenes_Luis/medicamento.png"/>
+                      <icon value="imagenes/Imagenes_Luis/medicamento.png"/>
                       <text value="Medicamentos:"/>
                     </properties>
                   </component>
@@ -493,7 +495,7 @@
                       <component id="e9339" class="javax.swing.JLabel" binding="Vicente">
                         <constraints border-constraint="West"/>
                         <properties>
-                          <icon value="Imagenes_Luis/lindo.jpg"/>
+                          <icon value="imagenes/Imagenes_Luis/lindo.jpg"/>
                           <text value=""/>
                         </properties>
                       </component>

@@ -50,6 +50,23 @@
             <version>2.20.0</version>
         </dependency>
 
+        <!-- JFreeChart para generar gráficos -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+
+        <!-- Lombok: genera getters, setters, constructores, toString, etc. automáticamente -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+
     </dependencies>
 
 </project>

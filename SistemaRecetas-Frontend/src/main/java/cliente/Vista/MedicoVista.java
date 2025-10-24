@@ -1,7 +1,9 @@
-package Vista;
+package cliente.Vista;
 import javax.swing.*;
 
-import Modelo.Personal;
+import cliente.modelo.*;
+
+import java.util.Objects;
 
 public class MedicoVista extends JFrame {
 
@@ -21,16 +23,16 @@ public class MedicoVista extends JFrame {
 
         //Iconos de las pestanas
 
-        ImageIcon iconPrincipal = new ImageIcon(getClass().getResource("/Imagenes_Luis/preescribir.png"));
+        ImageIcon iconPrincipal = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/imagenes/Imagenes_Luis/preescribir.png")));
         tabbedPane1.setIconAt(0, iconPrincipal);
 
-        ImageIcon icon1 = new ImageIcon(getClass().getResource("/Imagenes_Luis/dashboard.png"));
+        ImageIcon icon1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/imagenes/Imagenes_Luis/dashboard.png")));
         tabbedPane1.setIconAt(1, icon1);
 
-        ImageIcon icon2 = new ImageIcon(getClass().getResource("/Imagenes_Luis/historico.png"));
+        ImageIcon icon2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/imagenes/Imagenes_Luis/historico.png")));
         tabbedPane1.setIconAt(2, icon2);
 
-        ImageIcon icon3 = new ImageIcon(getClass().getResource("/Imagenes_Luis/acerca-de.png"));
+        ImageIcon icon3 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/resources/imagenes/Imagenes_Luis/acerca-de.png")));
         tabbedPane1.setIconAt(3, icon3);
 
 

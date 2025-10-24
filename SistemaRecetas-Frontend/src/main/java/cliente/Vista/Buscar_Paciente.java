@@ -1,7 +1,6 @@
-package Vista;
+package cliente.Vista;
 
-import Modelo.ListaPacientes;
-import Modelo.Personal;
+import cliente.modelo.*;
 
 import javax.swing.*;
 

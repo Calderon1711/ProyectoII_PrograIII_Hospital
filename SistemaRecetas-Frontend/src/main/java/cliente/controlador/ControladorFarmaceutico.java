@@ -1,7 +1,7 @@
-package Controlador;
+package cliente.controlador;
 
-import Modelo.*;
-import Vista.FarmaceuticoVista;
+import cliente.modelo.*;
+import cliente.Vista.*;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;

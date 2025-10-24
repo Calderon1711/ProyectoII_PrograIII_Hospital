@@ -1,7 +1,7 @@
-package Controlador;
+package cliente.controlador;
 
-import Modelo.*;
-import Vista.*;
+import cliente.modelo.*;
+import cliente.Vista.Modificar_detalle;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

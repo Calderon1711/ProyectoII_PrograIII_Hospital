@@ -40,7 +40,7 @@
                 <properties>
                   <background color="-16777216"/>
                   <font name="Arial" size="20" style="1"/>
-                  <icon value="ImagenesCalderon/doctor.png"/>
+                  <icon value="imagenes/ImagenesCalderon/doctor.png"/>
                   <text value="Medico"/>
                 </properties>
               </component>
@@ -50,7 +50,7 @@
                 </constraints>
                 <properties>
                   <font name="Tahoma" size="14" style="1"/>
-                  <icon value="ImagenesCalderon/escoba.png"/>
+                  <icon value="imagenes/ImagenesCalderon/escoba.png"/>
                   <text value="Limpiar"/>
                 </properties>
               </component>
@@ -61,7 +61,7 @@
                 <properties>
                   <enabled value="true"/>
                   <font name="Tahoma" size="14" style="1"/>
-                  <icon value="ImagenesCalderon/guardar-el-archivo.png"/>
+                  <icon value="imagenes/ImagenesCalderon/guardar-el-archivo.png"/>
                   <text value="Guardar"/>
                 </properties>
               </component>
@@ -71,7 +71,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="16" style="1"/>
-                  <icon value="ImagenesCalderon/usuario.png"/>
+                  <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                   <text value="Nombre:"/>
                 </properties>
               </component>
@@ -93,7 +93,7 @@
                 </constraints>
                 <properties>
                   <font name="Tahoma" size="14" style="1"/>
-                  <icon value="ImagenesCalderon/borrar.png"/>
+                  <icon value="imagenes/ImagenesCalderon/borrar.png"/>
                   <text value="Borrar"/>
                 </properties>
               </component>
@@ -138,7 +138,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="16" style="1"/>
-                  <icon value="ImagenesCalderon/id-del-paciente.png"/>
+                  <icon value="imagenes/ImagenesCalderon/id-del-paciente.png"/>
                   <text value="Id:"/>
                 </properties>
               </component>
@@ -180,7 +180,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="16" style="1"/>
-                  <icon value="ImagenesCalderon/expediente.png"/>
+                  <icon value="imagenes/ImagenesCalderon/expediente.png"/>
                   <text value="Especialidad:"/>
                 </properties>
               </component>
@@ -190,7 +190,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="16" style="1"/>
-                  <icon value="ImagenesCalderon/usuario.png"/>
+                  <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                   <text value="Nombre:"/>
                 </properties>
               </component>
@@ -208,7 +208,7 @@
                 </constraints>
                 <properties>
                   <font name="Tahoma" size="14" style="1"/>
-                  <icon value="ImagenesCalderon/lupa.png"/>
+                  <icon value="imagenes/ImagenesCalderon/lupa.png"/>
                   <text value="Buscar"/>
                 </properties>
               </component>
@@ -218,7 +218,7 @@
                 </constraints>
                 <properties>
                   <font name="Tahoma" size="14" style="1"/>
-                  <icon value="ImagenesCalderon/analista-de-negocios.png"/>
+                  <icon value="imagenes/ImagenesCalderon/analista-de-negocios.png"/>
                   <text value="Reporte"/>
                 </properties>
               </component>
@@ -263,7 +263,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="16" style="1"/>
-                          <icon value="ImagenesCalderon/id-del-paciente.png"/>
+                          <icon value="imagenes/ImagenesCalderon/id-del-paciente.png"/>
                           <text value="Id:"/>
                         </properties>
                       </component>
@@ -273,7 +273,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="20" style="1"/>
-                          <icon value="ImagenesCalderon/farmaceutico.png"/>
+                          <icon value="imagenes/ImagenesCalderon/farmaceutico.png"/>
                           <text value="Farmaceutico"/>
                         </properties>
                       </component>
@@ -288,7 +288,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="16" style="1"/>
-                          <icon value="ImagenesCalderon/usuario.png"/>
+                          <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                           <text value="Nombre:"/>
                         </properties>
                       </component>
@@ -306,7 +306,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/escoba.png"/>
+                          <icon value="imagenes/ImagenesCalderon/escoba.png"/>
                           <text value="Limpiar"/>
                         </properties>
                       </component>
@@ -321,7 +321,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/borrar.png"/>
+                          <icon value="imagenes/ImagenesCalderon/borrar.png"/>
                           <text value="Borrar"/>
                         </properties>
                       </component>
@@ -344,7 +344,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/guardar-el-archivo.png"/>
+                          <icon value="imagenes/ImagenesCalderon/guardar-el-archivo.png"/>
                           <text value="Guardar"/>
                         </properties>
                       </component>
@@ -383,7 +383,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="16" style="1"/>
-                          <icon value="ImagenesCalderon/usuario.png"/>
+                          <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                           <text value="Nombre:"/>
                         </properties>
                       </component>
@@ -393,7 +393,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/lupa.png"/>
+                          <icon value="imagenes/ImagenesCalderon/lupa.png"/>
                           <text value="Buscar"/>
                         </properties>
                       </component>
@@ -403,7 +403,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/analista-de-negocios.png"/>
+                          <icon value="imagenes/ImagenesCalderon/analista-de-negocios.png"/>
                           <text value="Reporte"/>
                         </properties>
                       </component>
@@ -541,7 +541,7 @@
                                 </constraints>
                                 <properties>
                                   <font name="Arial" size="18" style="1"/>
-                                  <icon value="ImagenesCalderon/lupa.png"/>
+                                  <icon value="imagenes/ImagenesCalderon/lupa.png"/>
                                   <text value=""/>
                                 </properties>
                               </component>
@@ -571,7 +571,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Arial" size="16" style="1"/>
-                                      <icon value="ImagenesCalderon/id-del-paciente.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/id-del-paciente.png"/>
                                       <text value="Id:"/>
                                     </properties>
                                   </component>
@@ -581,7 +581,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Arial" size="20" style="1"/>
-                                      <icon value="ImagenesCalderon/paciente.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/paciente.png"/>
                                       <text value="Paciente"/>
                                     </properties>
                                   </component>
@@ -596,7 +596,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Arial" size="16" style="1"/>
-                                      <icon value="ImagenesCalderon/usuario.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/usuario.png"/>
                                       <text value="Nombre:"/>
                                     </properties>
                                   </component>
@@ -614,7 +614,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Arial" size="14" style="1"/>
-                                      <icon value="ImagenesCalderon/escoba.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/escoba.png"/>
                                       <text value="Limpiar"/>
                                     </properties>
                                   </component>
@@ -629,7 +629,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Tahoma" size="14" style="1"/>
-                                      <icon value="ImagenesCalderon/borrar.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/borrar.png"/>
                                       <text value="Borrar"/>
                                     </properties>
                                   </component>
@@ -652,7 +652,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="Tahoma" size="14" style="1"/>
-                                      <icon value="ImagenesCalderon/guardar-el-archivo.png"/>
+                                      <icon value="imagenes/ImagenesCalderon/guardar-el-archivo.png"/>
                                       <text value="Guardar"/>
                                     </properties>
                                   </component>
@@ -723,7 +723,7 @@
                             </constraints>
                             <properties>
                               <font name="Arial" size="22" style="1"/>
-                              <icon value="ImagenesCalderon/paciente.png"/>
+                              <icon value="imagenes/ImagenesCalderon/paciente.png"/>
                               <text value="Listado:"/>
                             </properties>
                           </component>
@@ -783,7 +783,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="20" style="1"/>
-                          <icon value="ImagenesCalderon/medicamento.png"/>
+                          <icon value="imagenes/ImagenesCalderon/medicamento.png"/>
                           <text value="Medicamento"/>
                         </properties>
                       </component>
@@ -815,7 +815,7 @@
                         </constraints>
                         <properties>
                           <font name="Arial" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/escoba.png"/>
+                          <icon value="imagenes/ImagenesCalderon/escoba.png"/>
                           <text value="Limpiar"/>
                         </properties>
                       </component>
@@ -839,7 +839,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/borrar.png"/>
+                          <icon value="imagenes/ImagenesCalderon/borrar.png"/>
                           <text value="Borrar"/>
                         </properties>
                       </component>
@@ -870,7 +870,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/guardar-el-archivo.png"/>
+                          <icon value="imagenes/ImagenesCalderon/guardar-el-archivo.png"/>
                           <text value="Guardar"/>
                         </properties>
                       </component>
@@ -926,7 +926,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/lupa.png"/>
+                          <icon value="imagenes/ImagenesCalderon/lupa.png"/>
                           <text value="Buscar"/>
                         </properties>
                       </component>
@@ -936,7 +936,7 @@
                         </constraints>
                         <properties>
                           <font name="Tahoma" size="14" style="1"/>
-                          <icon value="ImagenesCalderon/analista-de-negocios.png"/>
+                          <icon value="imagenes/ImagenesCalderon/analista-de-negocios.png"/>
                           <text value="Reporte"/>
                         </properties>
                       </component>
@@ -1058,7 +1058,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="ImagenesCalderon/medicamento.png"/>
+                  <icon value="imagenes/ImagenesCalderon/medicamento.png"/>
                   <text value="Medicamentos"/>
                 </properties>
               </component>
@@ -1073,7 +1073,7 @@
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="ImagenesCalderon/comprobado.png"/>
+                  <icon value="imagenes/ImagenesCalderon/comprobado.png"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -1095,7 +1095,7 @@
                   <component id="2f58e" class="javax.swing.JButton" binding="medicamentosButton" default-binding="true">
                     <constraints border-constraint="North"/>
                     <properties>
-                      <icon value="ImagenesCalderon/medicamento.png"/>
+                      <icon value="imagenes/ImagenesCalderon/medicamento.png"/>
                       <text value="Medicamentos"/>
                     </properties>
                   </component>
@@ -1121,7 +1121,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <icon value="ImagenesCalderon/receta.png"/>
+                      <icon value="imagenes/ImagenesCalderon/receta.png"/>
                       <text value="Recetas"/>
                     </properties>
                   </component>
@@ -1195,7 +1195,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <icon value="ImagenesCalderon/lupa.png"/>
+                  <icon value="imagenes/ImagenesCalderon/lupa.png"/>
                   <text value="Buscar:"/>
                 </properties>
               </component>
@@ -1215,7 +1215,7 @@
                   <component id="af6cf" class="javax.swing.JLabel">
                     <constraints border-constraint="Center"/>
                     <properties>
-                      <icon value="Imagenes_Luis/medicamento.png"/>
+                      <icon value="imagenes/ImagenesCalderon/medicamento.png"/>
                       <text value="Medicamentos:"/>
                     </properties>
                   </component>
@@ -1260,7 +1260,7 @@
                   <component id="4d369" class="javax.swing.JLabel" binding="fotoHospital">
                     <constraints border-constraint="Center"/>
                     <properties>
-                      <icon value="Resources/Icons/r096x9_large.png"/>
+                      <icon value="imagenes/Icons/r096x9_large.png"/>
                       <text value=""/>
                     </properties>
                   </component>

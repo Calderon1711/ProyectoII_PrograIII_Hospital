@@ -1,6 +1,6 @@
-package Vista;
+package cliente.Vista;
 
-import Modelo.Hospital;
+import cliente.modelo.*;
 
 import javax.swing.*;
 

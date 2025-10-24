@@ -1,6 +1,6 @@
-package Vista;
+package cliente.Vista;
 
-import Modelo.Personal;
+import cliente.modelo.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;

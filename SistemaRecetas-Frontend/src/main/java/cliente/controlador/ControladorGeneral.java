@@ -1,14 +1,10 @@
-package Controlador;
+package cliente.controlador;
 
 // ControladorGeneral.java
-import Modelo.Rol;
-import Modelo.Usuario;
-import Vista.AdminVista;
-import Vista.FarmaceuticoVista;
-import Vista.MedicoVista;
-import Modelo.Hospital;
-import Modelo.Personal;
-import Controlador.*;
+import cliente.modelo.*;
+import cliente.Vista.*;
+import cliente.controlador.*;
+
 
 public class ControladorGeneral {
 

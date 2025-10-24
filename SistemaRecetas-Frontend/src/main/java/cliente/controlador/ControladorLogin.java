@@ -1,9 +1,8 @@
-package Controlador;
+package cliente.controlador;
 
 // ControladorLogin.java
-import Modelo.Personal;
-import Vista.LoginVista1;
-import Modelo.Hospital;
+import cliente.modelo.*;
+import cliente.Vista.*;
 
 import javax.swing.*;
 import java.util.Arrays;

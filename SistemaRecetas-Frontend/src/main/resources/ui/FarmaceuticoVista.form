@@ -92,7 +92,7 @@
                 <properties>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="4"/>
-                  <icon value="Resources/Icons/buscar.png"/>
+                  <icon value="imagenes/Icons/buscar.png"/>
                   <text value="Buscar"/>
                 </properties>
               </component>
@@ -104,7 +104,7 @@
                 </constraints>
                 <properties>
                   <horizontalTextPosition value="4"/>
-                  <icon value="Resources/Icons/images.png"/>
+                  <icon value="imagenes/Icons/images.png"/>
                   <text value="Limpiar"/>
                 </properties>
               </component>
@@ -134,7 +134,7 @@
             </constraints>
             <properties>
               <horizontalTextPosition value="4"/>
-              <icon value="Resources/Icons/esquema-del-boton-de-flecha-cuadrada-de-inicio-de-sesion.png"/>
+              <icon value="imagenes/Icons/esquema-del-boton-de-flecha-cuadrada-de-inicio-de-sesion.png"/>
               <text value="Iniciar Proceso"/>
             </properties>
           </component>
@@ -144,7 +144,7 @@
             </constraints>
             <properties>
               <horizontalTextPosition value="4"/>
-              <icon value="Resources/Icons/6159837.png"/>
+              <icon value="imagenes/Icons/6159837.png"/>
               <text value="Alistar"/>
             </properties>
           </component>
@@ -154,7 +154,7 @@
             </constraints>
             <properties>
               <horizontalTextPosition value="4"/>
-              <icon value="Resources/Icons/donacion-de-medicamentos.png"/>
+              <icon value="imagenes/Icons/donacion-de-medicamentos.png"/>
               <text value="Entregar"/>
             </properties>
           </component>
@@ -164,7 +164,7 @@
             </constraints>
             <properties>
               <horizontalTextPosition value="4"/>
-              <icon value="Resources/Icons/actualizar.png"/>
+              <icon value="imagenes/Icons/actualizar.png"/>
               <text value="Refrescar"/>
             </properties>
           </component>

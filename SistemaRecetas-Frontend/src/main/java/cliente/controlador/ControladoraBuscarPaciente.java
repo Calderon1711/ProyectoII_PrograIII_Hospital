@@ -1,8 +1,8 @@
-package Controlador;
+package cliente.controlador;
 
-import Modelo.Hospital;
-import Modelo.Paciente;
-import Vista.Buscar_Paciente;
+import cliente.modelo.*;
+import cliente.Vista.Buscar_Paciente;
+import cliente.modelo.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

@@ -1,4 +1,4 @@
-package Vista;
+package cliente.Vista;
 
 import javax.swing.*;
 import java.awt.Color;
