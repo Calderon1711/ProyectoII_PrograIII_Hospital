@@ -1,7 +1,6 @@
-package cliente.controlador;
+package servidor.controlador;
 
-import cliente.modelo.*;
-import cliente.Vista.*;
+import servidor.Modelo.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
