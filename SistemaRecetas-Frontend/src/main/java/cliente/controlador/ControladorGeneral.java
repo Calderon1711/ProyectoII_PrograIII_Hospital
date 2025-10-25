@@ -3,7 +3,6 @@ package cliente.controlador;
 // ControladorGeneral.java
 import cliente.modelo.*;
 import cliente.Vista.*;
-import cliente.controlador.*;
 
 
 public class ControladorGeneral {

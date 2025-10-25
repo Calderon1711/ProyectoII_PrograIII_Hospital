@@ -2,19 +2,27 @@ package cliente.modelo;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public class Receta {
-    private Personal personal; //Una receta tiene un único médico que la prescribe.
-    private Paciente paciente; //Una receta tiene un único paciente a quién se le receta.
-        private LocalDate fechaPrescripcion;
-        private LocalDate fechaRetiro;
-        private int estado;// 1: Procesada - 2: Confeccionada - 3: Lista - 4: Entregada
-        private ObservableList<DetalleMedicamento> detalleMedicamentos;
-        private String id;
 
+    private Personal personal;
+    private Paciente paciente;
+    private LocalDate fechaPrescripcion;
+    private LocalDate fechaRetiro;
+    private int estado; // 1: Procesada - 2: Confeccionada - 3: Lista - 4: Entregada
+    private ObservableList<DetalleMedicamento> detalleMedicamentos;
+    private String id;
+
+    // Constructor vacío
+    public Receta() {
+        this.personal = new Medico();
+        this.paciente = new Paciente();
+        this.detalleMedicamentos = FXCollections.observableArrayList();
+    }
+
+    // Constructor completo
     public Receta(String id, Personal personal, Paciente paciente, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
         this.id = id;
         this.personal = personal;
@@ -25,34 +33,7 @@ public class Receta {
         this.detalleMedicamentos = FXCollections.observableArrayList();
     }
 
-    public Receta(String id, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
-        this.id = id;
-        this.fechaPrescripcion = fechaPrescripcion;
-        this.fechaRetiro = fechaRetiro;
-        this.estado = estado;
-        personal = new Medico();
-        paciente = new Paciente();
-        detalleMedicamentos = FXCollections.observableArrayList();
-    }
-
-    public Receta(String id, String idPaciente, String idMedico, LocalDate fechaPrescripcion, LocalDate fechaRetiro, int estado) {
-        this.id = id;
-        this.fechaPrescripcion = fechaPrescripcion;
-        this.fechaRetiro = fechaRetiro;
-        this.estado = estado;
-        personal = new Medico(); //Acá se referenciaría con el hotel el medico con el idMedico.
-        paciente = new Paciente(); //Acá se referenciaría con el hotel el medico con el idPaciente.
-        detalleMedicamentos = FXCollections.observableArrayList();
-    }
-
-    public Receta() {
-        //Inicializar referencias.
-        personal = new Medico();
-        paciente = new Paciente();
-        detalleMedicamentos = FXCollections.observableArrayList();
-    }
-
-
+    // Getters y Setters
     public Personal getPersonal() {
         return personal;
     }
@@ -97,6 +78,10 @@ public class Receta {
         return detalleMedicamentos;
     }
 
+    public void setDetalleMedicamentos(List<DetalleMedicamento> detalleMedicamentos) {
+        this.detalleMedicamentos = FXCollections.observableArrayList(detalleMedicamentos);
+    }
+
     public String getId() {
         return id;
     }
@@ -105,123 +90,17 @@ public class Receta {
         this.id = id;
     }
 
-    public void setDetalleMedicamentos(List<DetalleMedicamento> detalleMedicamentos) {
-        this.detalleMedicamentos = FXCollections.observableArrayList(detalleMedicamentos);
-    }
-
-    public boolean insertarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
-        String codigoMedicamento = detalleMedicamento.getMedicamento().getCodigo();
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                return false;
-            }
-        }
-        detalleMedicamentos.add(detalleMedicamento);
-        return true; //Lo añade si NO hay otro detalle con el mismo medicamento. Se puede hacer con detalle, pero pensando en borrarlo luego, menor evitarlo.
-    }
-
-    public boolean eliminarDetalleMedicamento(String codigoMedicamento) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                detalleMedicamentos.remove(detalles);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean modificarMedicamentoDelDetalle(String codigoMedicamentoViejo, Medicamento medicamentoNuevo) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamentoViejo)) {
-                detalles.setMedicamento(medicamentoNuevo);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean modificarCantidad(String codigoMedicamento, int cantidad) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                detalles.setCantidad(cantidad);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean modificarDuracion(String codigoMedicamento, int duracion) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                detalles.setDuracion(duracion);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean modificarIndicacion(String codigoMedicamento, String indicacion) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                detalles.setIndicacion(indicacion);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    DetalleMedicamento getDetalleMedicamento(String codigoMedicamento) {
-        for (DetalleMedicamento detalles :  detalleMedicamentos) {
-            if (detalles.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                return detalles;
-            }
-        }
-        return null;
-    }
-
-    public String mostrarTodosLosDetalles() {
-        StringBuilder sb = new StringBuilder();
-        for (DetalleMedicamento detalle : detalleMedicamentos) {
-            sb.append(detalle.toString()).append("\n");
-        }
-        return sb.toString();
-    }
-
-    public String mostrarDetalle(String codigoMedicamento) {
-        StringBuilder sb = new StringBuilder();
-        for (DetalleMedicamento detalle : detalleMedicamentos) {
-            if (detalle.getMedicamento().getCodigo().equals(codigoMedicamento)) {
-                sb.append(detalle.toString()).append("\n");
-            }
-        }
-        return sb.toString();
-    }
-
-    public Boolean hayMedicamentosEnLaReceta () {
-        return !detalleMedicamentos.isEmpty();
-    }
-
-    public String obtenerNombreEstado(int estado) {
-        switch (estado) {
-            case 1: return "PROCESO";
-            case 2: return "CONFECCIONADA";
-            case 3: return "LISTA";
-            case 4: return "ENTREGADA";
-            default: return "Desconocido";
-        }
-    }
-
+    // toString solo para depuración
     @Override
     public String toString() {
-        String estadoStr = obtenerNombreEstado(1);
-        return "Receta {" + '\n' +
-                "id='" + id + '\n' +
-                ", personal=" + personal.toString() + '\n' +
-                ", paciente=" + paciente.toString() + '\n' +
-                ", fechaPrescripcion=" + fechaPrescripcion + '\n' +
-                ", fechaRetiro=" + fechaRetiro + '\n' +
-                ", estado=" + estadoStr + '\n' +
-                ", detalleMedicamentos=" + this.mostrarTodosLosDetalles() + '\n' +
+        return "Receta{" +
+                "id='" + id + '\'' +
+                ", personal=" + personal +
+                ", paciente=" + paciente +
+                ", fechaPrescripcion=" + fechaPrescripcion +
+                ", fechaRetiro=" + fechaRetiro +
+                ", estado=" + estado +
+                ", detalleMedicamentos=" + detalleMedicamentos +
                 '}';
     }
 }
