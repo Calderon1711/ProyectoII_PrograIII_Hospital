@@ -14,7 +14,7 @@ import java.util.List;
 public class PacienteDAO {
     private final SQLConnector connector = SQLConnector.getInstance();
 
-    public List<Paciente> listar() throws SQLException {
+    public List<Paciente> obtenerTodos() throws SQLException {
         String sql = "SELECT id, nombre, telefono, fecha_nacimiento FROM paciente ORDER BY nombre";
         List<Paciente> out = new ArrayList<>();
         try (Connection c = connector.newConnection();

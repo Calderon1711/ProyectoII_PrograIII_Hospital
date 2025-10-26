@@ -1,126 +1,172 @@
 package servidor.dao;
 
-import servidor.Modelo.*;
+import servidor.Modelo.Administrador;
+import servidor.Modelo.Farmaceuta;
+import servidor.Modelo.Medico;
+import servidor.Modelo.Personal;
 import servidor.Modelo.Rol;
-import servidor.persistencia.SQLExecutor;
+import servidor.persistencia.SQLConnector;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonalDAO {
-    private final SQLExecutor executor;
+    private final SQLConnector connector = SQLConnector.getInstance();
 
-    public PersonalDAO() throws SQLException {
-        executor = new SQLExecutor();
-    }
 
-    // Guardar cualquier tipo de personal
-    public void guardar(Personal personal) throws SQLException {
-        String sql = "INSERT INTO personal (id, nombre, clave, especialidad, rol) VALUES (?, ?, ?, ?, ?)";
-        String especialidad = null;
-        if (personal instanceof Medico) {
-            especialidad = ((Medico) personal).getEspecialidad();
-        }
-        executor.ejecutaUpdate(sql,
-                personal.getId(),
-                personal.getNombre(),
-                personal.getClave(),
-                especialidad,
-                personal.getRol().toString());
-    }
+    private Personal map(ResultSet rs) throws SQLException {
+        String id   = rs.getString("id_Personal");
+        String nom  = rs.getString("nombre_Personal");
+        String cla  = rs.getString("clave_Personal");
+        String rolS = rs.getString("rol_Personal");
+        Rol rol     = Rol.valueOf(rolS.toUpperCase());
 
-    // Actualizar personal existente
-    public void actualizar(Personal personal) throws SQLException {
-        String sql = "UPDATE personal SET nombre = ?, clave = ?, especialidad = ?, rol = ? WHERE id = ?";
-        String especialidad = null;
-        if (personal instanceof Medico) {
-            especialidad = ((Medico) personal).getEspecialidad();
-        }
-        executor.ejecutaUpdate(sql,
-                personal.getNombre(),
-                personal.getClave(),
-                especialidad,
-                personal.getRol().toString(),
-                personal.getId());
-    }
-
-    // Eliminar personal
-    public void eliminar(String id) throws SQLException {
-        String sql = "DELETE FROM personal WHERE id = ?";
-        executor.ejecutaUpdate(sql, id);
-    }
-
-    // Obtener personal por ID
-    public Personal obtener(String id) throws SQLException {
-        String sql = "SELECT * FROM personal WHERE id = ?";
-        ResultSet rs = executor.ejecutaQuery(sql, id);
-        Personal personal = null;
-        if (rs.next()) {
-            Rol rol = Rol.valueOf(rs.getString("rol"));
-            if (rol == Rol.MEDICO) {
-                personal = new Medico(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        rs.getString("especialidad"),
-                        Rol.MEDICO
-                );
-            } else if (rol == Rol.ADMINISTRADOR) {
-                personal = new Administrador(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        Rol.ADMINISTRADOR
-                );
-            } else if (rol == Rol.FARMACEUTICO) {
-                personal = new Farmaceuta(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        Rol.FARMACEUTICO
-                );
+        switch (rol) {
+            case MEDICO -> {
+                String esp = rs.getString("especialidad_Personal_Medico"); // puede ser null
+                return new Medico(nom, id, cla, esp, Rol.MEDICO);
             }
+            case FARMACEUTICO -> {
+                return new Farmaceuta(nom, id, cla, Rol.FARMACEUTICO);
+            }
+            case ADMINISTRADOR -> {
+                return new Administrador(nom, id, cla, Rol.ADMINISTRADOR);
+            }
+            default -> throw new SQLException("Rol no soportado: " + rolS);
         }
-        rs.close();
-        return personal;
     }
 
-    // Obtener todos los personales
     public List<Personal> obtenerTodos() throws SQLException {
-        String sql = "SELECT * FROM Personal";
-        ResultSet rs = executor.ejecutaQuery(sql);
-        List<Personal> lista = new ArrayList<>();
-        while (rs.next()) {
-            Rol rol = Rol.valueOf(rs.getString("rol"));
-            Personal personal = null;
-            if (rol == Rol.MEDICO) {
-                personal = new Medico(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        rs.getString("especialidad"),
-                        Rol.MEDICO
-                );
-            } else if (rol == Rol.ADMINISTRADOR) {
-                personal = new Administrador(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        Rol.ADMINISTRADOR
-                );
-            } else if (rol == Rol.FARMACEUTICO) {
-                personal = new Farmaceuta(
-                        rs.getString("nombre"),
-                        rs.getString("id"),
-                        rs.getString("clave"),
-                        Rol.FARMACEUTICO
-                );
-            }
-            lista.add(personal);
+        String sql = """
+            SELECT id_Personal, nombre_Personal, clave_Personal, rol_Personal, especialidad_Personal_Medico
+            FROM personal ORDER BY nombre_Personal
+        """;
+        List<Personal> out = new ArrayList<>();
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) out.add(map(rs));
         }
-        rs.close();
-        return lista;
+        return out;
+    }
+
+    public List<Medico> listarMedicos() throws SQLException {
+        String sql = """
+            SELECT id_Personal, nombre_Personal, clave_Personal, rol_Personal, especialidad_Personal_Medico
+            FROM personal WHERE rol_Personal='MEDICO' ORDER BY nombre_Personal
+        """;
+        List<Medico> out = new ArrayList<>();
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Personal p = map(rs);
+                if (p instanceof Medico m) out.add(m);
+            }
+        }
+        return out;
+    }
+
+    public List<Farmaceuta> listarFarmaceutas() throws SQLException {
+        String sql = """
+            SELECT id_Personal, nombre_Personal, clave_Personal, rol_Personal
+            FROM personal WHERE rol_Personal='FARMACEUTICO' ORDER BY nombre_Personal
+        """;
+        List<Farmaceuta> out = new ArrayList<>();
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Personal p = map(rs);
+                if (p instanceof Farmaceuta f) out.add(f);
+            }
+        }
+        return out;
+    }
+
+    public Personal obtenerPorId(String id) throws SQLException {
+        String sql = """
+            SELECT id_Personal, nombre_Personal, clave_Personal, rol_Personal, especialidad_Personal_Medico
+            FROM personal WHERE id_Personal=?
+        """;
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? map(rs) : null;
+            }
+        }
+    }
+
+    public boolean existe(String id) throws SQLException {
+        String sql = "SELECT 1 FROM personal WHERE id_Personal=?";
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    public int insertar(Personal p) throws SQLException {
+        String sql = """
+            INSERT INTO personal (id_Personal, nombre_Personal, clave_Personal, rol_Personal, especialidad_Personal_Medico)
+            VALUES (?,?,?,?,?)
+        """;
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, p.getId());
+            ps.setString(2, p.getNombre());
+            ps.setString(3, p.getClave());
+            ps.setString(4, p.getRol().name());
+            if (p instanceof Medico m) {
+                ps.setString(5, m.getEspecialidad());
+            } else {
+                ps.setNull(5, Types.VARCHAR);
+            }
+            return ps.executeUpdate();
+        }
+    }
+
+    public int actualizar(Personal p) throws SQLException {
+        String sql = """
+            UPDATE personal SET nombre_Personal=?, clave_Personal=?, rol_Personal=?, especialidad_Personal_Medico=?
+            WHERE id_Personal=?
+        """;
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getClave());
+            ps.setString(3, p.getRol().name());
+            if (p instanceof Medico m) {
+                ps.setString(4, m.getEspecialidad());
+            } else {
+                ps.setNull(4, Types.VARCHAR);
+            }
+            ps.setString(5, p.getId());
+            return ps.executeUpdate();
+        }
+    }
+
+    public boolean actualizarClave(String id, String nuevaClave) throws SQLException {
+        String sql = "UPDATE personal SET clave_Personal=? WHERE id_Personal=?";
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, nuevaClave);
+            ps.setString(2, id);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    /* -------------------------- DELETE ------------------------- */
+    public int eliminar(String id) throws SQLException {
+        String sql = "DELETE FROM personal WHERE id_Personal=?";
+        try (Connection c = connector.newConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate();
+        }
     }
 }
