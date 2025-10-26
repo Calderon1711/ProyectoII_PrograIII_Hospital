@@ -1,7 +1,7 @@
 package cliente.controlador;
 
 import cliente.modelo.*;
-import cliente.Vista.*
+import cliente.Vista.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.List;
+
 
 public class ControladoraAdmin implements ActionListener {
     private AdminVista vista;
