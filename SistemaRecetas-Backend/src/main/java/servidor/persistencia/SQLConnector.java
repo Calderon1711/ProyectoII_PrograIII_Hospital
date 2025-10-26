@@ -8,57 +8,32 @@ import java.util.Properties;
 
 public class SQLConnector {
     private static SQLConnector instance;
-    private Connection connection;
+    private final String url;
+    private final String user;
+    private final String pass;
 
     private SQLConnector() {
-        try {
-            // Cargar el archivo de propiedades desde resources
-            Properties props = new Properties();
-            InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
-            if (input == null) {
-                throw new RuntimeException("No se encontró el archivo db.properties en resources");
-            }
-            props.load(input);
-
-            // Obtener los valores
-            String url = props.getProperty("db.url");
-            String user = props.getProperty("db.user");
-            String password = props.getProperty("db.password");
-            String driver = props.getProperty("db.driver");
-
-            // Cargar el driver y crear la conexión
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
-            System.out.println(" Conexión exitosa a la base de datos!");
-
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+            if (in == null) throw new IllegalStateException("No se encontró db.properties en resources/");
+            Properties p = new Properties();
+            p.load(in);
+            Class.forName(p.getProperty("db.driver")); // com.mysql.cj.jdbc.Driver
+            this.url  = p.getProperty("db.url")
+                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+                    + "&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=250&prepStmtCacheSqlLimit=2048";
+            this.user = p.getProperty("db.user");
+            this.pass = p.getProperty("db.password");
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(" Error al conectar con la base de datos: " + e.getMessage());
+            throw new RuntimeException("No se pudo inicializar SQLConnector", e);
         }
     }
 
-    public static SQLConnector getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new SQLConnector();
-        }else if(instance.getConnection().isClosed()){
-            instance = new SQLConnector();
-        }
+    public static synchronized SQLConnector getInstance() {
+        if (instance == null) instance = new SQLConnector();
         return instance;
     }
 
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println(" Conexión cerrada correctamente.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Connection newConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, pass);
     }
 }
