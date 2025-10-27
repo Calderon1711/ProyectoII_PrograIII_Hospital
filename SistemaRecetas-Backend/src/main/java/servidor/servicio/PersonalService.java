@@ -1,6 +1,8 @@
 package servidor.servicio;
 
 
+import servidor.Modelo.Paciente;
+import servidor.dao.PacienteDAO;
 import servidor.dao.PersonalDAO;
 import servidor.Modelo.Personal;
 import servidor.Modelo.Rol;
@@ -10,59 +12,64 @@ import java.util.List;
 
 public class PersonalService {
 
-    private PersonalDAO personalDAO;
+    private final PersonalDAO personalDAO;
 
-    public PersonalService() throws SQLException {
+
+    public PersonalService(){
         this.personalDAO = new PersonalDAO();
     }
 
-    // Listar todo el personal
-    public List<Personal> listarPersonal() throws SQLException {
-        return personalDAO.obtenerTodos();
+    //listar todos los del personal
+    public List<Personal> listarPersonal(){
+        try{
+            return personalDAO.obtenerTodos();
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return List.of();
+        }
     }
 
-    // Consultar personal por ID
-    public Personal consultarPersonal(String id) throws SQLException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del personal no puede ser nulo o vacío.");
+    //Consultar un personal por ID
+    public Personal consultarPaciente(String id){
+        try{
+            return personalDAO.obtenerPorId(id);
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return null;
         }
-        return personalDAO.(id);
     }
 
-    // Agregar nuevo personal
-    public void agregarPersonal(Personal personal) throws SQLException {
-        if (personal == null) {
-            throw new IllegalArgumentException("El personal no puede ser nulo.");
+    //Agregar nuevo personal
+    public boolean agregarPersonal(Personal personal){
+        try{
+            return personalDAO.insertar(personal)>0;
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return false;
         }
-        if (personal.getId() == null || personal.getId().trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del personal no puede ser nulo o vacío.");
-        }
-        if (personal.getNombre() == null || personal.getNombre().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del personal no puede ser nulo o vacío.");
-        }
-        if (personal.getRol() == null) {
-            throw new IllegalArgumentException("El rol del personal no puede ser nulo.");
-        }
-        personalDAO.guardarPersonal(personal);
     }
 
-    // Actualizar personal existente
-    public void actualizarPersonal(Personal personal) throws SQLException {
-        if (personal == null) {
-            throw new IllegalArgumentException("El personal no puede ser nulo.");
+    //Actualizar persoanl
+    public boolean actualizarPersonal(Personal personal){
+        try{
+            return personalDAO.actualizar(personal)>0;
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return false;
         }
-        if (personal.getId() == null || personal.getId().trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del personal no puede ser nulo o vacío.");
-        }
-        personalDAO.actualizarPersonal(personal);
     }
 
-    // Eliminar personal por ID
-    public void eliminarPersonal(String id) throws SQLException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del personal no puede ser nulo o vacío.");
+    //eliminar personal
+    public boolean eliminarPersonal(String id){
+        try{
+           return personalDAO.eliminar(id)>0;
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return false;
         }
-        personalDAO.eliminarPersonal(id);
     }
+
+
 }
+
 

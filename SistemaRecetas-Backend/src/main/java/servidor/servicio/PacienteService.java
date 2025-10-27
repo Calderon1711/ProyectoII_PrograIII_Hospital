@@ -1,67 +1,64 @@
 package servidor.servicio;
 
-
 import servidor.dao.PacienteDAO;
 import servidor.Modelo.Paciente;
-
 import java.sql.SQLException;
 import java.util.List;
 
 public class PacienteService {
+    private final PacienteDAO pacienteDAO;
 
-    private PacienteDAO pacienteDAO;
-
-    public PacienteService() throws SQLException {
+    public PacienteService() {
         this.pacienteDAO = new PacienteDAO();
     }
 
     // Listar todos los pacientes
-    public List<Paciente> listarPacientes() throws SQLException {
-        return pacienteDAO.();
+    public List<Paciente> listarPacientes() {
+        try {
+            return pacienteDAO.obtenerTodos();
+        } catch (SQLException e) {
+            System.err.println("Error al listar pacientes: " + e.getMessage());
+            return List.of();
+        }
     }
 
-    // Consultar paciente por ID
-    public Paciente consultarPaciente(String id) throws SQLException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del paciente no puede ser nulo o vacío.");
+    //  Consultar un paciente por ID
+    public Paciente consultarPaciente(String id) {
+        try {
+            return pacienteDAO.obtenerPorId(id);
+        } catch (SQLException e) {
+            System.err.println("Error al consultar paciente: " + e.getMessage());
+            return null;
         }
-        return pacienteDAO.obtenerPaciente(id);
     }
 
-    // Agregar un nuevo paciente
-    public void agregarPaciente(Paciente paciente) throws SQLException {
-        if (paciente == null) {
-            throw new IllegalArgumentException("El paciente no puede ser nulo.");
+    //  Agregar nuevo paciente
+    public boolean agregarPaciente(Paciente paciente) {
+        try {
+            return pacienteDAO.insertar(paciente) > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al insertar paciente: " + e.getMessage());
+            return false;
         }
-        if (paciente.getId() == null || paciente.getId().trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del paciente no puede ser nulo o vacío.");
-        }
-        if (paciente.getNombre() == null || paciente.getNombre().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del paciente no puede ser nulo o vacío.");
-        }
-
-        pacienteDAO.guardarPaciente(paciente);
     }
 
-    // Actualizar un paciente existente
-    public void actualizarPaciente(Paciente paciente) throws SQLException {
-        if (paciente == null) {
-            throw new IllegalArgumentException("El paciente no puede ser nulo.");
+    //  Actualizar paciente
+    public boolean actualizarPaciente(Paciente paciente) {
+        try {
+            return pacienteDAO.actualizar(paciente) > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar paciente: " + e.getMessage());
+            return false;
         }
-        if (paciente.getId() == null || paciente.getId().trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del paciente no puede ser nulo o vacío.");
-        }
-        pacienteDAO.actualizarPaciente(paciente);
     }
 
-    // Eliminar un paciente por ID
-    public void eliminarPaciente(String id) throws SQLException {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("El ID del paciente no puede ser nulo o vacío.");
+    //   Eliminar paciente
+    public boolean eliminarPaciente(String id) {
+        try {
+            return pacienteDAO.eliminar(id) > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar paciente: " + e.getMessage());
+            return false;
         }
-        pacienteDAO.eliminarPaciente(id);
     }
 }
-
-
-
