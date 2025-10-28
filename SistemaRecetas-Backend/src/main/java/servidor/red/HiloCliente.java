@@ -52,6 +52,40 @@ public class HiloCliente implements Runnable {
     }
 
     private Mensaje procesarMensaje(Mensaje mensaje){
+        try{
+            String comando= mensaje.getComando();
 
+            //Instanciamos los servicios que vamos a usar
+            MedicamentoService medicamentoService = new MedicamentoService();
+            PacienteService pacienteService = new PacienteService();
+            PersonalService personalService = new PersonalService();
+            RecetaService recetaService = new RecetaService();
+
+            switch (comando){
+                //Medicamento
+                case Comandos.LISTAR_MEDICAMENTOS -> {
+                    return new Mensaje(true, "Lista de medicamentos",
+                            ConversorJSON.serializar(medicamentoService.obtenerMedicamentos()));
+                }
+                case Comandos.AGREGAR_MEDICAMENTO -> {
+                    Medicamento med = ConversorJSON.deserializar(mensaje.getObjeto().toString(), Medicamento.class);
+                    medicamentoService.agregarMedicamento(med);
+                    return new Mensaje(true, "Medicamento agregado con exito",null);
+                }
+                case Comandos.LISTAR_PACIENTES -> {
+                    return new Mensaje(true,"Lista de pacientes",ConversorJSON.serializar(pacienteService.obtenerTodosPacientes()));
+                }
+                case Comandos.Listar_Personal -> {
+                    return new Mensaje(true,"Lista de medicos", ConversorJSON.serializar(personalService.obtenerTodoPersonal()));
+                }
+                case Comandos.LISTAR_RECETAS -> {
+                    //return new Mensaje(true, "Lista de recetas", ConversorJSON.serializar(recetaService.))
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return new Mensaje(false, "Error procesando comando: " + e.getMessage(),null);
+        }
     }
 }

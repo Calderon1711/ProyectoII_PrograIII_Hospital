@@ -63,4 +63,7 @@ public class Comandos {
     public static final String CONSULTAR_PACIENTE = "consultar_paciente";
     public static final String ACTUALIZAR_PACIENTE = "actualizar_paciente";
 
+    //Mesnaje de proxyPersonal
+    public static final String Listar_Personal = "listar_personal";
+
 }

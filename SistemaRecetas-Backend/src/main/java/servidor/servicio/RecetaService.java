@@ -1,6 +1,7 @@
 package servidor.servicio;
 
 import servidor.Modelo.DetalleMedicamento;
+import servidor.Modelo.Personal;
 import servidor.Modelo.Receta;
 import servidor.dao.RecetaDAO;
 import java.sql.SQLException;
@@ -11,6 +12,16 @@ public class RecetaService {
 
     public RecetaService() {
         this.recetaDAO = new RecetaDAO();
+    }
+
+    //listar todos los del personal
+    public List<Receta> obtenerTodasLasRecetas{
+        try{
+            return recetaDAO.obtenerTodos();
+        }catch (SQLException e){
+            System.out.println("Erro ao listar personal: "+e.getMessage());
+            return List.of();
+        }
     }
 
     // Crear receta con detalles

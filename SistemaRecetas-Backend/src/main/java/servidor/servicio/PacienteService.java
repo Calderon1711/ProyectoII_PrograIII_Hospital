@@ -13,7 +13,7 @@ public class PacienteService {
     }
 
     // Listar todos los pacientes
-    public List<Paciente> listarPacientes() {
+    public List<Paciente> obtenerTodosPacientes() {
         try {
             return pacienteDAO.obtenerTodos();
         } catch (SQLException e) {

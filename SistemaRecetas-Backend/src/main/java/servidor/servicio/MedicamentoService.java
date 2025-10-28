@@ -13,7 +13,7 @@ public class MedicamentoService {
         this.medicamentoDAO = new MedicamentoDAO();
     }
 
-    public List<Medicamento> listarMedicamentos() {
+    public List<Medicamento> obtenerMedicamentos() {
         try {
             return medicamentoDAO.obtenerTodos();
         } catch (SQLException e) {

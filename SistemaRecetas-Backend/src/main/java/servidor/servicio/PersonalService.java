@@ -20,7 +20,7 @@ public class PersonalService {
     }
 
     //listar todos los del personal
-    public List<Personal> listarPersonal(){
+    public List<Personal> obtenerTodoPersonal(){
         try{
             return personalDAO.obtenerTodos();
         }catch (SQLException e){
