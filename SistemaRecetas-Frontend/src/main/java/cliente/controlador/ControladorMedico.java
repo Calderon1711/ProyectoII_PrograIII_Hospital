@@ -24,10 +24,10 @@ import java.util.List;
 public class ControladorMedico extends JFrame {
 
     private MedicoVista vista;
-    private static Hospital hospi = Hospital.getInstance();
+    private Hospital hospi ;
     private ControladoraBuscarPaciente controladoraBuscarPaciente;
     private ControladorDetalleMedicamento controladorDetalleMedicamento;
-    static Personal personal;
+    private Personal personal;
     private DefaultTableModel modeloTablaMedicamentos;
 
 

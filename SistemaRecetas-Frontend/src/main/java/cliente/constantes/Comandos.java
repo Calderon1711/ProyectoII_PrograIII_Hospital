@@ -21,7 +21,7 @@ public class Comandos {
     public static final String CONSULTAR_DETALLEMEDICAMENTO = "consultar_detallemedicamento";
     public static final String ACTUALIZAR_DETALLEMEDICAMENTO = "actualizar_detallemedicamento";
 
-    //Mensajes de ProxyRecetas
+    //Mensajes de ProxyReceta
     public static final String LISTAR_RECETAS = "listar_recetas";
     public static final String AGREGAR_RECETA = "agregar_receta";
     public static final String ELIMINAR_RECETA = "eliminar_receta";
@@ -43,7 +43,7 @@ public class Comandos {
     public static final String ACTUALIZAR_FARMACEUTICA = "actualizar_farmaceutica";
 
     //Mensaje de ProxyHospital
-    public static final String LISTAR_HOSPITALES = "listar_hospital";
+    public static final String LISTAR_HOSPITAL = "listar_hospital";
     public static final String AGREGAR_HOSPITAL = "agregar_hospital";
     public static final String ELIMINAR_HOSPITAL = "eliminar_hospital";
     public static final String CONSULTAR_HOSPITAL = "consultar_hospital";
@@ -62,5 +62,13 @@ public class Comandos {
     public static final String ELIMINAR_PACIENTE = "eliminar_paciente";
     public static final String CONSULTAR_PACIENTE = "consultar_paciente";
     public static final String ACTUALIZAR_PACIENTE = "actualizar_paciente";
+
+    //Mensaje de ProxyPersonal
+    public static final String LISTAR_PERSONAL = "listar_personal";
+    public static final String AGREGAR_PERSONAL = "agregar_personal";
+    public static final String ELIMINAR_PERSONAL = "eliminar_personal";
+    public static final String CONSULTAR_PERSONAL= "consultar_personal";
+    public static final String ACTUALIZAR_PERSONAL = "actualizar_personal";
+
 
 }

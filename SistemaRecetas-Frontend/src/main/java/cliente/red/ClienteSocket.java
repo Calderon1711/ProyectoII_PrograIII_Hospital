@@ -1,15 +1,12 @@
 package cliente.red;
 
 import cliente.util.ConfiguracionCliente;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.*;
 
-
-//Maneja la conexión del cliente con el servidor.
-
+// Maneja la conexión del cliente con el servidor.
 public class ClienteSocket {
 
     private static ClienteSocket instance;
@@ -17,7 +14,6 @@ public class ClienteSocket {
     private ObjectOutputStream salida;
     private ObjectInputStream entrada;
     private final ConcurrentMap<String, BlockingQueue<Mensaje>> pendientes = new ConcurrentHashMap<>();
-
 
     private ClienteSocket() {}
 
@@ -29,12 +25,11 @@ public class ClienteSocket {
     public synchronized void connect(String host, int puerto) throws Exception {
         if (socket != null && socket.isConnected()) return;
 
-        socket = new Socket(ConfiguracionCliente.getHost(), ConfiguracionCliente.getPuerto());
+        socket = new Socket(host, puerto);
         salida = new ObjectOutputStream(socket.getOutputStream());
         entrada = new ObjectInputStream(socket.getInputStream());
 
-        // 🔹 En vez de crear el hilo aquí directamente,
-        // lo delegamos al gestor de hilos.
+        // Crear hilo listener para recibir respuestas
         GestorHilosCliente.getInstance().ejecutar(new ListenerMensajes(this, entrada));
     }
 
@@ -43,16 +38,22 @@ public class ClienteSocket {
         salida.flush();
     }
 
+    // Verifica si el socket está conectado y activo
+
+    public synchronized boolean isConnected() {
+        return socket != null && socket.isConnected() && !socket.isClosed();
+    }
+
     public void entregarRespuesta(Mensaje respuesta) {
         BlockingQueue<Mensaje> q = pendientes.get(respuesta.getId());
         if (q != null) {
             q.offer(respuesta);
         } else {
-            System.out.println("Respuesta recibida sin solicitud pendiente: " + respuesta.getComando());
+            System.out.println("Respuesta sin solicitud pendiente: " + respuesta.getComando());
         }
     }
 
-    // Envía un mensaje y espera la respuesta correspondiente (bloqueante)
+    // Método que envía un mensaje y espera respuesta
 
     public Mensaje enviarYEsperar(Mensaje solicitud, long timeoutMillis) {
         try {
@@ -72,5 +73,4 @@ public class ClienteSocket {
             return null;
         }
     }
-
 }

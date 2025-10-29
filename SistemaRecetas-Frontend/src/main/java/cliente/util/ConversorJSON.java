@@ -23,3 +23,5 @@ public class ConversorJSON {
         return gson.fromJson(json, TypeToken.getParameterized(List.class, tipo).getType());
     }
 }
+
+
