@@ -150,7 +150,7 @@ public class ControladorMedico extends JFrame {
     }
 
     private void agregarMedicamento() {
-        ControladorDetalleMedicamento ctrlDet = new ControladorDetalleMedicamento(hospi);
+        ControladorDetalleMedicamento ctrlDet = new ControladorDetalleMedicamento();
 
         ctrlDet.getVista().addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

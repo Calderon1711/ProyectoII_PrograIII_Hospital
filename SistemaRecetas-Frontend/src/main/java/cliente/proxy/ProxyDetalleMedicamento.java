@@ -35,7 +35,7 @@ public class ProxyDetalleMedicamento extends ProxyService {
     }
 
     // Agregar una receta nueva → devuelve la receta creada
-    public DetalleMedicamento agregarReceta(DetalleMedicamento detalleMedicamento) {
+    public DetalleMedicamento agregarDetalleMedicamento(DetalleMedicamento detalleMedicamento) {
         try {
             String jsonReceta = ConversorJSON.serializar(detalleMedicamento);
             Mensaje solicitud = new Mensaje(Comandos.AGREGAR_DETALLEMEDICAMENTO, jsonReceta);

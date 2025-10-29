@@ -1,37 +1,42 @@
 package cliente.controlador;
 
 import cliente.modelo.*;
+import cliente.proxy.*;
 import cliente.Vista.Modificar_detalle;
+import cliente.util.Alerta;
+import javafx.collections.ObservableList;
+import lombok.Data;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
+@Data
 public class ControladorDetalleMedicamento {
 
     private Modificar_detalle modificarDetalleVista;
-    private Hospital hospi = Hospital.getInstance();
     private Medicamento medicamento;
-    private DetalleMedicamento detalle;
+    private ProxyHospital proxyHospital;
+    private ProxyDetalleMedicamento proxyDetalle;
 
-
-    public ControladorDetalleMedicamento(Hospital hospital) {
-
-        this.hospi = hospital;
-
-
-        if (hospi == null || hospi.getMedicamentos() == null || hospi.getMedicamentos().getMedicamentos() == null) {
-            System.err.println("Hospital o lista de medicamentos no disponible.");
-            return;
-        }
+    public ControladorDetalleMedicamento() {
         try {
-            modificarDetalleVista= new Modificar_detalle(hospi);
+            proxyHospital = new ProxyHospital();
+            proxyDetalle = new ProxyDetalleMedicamento();
+
+            Hospital hospi = proxyHospital.obtenerHospital(); // ahora el hospital viene del backend
+            if (hospi == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener información del hospital desde el servidor.");
+                return;
+            }
+
+            modificarDetalleVista = new Modificar_detalle(hospi);
+            initController();
+
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            Alerta.error("Detalle Medicamento","Error inicializando el controlador" + e.getMessage());
         }
-
-        initController();
     }
+
 
     private void initController() {
         System.out.println(" Inicializando controlador...");
@@ -60,44 +65,56 @@ public class ControladorDetalleMedicamento {
 
     public void configurarBotonGuardar() {
         modificarDetalleVista.getGuardarButton().addActionListener(e -> {
-            String nombre = modificarDetalleVista.getTextFieldMedicamento().getText().trim();
-            String presentacion = modificarDetalleVista.getTextFieldPresentacion().getText().trim();
-            String codigo = modificarDetalleVista.getTextFieldCodigo().getText().trim();
-            String indicacion = modificarDetalleVista.getTextFieldIndicaciones().getText().trim();
+            try {
+                String nombre = modificarDetalleVista.getTextFieldMedicamento().getText().trim();
+                String presentacion = modificarDetalleVista.getTextFieldPresentacion().getText().trim();
+                String codigo = modificarDetalleVista.getTextFieldCodigo().getText().trim();
+                String indicacion = modificarDetalleVista.getTextFieldIndicaciones().getText().trim();
 
-            Integer cantidad = (Integer) modificarDetalleVista.getComboBoxCantidad().getSelectedItem();
-            Integer duracion = (Integer) modificarDetalleVista.getComboBoxdias().getSelectedItem();
+                Integer cantidad = (Integer) modificarDetalleVista.getComboBoxCantidad().getSelectedItem();
+                Integer duracion = (Integer) modificarDetalleVista.getComboBoxdias().getSelectedItem();
 
-            if (nombre.isEmpty() || presentacion.isEmpty() || codigo.isEmpty() || indicacion.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor completa todos los campos obligatorios.");
-                return;
+                if (nombre.isEmpty() || presentacion.isEmpty() || codigo.isEmpty() || indicacion.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor completa todos los campos obligatorios.");
+                    return;
+                }
+
+                // Crear objetos
+                Medicamento medicamento = new Medicamento();
+                medicamento.setCodigo(codigo);
+                medicamento.setNombre(nombre);
+                medicamento.setPresentacion(presentacion);
+
+                DetalleMedicamento detalle = new DetalleMedicamento();
+                detalle.setCantidad(cantidad);
+                detalle.setMedicamento(medicamento);
+                detalle.setIdDetalle(codigo);
+                detalle.setDuracion(duracion);
+                detalle.setIndicacion(indicacion);
+
+                // 🔹 Nuevo: enviar al backend mediante el Proxy
+                DetalleMedicamento detalleGuardado = proxyDetalle.agregarDetalleMedicamento(detalle);
+
+                if (detalleGuardado != null) {
+                    JOptionPane.showMessageDialog(modificarDetalleVista,
+                            "Medicamento agregado correctamente al servidor.",
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    modificarDetalleVista.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(modificarDetalleVista,
+                            "Error al agregar medicamento en el servidor.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al guardar: " + ex.getMessage());
             }
-
-            // Crear objetos
-            Medicamento medicamento = new Medicamento();
-            medicamento.setCodigo(codigo);
-            medicamento.setNombre(nombre);
-            medicamento.setPresentacion(presentacion);
-
-            DetalleMedicamento detalle = new DetalleMedicamento();
-            detalle.setCantidad(cantidad);
-            detalle.setMedicamento(medicamento);
-            detalle.setIdDetalle(codigo);
-            detalle.setDuracion(duracion);
-            detalle.setIndicacion(indicacion);
-
-
-            this.medicamento = medicamento;
-            this.detalle = detalle;
-
-            JOptionPane.showMessageDialog(modificarDetalleVista,
-                    "Medicamento agregado a la receta.",
-                    "Medicamento",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-            modificarDetalleVista.dispose();
         });
     }
+
     public void cancelar(){
         modificarDetalleVista.getCancelarButton().addActionListener(e -> {
             modificarDetalleVista.dispose();
@@ -120,19 +137,21 @@ public class ControladorDetalleMedicamento {
         return modificarDetalleVista;
     }
 
-    public Medicamento getMedicamento() {
-        return medicamento;
+    public void cargarDetallesDesdeServidor() {
+        try {
+            ObservableList<DetalleMedicamento> lista = proxyDetalle.obtenerDetalleMedicamentos();
+            if (lista.isEmpty()) {
+                System.out.println("No hay detalles registrados en el servidor.");
+            } else {
+                System.out.println("Detalles obtenidos: " + lista.size());
+            }
+            /// Falta ver donde van los detalles
+            // Aquí podrías llenar una JTable o ComboBox con esos datos.
+
+        } catch (Exception e) {
+            System.err.println("Error al obtener detalles desde el servidor: " + e.getMessage());
+        }
     }
 
-    public void setMedicamento(Medicamento medicamento) {
-        this.medicamento = medicamento;
-    }
 
-    public DetalleMedicamento getDetalle() {
-        return detalle;
-    }
-
-    public void setDetalle(DetalleMedicamento detalle) {
-        this.detalle = detalle;
-    }
 }

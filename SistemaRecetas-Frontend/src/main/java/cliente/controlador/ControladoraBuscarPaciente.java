@@ -3,8 +3,6 @@ package cliente.controlador;
 import cliente.modelo.*;
 import cliente.Vista.Buscar_Paciente;
 import cliente.modelo.*;
-import cliente.proxy.ProxyHospital;
-import lombok.Getter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -16,10 +14,7 @@ import java.util.List;
 public class ControladoraBuscarPaciente {
 
     private  Buscar_Paciente buscarPacienteVista;
-    private final ProxyHospital hospi;
-
-    //Para retorna el paciente seleccionado
-    @Getter
+    private final Hospital hospi= getInstance();
     private Paciente pacienteSeleccionado; // variable para guardar el paciente elegido
 
     public ControladoraBuscarPaciente(Hospital hospital) {
@@ -80,7 +75,8 @@ public class ControladoraBuscarPaciente {
         List<Paciente> pacientes = hospi.getPacientes().getPacientes();
 
         // Agregar los pacientes al modelo
-        for (Paciente p : pacientes) {
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente p = pacientes.get(i);
             Object[] fila = new Object[4];
             fila[0] = p.getId();
             fila[1] = p.getFechaNacimiento();
@@ -126,7 +122,8 @@ public class ControladoraBuscarPaciente {
 
         List<Paciente> pacientes = hospi.getPacientes().getPacientes();
 
-        for (Paciente p : pacientes) {
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente p = pacientes.get(i);
             combo.addItem(p);
         }
 
@@ -164,6 +161,10 @@ public class ControladoraBuscarPaciente {
                 JOptionPane.showMessageDialog(buscarPacienteVista, "Seleccione un paciente", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         });
+    }
+    //Para retorna el paciente seleccionado
+    public Paciente getPacienteSeleccionado() {
+        return pacienteSeleccionado;
     }
 
     public void configurarJTextField() {
