@@ -1,6 +1,7 @@
 package cliente.Vista;
 
 import cliente.modelo.*;
+import javafx.collections.ObservableList;
 
 import javax.swing.*;
 
@@ -76,7 +77,7 @@ public class Buscar_Paciente extends JFrame{
     //--------------------------------------------------------------
 
 
-    public Buscar_Paciente(ListaPacientes u) {
+    public Buscar_Paciente(ObservableList<Paciente> pacientes) {
         setContentPane(Panel1);
         setTitle("Agregar Paciente");
         setSize(400, 300);

@@ -11,7 +11,9 @@ import cliente.util.ConversorJSON;
 import java.util.List;
 
 public class ProxyHospital {
+
     // Obtener el hospital
+
     public Hospital obtenerHospital() {
         try {
             // No hay datos que enviar, pero mantenemos coherencia: enviamos null
