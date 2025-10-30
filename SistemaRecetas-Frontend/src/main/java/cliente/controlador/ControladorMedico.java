@@ -56,7 +56,7 @@ public class ControladorMedico extends JFrame {
     private long ultimaActualizacionMedicos = 0;
 
     //  Tiempo máximo de validez (en milisegundos)
-    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimeout(); // 5 mins
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimedeCache(); // 5 mins
 
 
     //Para controlador general

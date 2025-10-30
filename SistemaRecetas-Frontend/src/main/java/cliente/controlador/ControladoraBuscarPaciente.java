@@ -24,7 +24,7 @@ public class ControladoraBuscarPaciente {
 
     // Variables para control de caché
     private long ultimaActualizacionPacientes = 0;
-    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimeout(); // 5 minutos de caché
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimedeCache(); // 5 minutos de caché
 
     public ControladoraBuscarPaciente() {
         this.proxyPaciente = new ProxyPaciente();

@@ -42,13 +42,6 @@ public class Comandos {
     public static final String CONSULTAR_FARMACEUTICA = "consultar_farmaceutica";
     public static final String ACTUALIZAR_FARMACEUTICA = "actualizar_farmaceutica";
 
-    //Mensaje de ProxyHospital
-    public static final String LISTAR_HOSPITAL = "listar_hospital";
-    public static final String AGREGAR_HOSPITAL = "agregar_hospital";
-    public static final String ELIMINAR_HOSPITAL = "eliminar_hospital";
-    public static final String CONSULTAR_HOSPITAL = "consultar_hospital";
-    public static final String ACTUALIZAR_HOSPITAL = "actualizar_hospital";
-
     //Mensaje de ProxyMedico
     public static final String LISTAR_MEDICOS = "listar_medico";
     public static final String AGREGAR_MEDICO = "agregar_medico";

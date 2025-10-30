@@ -46,7 +46,7 @@ public class ProxyPersonal {
 
             if (respuesta != null && respuesta.isExito()) {
                 String json = (String) respuesta.getResultado();
-                List<Personal> listaNormal = ConversorJSON.deserializarLista(json,Personal.class);
+                List<Medico> listaNormal = ConversorJSON.deserializarLista(json,Medico.class);
                 return FXCollections.observableArrayList(listaNormal);
             }
         } catch (Exception e) {
