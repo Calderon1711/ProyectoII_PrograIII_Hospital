@@ -1,13 +1,10 @@
 package servidor.dao;
 
 import servidor.Modelo.*;
-import servidor.Modelo.Rol;
 import servidor.persistencia.SQLConnector;
 
-import java.sql.ResultSet;
 import java.sql.*;
 import java.time.LocalDate;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +23,6 @@ public class PacienteDAO {
                 int telefono = rs.getInt("telefono");
                 Date f = rs.getDate("fecha_nacimiento");
                 LocalDate fn = (f != null) ? f.toLocalDate() : null;
-
-                // Constructor de tu modelo:
                 Paciente p = new Paciente(telefono, fn, nombre, id);
                 out.add(p);
             }
@@ -93,5 +88,26 @@ public class PacienteDAO {
             ps.setString(1, id);
             return ps.executeUpdate();
         }
+    }
+
+    //Comandos Pacientes
+    public List<Paciente> listarPacientes() throws SQLException { // LISTAR_PACIENTES
+        return obtenerTodos();
+    }
+
+    public int agregarPaciente(Paciente p) throws SQLException {   // AGREGAR_PACIENTE
+        return insertar(p);
+    }
+
+    public int eliminarPaciente(String id) throws SQLException {   // ELIMINAR_PACIENTE
+        return eliminar(id);
+    }
+
+    public Paciente consultarPaciente(String id) throws SQLException { // CONSULTAR_PACIENTE
+        return obtenerPorId(id);
+    }
+
+    public int actualizarPaciente(Paciente p) throws SQLException { // ACTUALIZAR_PACIENTE
+        return actualizar(p);
     }
 }
