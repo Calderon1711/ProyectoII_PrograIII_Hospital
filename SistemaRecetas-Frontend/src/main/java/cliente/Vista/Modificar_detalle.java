@@ -87,7 +87,7 @@ public class Modificar_detalle extends JFrame {
         this.guardarButton = guardarButton;
     }
 
-    public Modificar_detalle(Hospital hospi) {
+    public Modificar_detalle() {
         setContentPane(panel1);
         setTitle("Modificar Detalle");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -98,7 +98,7 @@ public class Modificar_detalle extends JFrame {
 
         public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Modificar_detalle vista = new Modificar_detalle(null);
+            Modificar_detalle vista = new Modificar_detalle();
             vista.setVisible(true);
         });
     }

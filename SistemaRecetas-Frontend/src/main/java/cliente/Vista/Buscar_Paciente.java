@@ -77,7 +77,7 @@ public class Buscar_Paciente extends JFrame{
     //--------------------------------------------------------------
 
 
-    public Buscar_Paciente(ObservableList<Paciente> pacientes) {
+    public Buscar_Paciente() {
         setContentPane(Panel1);
         setTitle("Agregar Paciente");
         setSize(400, 300);
@@ -89,7 +89,7 @@ public class Buscar_Paciente extends JFrame{
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Buscar_Paciente vista = new Buscar_Paciente(null);
+            Buscar_Paciente vista = new Buscar_Paciente();
             vista.setVisible(true);
         });
     }

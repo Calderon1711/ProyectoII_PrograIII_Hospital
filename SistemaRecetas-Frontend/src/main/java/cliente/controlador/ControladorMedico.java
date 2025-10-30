@@ -1,8 +1,10 @@
 package cliente.controlador;
 
-
 import cliente.Vista.*;
 import cliente.modelo.*;
+import cliente.util.Alerta;
+import cliente.util.ConfiguracionCliente;
+import javafx.collections.ObservableList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -19,28 +21,65 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.List;
+import cliente.proxy.*;
 
 
 public class ControladorMedico extends JFrame {
 
-    private MedicoVista vista;
-    private Hospital hospi ;
+    //Vista
+    private final MedicoVista vista;
+    //Proxys
+    private ProxyPersonal proxyPersonal;
+    private ProxyMedicamento proxyMedicamento;
+    private ProxyReceta proxyReceta;
+    private ProxyDetalleMedicamento proxyDetalleMedicamento;
+    private ProxyPaciente proxyPaciente;
+
+    //Controladores
     private ControladoraBuscarPaciente controladoraBuscarPaciente;
     private ControladorDetalleMedicamento controladorDetalleMedicamento;
-    private Personal personal;
     private DefaultTableModel modeloTablaMedicamentos;
+
+    // Datos cacheados
+    private ObservableList<Personal> personal;
+    private ObservableList<Medicamento> medicamentos;
+    private ObservableList<Receta> recetas;
+    private ObservableList<DetalleMedicamento> detalleMedicamentos;
+    private ObservableList<Paciente> pacientes;
+    private ObservableList<Medico> medicos;
+
+    // Control de tiempo de última actualización
+    private long ultimaActualizacionPersonal = 0;
+    private long ultimaActualizacionRecetas = 0;
+    private long ultimaActualizacionDetalles = 0;
+    private long ultimaActualizacionMedicamentos = 0;
+    private long ultimaActualizacionMedicos = 0;
+
+    //  Tiempo máximo de validez (en milisegundos)
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimeout(); // 5 mins
 
 
     //Para controlador general
-    public ControladorMedico(MedicoVista medicoVista, Personal personalMedico) {
+    public ControladorMedico(MedicoVista medicoVista) {
+        if(medicoVista == null) {
+            medicoVista= new MedicoVista();
+        }
         this.vista = medicoVista;
-        this.personal = personalMedico;
+        this.proxyPersonal = new ProxyPersonal();
+        this.proxyMedicamento= new ProxyMedicamento();
+        this.proxyReceta = new ProxyReceta();
+        this.proxyDetalleMedicamento = new ProxyDetalleMedicamento();
+        this.proxyPaciente = new ProxyPaciente();
         initController();
     }
 
     public void initController() {
 
         try {
+
+            //Metodo general para llamar a los datos
+            cargarDatosIniciales();
+
             //Pestana preeescribir
             configurarEventosPreescribir();
             inicializarTablaMedicamentosPreescribir();
@@ -64,6 +103,89 @@ public class ControladorMedico extends JFrame {
 
     }
 
+    // =========================================================================
+    // MÉTODOS DE GESTIÓN DE DATOS Y CACHÉ
+    // =========================================================================
+
+    private ObservableList<Personal> getPersonal() {
+        long ahora = System.currentTimeMillis();
+
+        if (personal == null || (ahora - ultimaActualizacionPersonal) > TIEMPO_CACHE_MS) {
+            personal = proxyPersonal.obtenerPersonal();
+            ultimaActualizacionPersonal = ahora;
+            Alerta.info("Medico","[INFO] Personal actualizado desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando personal en caché.");
+        }
+
+        return personal;
+    }
+
+    private ObservableList<Receta> getRecetas() {
+        long ahora = System.currentTimeMillis();
+
+        if (recetas == null || (ahora - ultimaActualizacionRecetas) > TIEMPO_CACHE_MS) {
+            recetas = proxyReceta.obtenerRecetas();
+            ultimaActualizacionRecetas = ahora;
+            Alerta.info("Medico","[INFO] Recetas actualizadas desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando recetas en caché.");
+        }
+
+        return recetas;
+    }
+
+    private ObservableList<DetalleMedicamento> getDetalles() {
+        long ahora = System.currentTimeMillis();
+
+        if (detalleMedicamentos == null || (ahora - ultimaActualizacionDetalles) > TIEMPO_CACHE_MS) {
+            detalleMedicamentos = proxyDetalleMedicamento.obtenerDetalleMedicamentos();
+            ultimaActualizacionDetalles = ahora;
+            Alerta.info("Medico","[INFO] Detalles medicamento actualizados desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando detalles medicamento en caché.");
+        }
+
+        return detalleMedicamentos;
+    }
+
+    private ObservableList<Medicamento> getMedicamentos() {
+        long ahora = System.currentTimeMillis();
+
+        if (medicamentos == null || (ahora - ultimaActualizacionMedicamentos) > TIEMPO_CACHE_MS) {
+            medicamentos = proxyMedicamento.obtenerMedicamentos();
+            ultimaActualizacionMedicamentos = ahora;
+            Alerta.info("Medico","[INFO] Medicamentos actualizados desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando medicamentos en caché.");
+        }
+
+        return medicamentos;
+    }
+
+    private ObservableList<Medico> getMedicos() {
+        long ahora = System.currentTimeMillis();
+
+        if (medicos == null || (ahora - ultimaActualizacionMedicos) > TIEMPO_CACHE_MS) {
+            medicos = proxyPersonal.obtenerMedicos();
+            ultimaActualizacionMedicos = ahora;
+            Alerta.info("Medico","[INFO] Médicos actualizados desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando médicos en caché.");
+        }
+
+        return medicos;
+    }
+
+    private void cargarDatosIniciales() {
+        getPersonal();
+        getRecetas();
+        getDetalles();
+        getMedicamentos();
+        getMedicos();
+    }
+
+
 
     //=============================================================
     //Pestana preescribir
@@ -86,29 +208,26 @@ public class ControladorMedico extends JFrame {
 
     private void buscarPaciente() {
         if (controladoraBuscarPaciente == null) {
-            controladoraBuscarPaciente = new ControladoraBuscarPaciente(hospi);
+            controladoraBuscarPaciente = new ControladoraBuscarPaciente();
         }
         controladoraBuscarPaciente.mostrarVentana();
     }
 
     public Personal obtenerMedicoAleatorio() {
-        List<Personal> todos = hospi.getPersonal().getPersonal();
-        List<Personal> medicos = new ArrayList<>();
+        ObservableList<Personal> listaPersonal = getPersonal();
+        if (listaPersonal == null || listaPersonal.isEmpty()) return null;
 
-        for (Personal p : todos) {
+        List<Personal> medicos = new ArrayList<>();
+        for (Personal p : listaPersonal) {
             if (p.getRol() == Rol.MEDICO) {
                 medicos.add(p);
             }
         }
 
-        if (!medicos.isEmpty()) {
-            Random rand = new Random();
-            int indice = rand.nextInt(medicos.size());
-            return medicos.get(indice);
-        }
-
-        return null; // No hay médicos disponibles
+        if (medicos.isEmpty()) return null;
+        return medicos.get(new Random().nextInt(medicos.size()));
     }
+
 
     public void comboFechas() {
         JComboBox<String> comboFechas = vista.getOpciones_Fecha_de_Retiro();
@@ -140,8 +259,6 @@ public class ControladorMedico extends JFrame {
 
 
 
-
-
     public void inicializarTablaMedicamentosPreescribir() {
         String[] columnas = {"Medicamento", "Presentación", "Cantidad", "Indicaciones", "Duración (días)"};
         modeloTablaMedicamentos = new DefaultTableModel(columnas, 0);
@@ -152,15 +269,18 @@ public class ControladorMedico extends JFrame {
     private void agregarMedicamento() {
         ControladorDetalleMedicamento ctrlDet = new ControladorDetalleMedicamento();
 
-        ctrlDet.getVista().addWindowListener(new java.awt.event.WindowAdapter() {
+        ctrlDet.getModificarDetalleVista().addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                DetalleMedicamento nuevo = ctrlDet.getDetalle();
-                Medicamento med = ctrlDet.getMedicamento();
+
+                DetalleMedicamento nuevo = ctrlDet.getDetalleGuardado();
+                Medicamento med = ctrlDet.getMedicamentoGuardado();
+
 
                 if (nuevo != null && med != null) {
-                    hospi.getMedicamentos().insertarMedicamento(med);//
-                    hospi.guardarMedicamentos();
+                    proxyMedicamento.agregarMedicamento(med);
+                    proxyDetalleMedicamento.agregarDetalleMedicamento(nuevo);
+
                     modificarTablaDashBoard();// Ahora sí, después de llenar
                     agregarMedicamentoATabla(nuevo);
                     modificarTablaMedicamentosHistorico();
@@ -211,18 +331,27 @@ public class ControladorMedico extends JFrame {
             String indicaciones = modeloTablaMedicamentos.getValueAt(filaSeleccionada, 3).toString();
             int dias = Integer.parseInt(modeloTablaMedicamentos.getValueAt(filaSeleccionada, 4).toString());
 
-            Medicamento med = hospi.getMedicamentos().buscarPorNombreYPresentacion(nombre, presentacion);
+            Medicamento med = proxyMedicamento.consultarMedicamento(nombre);
+
             if (med == null) {
                 System.out.println(med.toString());
                 JOptionPane.showMessageDialog(vista, "El medicamento seleccionado no existe en el sistema.");
+                med.setPresentacion(presentacion);
                 return;
             }
 
-            DetalleMedicamento detalle = new DetalleMedicamento(med, cantidad, indicaciones, dias);
+            DetalleMedicamento detalle = new DetalleMedicamento();
+            int idDetalle = getDetalles().size() + 1;
+            detalle.setMedicamento(med);
+            detalle.setIdDetalle(String.valueOf(++idDetalle));
+            detalle.setCantidad(cantidad);
+            detalle.setIndicacion(indicaciones);
+            detalle.setDuracion(dias);
+
             List<DetalleMedicamento> detalles = new ArrayList<>();
             detalles.add(detalle);
 
-            String idReceta = "R" + (hospi.getRecetas().getRecetas().size() + 1);
+            String idReceta = "R" + (getRecetas().size() + 1);
             LocalDate hoy = LocalDate.now();
 
             String texto = vista.getFechaRetiro().getText();
@@ -240,7 +369,8 @@ public class ControladorMedico extends JFrame {
             Receta receta = new Receta(idReceta,medico, paciente, hoy, fechaRetiro, 2);
             receta.getDetalleMedicamentos().addAll(detalles);
 
-            hospi.getRecetas().insertarReceta(receta);
+            proxyReceta.agregarReceta(receta);
+
             modificarTablaRecetaHistorico();
             crearGraficoRecetas(vista.getGraficoReceta());
             JOptionPane.showMessageDialog(vista, "Receta " + receta.getId() + " guardada con éxito.");
@@ -277,10 +407,9 @@ public class ControladorMedico extends JFrame {
     }
 
     private void mostrarDetalles() {
-        List<Receta> recetas = hospi.getRecetas().getRecetas();
         StringBuilder mensaje = new StringBuilder();
 
-        for (Receta receta : recetas) {
+        for (Receta receta : getRecetas()) {
             List<DetalleMedicamento> detalles = receta.getDetalleMedicamentos();
 
             if (detalles != null && !detalles.isEmpty()) {
@@ -336,30 +465,28 @@ public class ControladorMedico extends JFrame {
 
         // Inicializar combobox de medicamentos
 
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
 
-        for (Medicamento med : lista) {
+        for (Medicamento med : getMedicamentos()) {
             vista.getCmbMedicamento().addItem(med.getNombre());
         }
 
         // Configurar año y mes actual por defecto
         Calendar cal = Calendar.getInstance();
-        int añoActual = cal.get(Calendar.YEAR);
+        int annioActual = cal.get(Calendar.YEAR);
         int mesActual = cal.get(Calendar.MONTH); // 0-11
 
-        vista.getCmbDesdeAnnio().setSelectedItem(String.valueOf(añoActual));
-        vista.getCmbHastaAnio().setSelectedItem(String.valueOf(añoActual));
+        vista.getCmbDesdeAnnio().setSelectedItem(String.valueOf(annioActual));
+        vista.getCmbHastaAnio().setSelectedItem(String.valueOf(annioActual));
         vista.getCmbDesdeMes().setSelectedIndex(mesActual);
         vista.getCmbHastaMes().setSelectedIndex(mesActual);
     }
 
     public void modificarTablaDashBoard() {
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
         String[] columnas = {"Nombre", "Presentacion", "Codigo"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         // Agregar cada medicamento al modelo
-        for (Medicamento med : lista) {
+        for (Medicamento med : getMedicamentos()) {
             Object[] fila = {
                     med.getNombre(),
                     med.getPresentacion(),
@@ -373,11 +500,10 @@ public class ControladorMedico extends JFrame {
     }
 
     public void crearGraficoMedicamentos(JPanel panel) {
-        List<Medicamento> listaMedicamentos = hospi.getMedicamentos().getMedicamentos();
 
         // Contar medicamentos por nombre
         Map<String, Integer> conteoPorNombre = new HashMap<>();
-        for (Medicamento med : listaMedicamentos) {
+        for (Medicamento med : getMedicamentos()) {
             String nombre = med.getNombre();
             conteoPorNombre.put(nombre, conteoPorNombre.getOrDefault(nombre, 0) + 1);
         }
@@ -414,11 +540,10 @@ public class ControladorMedico extends JFrame {
     }
 
     public void crearGraficoRecetas(JPanel panel) {
-        List<Receta> recetas = hospi.getRecetas().getRecetas();
 
         // Contar recetas por estado (usando nombre legible)
         Map<String, Integer> conteoPorEstado = new HashMap<>();
-        for (Receta r1 : recetas) {
+        for (Receta r1 : getRecetas()) {
             int estadoInt = r1.getEstado(); // Suponiendo que esto devuelve el int
             String estadoNombre = obtenerNombreEstado(estadoInt);
             conteoPorEstado.put(estadoNombre, conteoPorEstado.getOrDefault(estadoNombre, 0) + 1);
@@ -548,12 +673,11 @@ public class ControladorMedico extends JFrame {
     }
 
     public void modificarTablaRecetaHistorico() {
-        List<Receta> lista = hospi.getRecetas().getRecetas();
         String[] columnas = {"Receta por paciente", "Receta por Medico", "Estado de la receta"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         // Agregar cada medicamento al modelo
-        for (Receta med : lista) {
+        for (Receta med : getRecetas()) {
             Object[] fila = {
 
                     med.getPaciente(),
@@ -569,7 +693,6 @@ public class ControladorMedico extends JFrame {
     }
 
     public void modificarTablaMedicamentosHistorico() {
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
         int contador = 1;
         String[] columnas = {"Numero", "Nombre", "Presentación", "Codigo"};
 
@@ -579,7 +702,7 @@ public class ControladorMedico extends JFrame {
                 return false;
             }
         };
-        for (Medicamento med : lista) {
+        for (Medicamento med : getMedicamentos()) {
             Object[] fila = {
                     contador,
                     med.getNombre(),
@@ -597,14 +720,15 @@ public class ControladorMedico extends JFrame {
     }
 
     private void poblarComboMedicos() {
-        List<Receta> listaRecetas = hospi.getRecetas().getRecetas();
-        Set<Personal> medicosUnicos = new HashSet<>();
-        for (Receta r : listaRecetas) {
-            medicosUnicos.add(r.getPersonal());
+
+        Set<Medico> medicosUnicos;
+        medicosUnicos = new HashSet<>();
+        for (Medico r : getMedicos()) {
+            medicosUnicos.add(r);
         }
 
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<>();
-        for (Personal medico : medicosUnicos) {
+        for (Personal medico : getPersonal()) {
             modeloCombo.addElement(medico.getNombre());
         }
 
@@ -617,7 +741,7 @@ public class ControladorMedico extends JFrame {
             DefaultTableModel modelo = (DefaultTableModel) vista.getTableHistoricoRecetas().getModel();
             modelo.setRowCount(0); // Limpiar tabla
 
-            for (Receta r : hospi.getRecetas().getRecetas()) {
+            for (Receta r :getRecetas()) {
                 String nombreMedico = r.getPersonal().getNombre().toLowerCase();
                 if (nombreMedico.equals(nombreSeleccionado)) {
                     modelo.addRow(new Object[]{
@@ -649,17 +773,4 @@ public class ControladorMedico extends JFrame {
         panelcito.revalidate();
         panelcito.repaint();
     }
-
-
-
-
-
 }
-
-
-
-
-
-
-
-

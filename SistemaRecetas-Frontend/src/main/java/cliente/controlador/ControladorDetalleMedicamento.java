@@ -12,28 +12,46 @@ import javax.swing.*;
 @Data
 public class ControladorDetalleMedicamento {
 
+    //Vista
     private Modificar_detalle modificarDetalleVista;
-    private Medicamento medicamento;
-    private ProxyHospital proxyHospital;
+
+    //Variables para aguardar lo que digite el usuario
+    private Medicamento medicamentoGuardado;
+    private DetalleMedicamento detalleGuardado;
+
+    //Proxys que se usan
     private ProxyDetalleMedicamento proxyDetalle;
+    private ProxyMedicamento proxyMedicamento;
+
+    //Lista para enllenar la ventana
+    ObservableList<Medicamento> medicamentos;
+    ObservableList<DetalleMedicamento> detalleMedicamentos;
 
     public ControladorDetalleMedicamento() {
         try {
-            proxyHospital = new ProxyHospital();
+            proxyMedicamento = new ProxyMedicamento();
             proxyDetalle = new ProxyDetalleMedicamento();
 
-            Hospital hospi = proxyHospital.obtenerHospital(); // ahora el hospital viene del backend
-            if (hospi == null) {
-                JOptionPane.showMessageDialog(null, "No se pudo obtener información del hospital desde el servidor.");
+            medicamentos = proxyMedicamento.obtenerMedicamentos();
+            detalleMedicamentos = proxyDetalle.obtenerDetalleMedicamentos();
+
+            if (medicamentos == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener información de los medicamentos desde el servidor.");
                 return;
             }
 
-            modificarDetalleVista = new Modificar_detalle(hospi);
+            if (detalleMedicamentos == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener información de los detalleMedicamentos desde el servidor.");
+                return;
+            }
+
+
+            modificarDetalleVista = new Modificar_detalle();
             initController();
 
         } catch (Exception e) {
             e.printStackTrace();
-            Alerta.error("Detalle Medicamento","Error inicializando el controlador" + e.getMessage());
+            Alerta.error("Agregar Medicamento", "Error inicializando el controlador" + e.getMessage());
         }
     }
 
@@ -80,20 +98,18 @@ public class ControladorDetalleMedicamento {
                 }
 
                 // Crear objetos
-                Medicamento medicamento = new Medicamento();
-                medicamento.setCodigo(codigo);
-                medicamento.setNombre(nombre);
-                medicamento.setPresentacion(presentacion);
+                medicamentoGuardado.setCodigo(codigo);
+                medicamentoGuardado.setNombre(nombre);
+                medicamentoGuardado.setPresentacion(presentacion);
 
-                DetalleMedicamento detalle = new DetalleMedicamento();
-                detalle.setCantidad(cantidad);
-                detalle.setMedicamento(medicamento);
-                detalle.setIdDetalle(codigo);
-                detalle.setDuracion(duracion);
-                detalle.setIndicacion(indicacion);
+                detalleGuardado.setCantidad(cantidad);
+                detalleGuardado.setMedicamento(medicamentoGuardado);
+                detalleGuardado.setIdDetalle(codigo);
+                detalleGuardado.setDuracion(duracion);
+                detalleGuardado.setIndicacion(indicacion);
 
-                // 🔹 Nuevo: enviar al backend mediante el Proxy
-                DetalleMedicamento detalleGuardado = proxyDetalle.agregarDetalleMedicamento(detalle);
+                proxyMedicamento.agregarMedicamento(medicamentoGuardado);
+                proxyDetalle.agregarDetalleMedicamento(detalleGuardado);
 
                 if (detalleGuardado != null) {
                     JOptionPane.showMessageDialog(modificarDetalleVista,
@@ -115,16 +131,10 @@ public class ControladorDetalleMedicamento {
         });
     }
 
-    public void cancelar(){
+    public void cancelar() {
         modificarDetalleVista.getCancelarButton().addActionListener(e -> {
             modificarDetalleVista.dispose();
         });
-    }
-
-    public void actualizarDatos() {
-        iniciarcomboBox();
-        configurarBotonGuardar();
-        cancelar();
     }
 
     public void mostrarVentana() {
@@ -133,25 +143,4 @@ public class ControladorDetalleMedicamento {
         }
         modificarDetalleVista.setVisible(true);
     }
-    public Modificar_detalle getVista() {
-        return modificarDetalleVista;
-    }
-
-    public void cargarDetallesDesdeServidor() {
-        try {
-            ObservableList<DetalleMedicamento> lista = proxyDetalle.obtenerDetalleMedicamentos();
-            if (lista.isEmpty()) {
-                System.out.println("No hay detalles registrados en el servidor.");
-            } else {
-                System.out.println("Detalles obtenidos: " + lista.size());
-            }
-            /// Falta ver donde van los detalles
-            // Aquí podrías llenar una JTable o ComboBox con esos datos.
-
-        } catch (Exception e) {
-            System.err.println("Error al obtener detalles desde el servidor: " + e.getMessage());
-        }
-    }
-
-
 }

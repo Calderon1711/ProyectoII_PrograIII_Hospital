@@ -14,7 +14,7 @@ public class MedicoVista extends JFrame {
     private JPanel panelPreescribir;
 
     //=====================================================
-    public MedicoVista(Personal u) {
+    public MedicoVista() {
         setContentPane(panel1);
         setTitle("Medico");// le pongo titulo
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //para q cuando la aplicacion cierre el programa tambnien
@@ -40,7 +40,7 @@ public class MedicoVista extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MedicoVista vista = new MedicoVista(null);
+            MedicoVista vista = new MedicoVista();
             vista.setVisible(true);
         });
     }

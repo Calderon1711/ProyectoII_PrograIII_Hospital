@@ -6,15 +6,17 @@ import cliente.red.ClienteSocket;
 import cliente.red.Mensaje;
 import cliente.util.ConfiguracionCliente;
 import cliente.util.ConversorJSON;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
+
 
 public class ProxyHospital {
 
     // Obtener el hospital
 
-    public Hospital obtenerHospital() {
+    public ObservableList<Hospital> obtenerHospital() {
         try {
             // No hay datos que enviar, pero mantenemos coherencia: enviamos null
             String jsonDatos = ConversorJSON.serializar(null);
@@ -25,15 +27,13 @@ public class ProxyHospital {
 
             if (respuesta != null && respuesta.isExito()) {
                 String json = (String) respuesta.getResultado();
-                Hospital hospital;
-                hospital = ConversorJSON.deserializar(json, Hospital.class);
-                return hospital;
+                List<Hospital> listaNormal = ConversorJSON.deserializarLista(json,Hospital.class);
+                return FXCollections.observableArrayList(listaNormal);
             }
         } catch (Exception e) {
-            System.err.println("Error al obtener hospital: " + e.getMessage());
+            System.err.println("Error al obtener Hospital: " + e.getMessage());
             e.printStackTrace();
         }
-        return null;
+        return FXCollections.observableArrayList();
     }
-
 }

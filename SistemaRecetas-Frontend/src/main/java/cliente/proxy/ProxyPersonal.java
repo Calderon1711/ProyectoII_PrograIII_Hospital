@@ -1,6 +1,7 @@
 package cliente.proxy;
 
 import cliente.constantes.Comandos;
+import cliente.modelo.Medico;
 import cliente.modelo.Personal;
 import cliente.red.ClienteSocket;
 import cliente.red.Mensaje;
@@ -18,6 +19,27 @@ public class ProxyPersonal {
             // No hay datos que enviar, pero mantenemos coherencia: enviamos null
             String jsonDatos = ConversorJSON.serializar(null);
             Mensaje solicitud = new Mensaje(Comandos.LISTAR_PERSONAL, jsonDatos);
+
+            ClienteSocket cliente = ClienteSocket.getInstance();
+            Mensaje respuesta = cliente.enviarYEsperar(solicitud, ConfiguracionCliente.getTimeout());
+
+            if (respuesta != null && respuesta.isExito()) {
+                String json = (String) respuesta.getResultado();
+                List<Personal> listaNormal = ConversorJSON.deserializarLista(json,Personal.class);
+                return FXCollections.observableArrayList(listaNormal);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener personal: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList();
+    }
+
+    public ObservableList<Medico> obtenerMedicos() {
+        try {
+            // No hay datos que enviar, pero mantenemos coherencia: enviamos null
+            String jsonDatos = ConversorJSON.serializar(null);
+            Mensaje solicitud = new Mensaje(Comandos.LISTAR_MEDICOS, jsonDatos);
 
             ClienteSocket cliente = ClienteSocket.getInstance();
             Mensaje respuesta = cliente.enviarYEsperar(solicitud, ConfiguracionCliente.getTimeout());

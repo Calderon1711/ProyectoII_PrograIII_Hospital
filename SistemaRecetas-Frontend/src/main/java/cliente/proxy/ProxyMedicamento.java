@@ -54,10 +54,10 @@ public class ProxyMedicamento {
     }
 
     // Consultar una receta por ID → devuelve la receta encontrada
-    public Medicamento consultarMedicamento(int idMedicamento) {
+    public Medicamento consultarMedicamento(String nombreMedicamento) {
         try {
             // Convertimos el ID a JSON para mantener coherencia
-            String jsonId = ConversorJSON.serializar(idMedicamento);
+            String jsonId = ConversorJSON.serializar(nombreMedicamento);
             Mensaje solicitud = new Mensaje(Comandos.CONSULTAR_MEDICAMENTO, jsonId);
 
             ClienteSocket cliente = ClienteSocket.getInstance();
