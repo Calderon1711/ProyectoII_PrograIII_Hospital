@@ -7,6 +7,7 @@ import cliente.Vista.*;
 
 public class ControladorGeneral {
 
+    //Personal de U ahora es el usuario logeado activo
     public void abrirVistaPorRol(Personal u) {
         if (u == null) return;
 

@@ -35,6 +35,14 @@ public class FarmaceuticoVista extends JFrame {
     private final RecetaTableModel recetasModel = new RecetaTableModel();
     private final DetalleTableModel detallesModel = new DetalleTableModel();
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            FarmaceuticoVista vista = new FarmaceuticoVista(null);
+            vista.setVisible(true);
+        });
+    }
+
+
     public FarmaceuticoVista(Personal u) {
         setContentPane(rootPanel1);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

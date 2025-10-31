@@ -28,12 +28,13 @@ public class ControladorMedico extends JFrame {
 
     //Vista
     private final MedicoVista vista;
+    private final Personal usuarioActivo;
     //Proxys
-    private ProxyPersonal proxyPersonal;
-    private ProxyMedicamento proxyMedicamento;
-    private ProxyReceta proxyReceta;
-    private ProxyDetalleMedicamento proxyDetalleMedicamento;
-    private ProxyPaciente proxyPaciente;
+    private final ProxyPersonal proxyPersonal;
+    private final ProxyMedicamento proxyMedicamento;
+    private final ProxyReceta proxyReceta;
+    private final ProxyDetalleMedicamento proxyDetalleMedicamento;
+    private final ProxyPaciente proxyPaciente;
 
     //Controladores
     private ControladoraBuscarPaciente controladoraBuscarPaciente;
@@ -45,7 +46,6 @@ public class ControladorMedico extends JFrame {
     private ObservableList<Medicamento> medicamentos;
     private ObservableList<Receta> recetas;
     private ObservableList<DetalleMedicamento> detalleMedicamentos;
-    private ObservableList<Paciente> pacientes;
     private ObservableList<Medico> medicos;
 
     // Control de tiempo de última actualización
@@ -60,9 +60,10 @@ public class ControladorMedico extends JFrame {
 
 
     //Para controlador general
-    public ControladorMedico(MedicoVista medicoVista) {
+    public ControladorMedico(MedicoVista medicoVista, Personal usuarioActivo) {
+        this.usuarioActivo = usuarioActivo;
         if(medicoVista == null) {
-            medicoVista= new MedicoVista();
+            medicoVista= new MedicoVista(usuarioActivo);
         }
         this.vista = medicoVista;
         this.proxyPersonal = new ProxyPersonal();

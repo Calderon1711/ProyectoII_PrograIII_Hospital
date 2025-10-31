@@ -63,5 +63,12 @@ public class Comandos {
     public static final String CONSULTAR_PERSONAL= "consultar_personal";
     public static final String ACTUALIZAR_PERSONAL = "actualizar_personal";
 
+    //Mensaje de ProxyUsuario
+    public static final String LOGIN = "login_usuario";
+    public static final String LOGOUT = "logout_usuario";
+    public static final String LISTAR_USUARIOS_ACTIVOS = "listar_usuario_activos";
+    public static final String ENVIAR_MENSAJE = "mensaje_de_usuario_activo";
+
+
 
 }

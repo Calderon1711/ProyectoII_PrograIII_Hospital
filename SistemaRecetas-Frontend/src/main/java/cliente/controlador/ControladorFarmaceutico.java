@@ -2,6 +2,11 @@ package cliente.controlador;
 
 import cliente.modelo.*;
 import cliente.Vista.*;
+import cliente.proxy.*;
+import cliente.util.Alerta;
+import cliente.util.ConfiguracionCliente;
+import javafx.collections.ObservableList;
+
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,15 +16,36 @@ import java.util.stream.Collectors;
 
 
 
+
 public class ControladorFarmaceutico {
+
+    //Vista
     private FarmaceuticoVista vista;
-    private ListaRecetas listaRecetas;
-    private static Hospital hospital=Hospital.getInstance();
-    private ListaRecetas listaRecetas2;
+    private Personal personalFarma;
+
+    //Proxys que va estar usando
+    private ProxyPersonal proxyPersonal;
+    private ProxyReceta proxyReceta;
+
+
+    // Datos cacheados
+    private ObservableList<Receta> listaRecetas;
+
+    //Control de tiempo
+    private long ultimaActualizacionRecetas = 0;
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimedeCache();
+
 
     public ControladorFarmaceutico(FarmaceuticoVista vista, Personal personalFarma) {
+
+        this.personalFarma = personalFarma;
+        if(vista == null) {
+            vista = new FarmaceuticoVista(personalFarma);
+        }
         this.vista = vista;
-        this.listaRecetas = hospital.getRecetas();
+        this.proxyPersonal = new ProxyPersonal();
+        this.proxyReceta = new ProxyReceta();
+
 
         System.out.println("Farmaceutico Vista Iniciada");
 
@@ -34,6 +60,19 @@ public class ControladorFarmaceutico {
 
     }
 
+    private ObservableList<Receta> getRecetas() {
+        long ahora = System.currentTimeMillis();
+
+        if (listaRecetas == null || (ahora - ultimaActualizacionRecetas) > TIEMPO_CACHE_MS) {
+            listaRecetas = proxyReceta.obtenerRecetas();
+            ultimaActualizacionRecetas = ahora;
+            Alerta.info("Medico","[INFO] Recetas actualizadas desde el backend.");
+        } else {
+            Alerta.info("Medico","[INFO] Usando recetas en caché.");
+        }
+
+        return listaRecetas;
+    }
 
     private void iniciarProceso(){
         FarmaceuticoVista.RecetaRow row=vista.getRecetaSeleccionada();
@@ -41,7 +80,7 @@ public class ControladorFarmaceutico {
             JOptionPane.showMessageDialog(vista, "Seleccione una receta", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        Receta r=listaRecetas.getRecetaPorID(row.id);
+        Receta r = proxyReceta.consultarReceta(Integer.parseInt(row.id));
         if (r == null ) {
             JOptionPane.showMessageDialog(vista, "No se encontro la receta seleccionada", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -65,7 +104,7 @@ public class ControladorFarmaceutico {
             JOptionPane.showMessageDialog(vista, "Seleccione una receta", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        Receta r=listaRecetas.getRecetaPorID(row.id);
+        Receta r = proxyReceta.consultarReceta(Integer.parseInt(row.id));
         if (r == null ) {
             JOptionPane.showMessageDialog(vista, "No se encontro la receta seleccionda", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -85,7 +124,7 @@ public class ControladorFarmaceutico {
             JOptionPane.showMessageDialog(vista, "Seleccione una receta", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        Receta r=listaRecetas.getRecetaPorID(row.id);
+        Receta r = proxyReceta.consultarReceta(Integer.parseInt(row.id));
         if (r == null ) {
             JOptionPane.showMessageDialog(vista, "No se encontro la receta seleccionda", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -108,7 +147,7 @@ public class ControladorFarmaceutico {
             return;
         }
 
-        List<Receta> base = new ArrayList<>(listaRecetas.getRecetas());
+        List<Receta> base = new ArrayList<>(getRecetas());
         String q = texto.toLowerCase(Locale.ROOT).trim();
 
         List<Receta> filtradas = switch (filtro == null ? "" : filtro.toLowerCase(Locale.ROOT)) {
@@ -152,7 +191,7 @@ public class ControladorFarmaceutico {
     }
     private void refrescarTabla() {
         LocalDate hoy=LocalDate.now();
-        List<Receta> activas= listaRecetas.getRecetas().stream()
+        List<Receta> activas= getRecetas().stream()
                 .filter(r->r.getEstado()==2||r.getEstado()==1||r.getEstado()==3)
                 .filter(r->estaEnVentanaRetiro(r.getFechaRetiro(),3))
                 .collect(Collectors.toList());
@@ -165,7 +204,7 @@ public class ControladorFarmaceutico {
     }
 
     private void refrescarTablaConservarSeleccion(String idReceta){
-        List<FarmaceuticoVista.RecetaRow>filas= construirFilas(listaRecetas.getRecetas());
+        List<FarmaceuticoVista.RecetaRow>filas= construirFilas(getRecetas());
         vista.setRecetas(filas);
     }
     private void setTablaDesdeModelo(List<Receta> recetas) {
@@ -174,8 +213,9 @@ public class ControladorFarmaceutico {
     }
     private List<FarmaceuticoVista.RecetaRow> construirFilas(List<Receta> recetas) {
         List<FarmaceuticoVista.RecetaRow> filas=new ArrayList<>();
-        for(Receta r: recetas){
-            String estado=r.obtenerNombreEstado(r.getEstado());
+        for(Receta r: getRecetas()){
+            String estado= String.valueOf(r.getEstado());
+
             String medico=(r.getPersonal()!=null && r.getPersonal().getNombre()!=null)
                     ?r.getPersonal().getNombre():"";
             String paciente= (r.getPaciente()!=null &&r.getPaciente().getNombre()!=null)
