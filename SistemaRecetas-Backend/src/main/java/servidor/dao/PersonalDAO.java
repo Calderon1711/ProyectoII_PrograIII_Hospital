@@ -168,14 +168,7 @@ public class PersonalDAO {
         }
     }
 
-    /* Comandos personal*/
 
-
-    public List<Personal> listarPersonal() throws SQLException {
-        return obtenerTodos();
-    }
-
-    /*Administrador*/
     public List<Administrador> listarAdministradores() throws SQLException {
         return obtenerTodos().stream()
                 .filter(p -> p.getRol() == Rol.ADMINISTRADOR)
@@ -183,64 +176,9 @@ public class PersonalDAO {
                 .toList();
     }
 
-    public int agregarAdministrador(Administrador a) throws SQLException {
-        return insertar(a);
-    }
-
-    public int eliminarAdministrador(String id) throws SQLException {
-        return eliminar(id);
-    }
-
     public Administrador consultarAdministrador(String id) throws SQLException {
         Personal p = obtenerPorId(id);
         return (p instanceof Administrador) ? (Administrador) p : null;
     }
 
-    public int actualizarAdministrador(Administrador a) throws SQLException {
-        return actualizar(a);
-    }
-
-    /* Médico*/
-    public List<Medico> listarMedicosComando() throws SQLException { // evita chocar con listarMedicos()
-        return listarMedicos();
-    }
-
-    public int agregarMedico(Medico m) throws SQLException {
-        return insertar(m);
-    }
-
-    public int eliminarMedico(String id) throws SQLException {
-        return eliminar(id);
-    }
-
-    public Medico consultarMedico(String id) throws SQLException {
-        Personal p = obtenerPorId(id);
-        return (p instanceof Medico) ? (Medico) p : null;
-    }
-
-    public int actualizarMedico(Medico m) throws SQLException {
-        return actualizar(m);
-    }
-
-    /* Farmacéutica*/
-    public List<Farmaceuta> listarFarmaceuticas() throws SQLException {
-        return listarFarmaceutas();
-    }
-
-    public int agregarFarmaceutica(Farmaceuta f) throws SQLException {
-        return insertar(f);
-    }
-
-    public int eliminarFarmaceutica(String id) throws SQLException {
-        return eliminar(id);
-    }
-
-    public Farmaceuta consultarFarmaceutica(String id) throws SQLException {
-        Personal p = obtenerPorId(id);
-        return (p instanceof Farmaceuta) ? (Farmaceuta) p : null;
-    }
-
-    public int actualizarFarmaceutica(Farmaceuta f) throws SQLException {
-        return actualizar(f);
-    }
 }

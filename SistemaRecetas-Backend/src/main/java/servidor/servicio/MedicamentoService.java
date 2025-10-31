@@ -1,6 +1,7 @@
 package servidor.servicio;
 
 
+import servidor.Modelo.Hospital;
 import servidor.Modelo.Medicamento;
 import servidor.dao.MedicamentoDAO;
 import java.sql.SQLException;
@@ -33,7 +34,9 @@ public class MedicamentoService {
 
     public boolean agregarMedicamento(Medicamento medicamento) {
         try {
-            return medicamentoDAO.insertar(medicamento) > 0;
+            Hospital.getInstance().getMedicamentos().insertarMedicamento(medicamento);
+            medicamentoDAO.insertar(medicamento);
+            return true;
         } catch (SQLException e) {
             System.err.println("Error al insertar medicamento: " + e.getMessage());
             return false;
@@ -51,7 +54,9 @@ public class MedicamentoService {
 
     public boolean eliminarMedicamento(String codigo) {
         try {
-            return medicamentoDAO.eliminar(codigo) > 0;
+            Hospital.getInstance().getMedicamentos().eliminar(codigo);
+            medicamentoDAO.eliminar(codigo);
+            return true;
         } catch (SQLException e) {
             System.err.println("Error al eliminar medicamento: " + e.getMessage());
             return false;

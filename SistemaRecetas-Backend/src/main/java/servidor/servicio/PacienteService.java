@@ -1,5 +1,6 @@
 package servidor.servicio;
 
+import servidor.Modelo.Hospital;
 import servidor.dao.PacienteDAO;
 import servidor.Modelo.Paciente;
 import java.sql.SQLException;
@@ -35,7 +36,15 @@ public class PacienteService {
     //  Agregar nuevo paciente
     public boolean agregarPaciente(Paciente paciente) {
         try {
-            return pacienteDAO.insertar(paciente) > 0;
+            boolean credenciales= Hospital.getInstance().getPacientes().existeAlguienConEseID(paciente.getId());
+            if (!credenciales) {
+                System.out.println("Paciente existente con ese id");
+                return false;
+            }
+                pacienteDAO.insertar(paciente);
+               Hospital.getInstance().getPacientes().insertarPaciente(paciente,false);
+
+            return true;
         } catch (SQLException e) {
             System.err.println("Error al insertar paciente: " + e.getMessage());
             return false;
@@ -55,7 +64,9 @@ public class PacienteService {
     //   Eliminar paciente
     public boolean eliminarPaciente(String id) {
         try {
-            return pacienteDAO.eliminar(id) > 0;
+            Hospital.getInstance().getPacientes().eliminar(id);
+            pacienteDAO.eliminar(id);
+            return true;
         } catch (SQLException e) {
             System.err.println("Error al eliminar paciente: " + e.getMessage());
             return false;

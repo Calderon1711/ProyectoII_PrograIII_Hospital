@@ -90,24 +90,5 @@ public class PacienteDAO {
         }
     }
 
-    //Comandos Pacientes
-    public List<Paciente> listarPacientes() throws SQLException { // LISTAR_PACIENTES
-        return obtenerTodos();
-    }
 
-    public int agregarPaciente(Paciente p) throws SQLException {   // AGREGAR_PACIENTE
-        return insertar(p);
-    }
-
-    public int eliminarPaciente(String id) throws SQLException {   // ELIMINAR_PACIENTE
-        return eliminar(id);
-    }
-
-    public Paciente consultarPaciente(String id) throws SQLException { // CONSULTAR_PACIENTE
-        return obtenerPorId(id);
-    }
-
-    public int actualizarPaciente(Paciente p) throws SQLException { // ACTUALIZAR_PACIENTE
-        return actualizar(p);
-    }
 }

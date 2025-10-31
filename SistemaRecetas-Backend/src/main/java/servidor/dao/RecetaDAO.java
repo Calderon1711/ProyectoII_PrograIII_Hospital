@@ -179,14 +179,6 @@ public class RecetaDAO {
         return out;
     }
 
-    public void agregarReceta(Receta r, List<DetalleMedicamento> detalles) throws SQLException {
-        crearRecetaConDetalles(r, detalles);
-    }
-
-    public int eliminarReceta(String idReceta) throws SQLException {
-        return eliminar(idReceta);
-    }
-
     public Receta consultarReceta(String idReceta) throws SQLException {
         String sql = """
             SELECT id_Receta, id_PersonalReceta, id_PacienteReceta,
@@ -212,7 +204,4 @@ public class RecetaDAO {
         }
     }
 
-    public int actualizarReceta(Receta r) throws SQLException {
-        return actualizarEstado(r.getId(), r.getEstado());
-    }
 }

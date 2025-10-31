@@ -119,21 +119,7 @@ public class DetalleMedicamentoDAO {
     }
 
   //Comandos DetalleMedicamento
-    public List<DetalleMedicamento> listarDetalleMedicamentos() throws SQLException {
-        return obtenerTodos();
-    }
 
-    public List<DetalleMedicamento> listarDetalleMedicamentos(String idReceta) throws SQLException {
-        return obtenerPorReceta(idReceta);
-    }
-
-    public int agregarDetalleMedicamento(DetalleMedicamento d) throws SQLException {
-        return insertar(d);
-    }
-
-    public int eliminarDetalleMedicamento(String idReceta, String codigoMedicamento) throws SQLException {
-        return eliminar(idReceta, codigoMedicamento);
-    }
 
     public DetalleMedicamento consultarDetalleMedicamento(String idReceta, String codigoMedicamento) throws SQLException {
         String sql = """
