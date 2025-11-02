@@ -137,4 +137,36 @@ public class ProxyPersonal {
         }
         return null;
     }
+
+    public Personal login(String id, String clave) {
+        try {
+            String[] datos = {id, clave};
+            String json = ConversorJSON.serializar(datos);
+            Mensaje solicitud = new Mensaje(Comandos.LOGIN_PERSONAL, json);
+            ClienteSocket cliente = ClienteSocket.getInstance();
+            Mensaje respuesta = cliente.enviarYEsperar(solicitud, ConfiguracionCliente.getTimeout());
+
+            if (respuesta != null && respuesta.isExito()) {
+                String jsonUsuario = (String) respuesta.getResultado();
+                return ConversorJSON.deserializar(jsonUsuario, Personal.class);
+            }
+        } catch (Exception e) {
+            System.err.println("Error en login: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean cambiarClave(String id, String nuevaClave) {
+        try {
+            String[] datos = {id, nuevaClave};
+            String json = ConversorJSON.serializar(datos);
+            Mensaje solicitud = new Mensaje(Comandos.CAMBIAR_CLAVE, json);
+            ClienteSocket cliente = ClienteSocket.getInstance();
+            Mensaje respuesta = cliente.enviarYEsperar(solicitud, ConfiguracionCliente.getTimeout());
+            return respuesta != null && respuesta.isExito();
+        } catch (Exception e) {
+            System.err.println("Error al cambiar clave: " + e.getMessage());
+        }
+        return false;
+    }
 }

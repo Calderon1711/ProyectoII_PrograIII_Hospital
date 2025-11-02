@@ -114,6 +114,24 @@ public class HiloCliente implements Runnable {
                     detalleService.actualizarDetalle(detalle);
                     return new Mensaje(true, "Detalle actualizado", null);
                 }
+                //------------------Login---------------------
+                case Comandos.LOGIN_PERSONAL -> {
+                    String[] datos = ConversorJSON.deserializar(mensaje.getObjeto().toString(), String[].class);
+                    String id = datos[0];
+                    String clave = datos[1];
+                    Personal usuario = personalService.obtenerTodoPersonal()
+                            .stream()
+                            .filter(p -> p.getId().equals(id) && p.getClave().equals(clave))
+                            .findFirst().orElse(null);
+                    return new Mensaje(usuario != null, usuario != null ? "Login exitoso" : "Credenciales incorrectas",
+                            usuario != null ? ConversorJSON.serializar(usuario) : null);
+                }
+
+                case Comandos.CAMBIAR_CLAVE -> {
+                    String[] datos = ConversorJSON.deserializar(mensaje.getObjeto().toString(), String[].class);
+                    boolean ok = personalService.actualizarClave(datos[0], datos[1]);
+                    return new Mensaje(ok, ok ? "Contraseña actualizada" : "Error al actualizar", null);
+                }
 
                 // ----------------- Recetas -----------------
                 case Comandos.LISTAR_RECETAS -> {

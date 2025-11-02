@@ -3,19 +3,20 @@ package cliente.controlador;
 // ControladorLogin.java
 import cliente.modelo.*;
 import cliente.Vista.*;
-
+import cliente.proxy.ProxyPersonal;
 import javax.swing.*;
 import java.util.Arrays;
 
 public class ControladorLogin {
     private final LoginVista1 vista;
     private final ControladorGeneral appController;
-    private Hospital hospi=Hospital.getInstance();
+    private final ProxyPersonal proxyPersonal;
+
 
     public ControladorLogin(LoginVista1 vista, ControladorGeneral appController) {
         this.vista = vista;
-
         this.appController = appController;
+        this.proxyPersonal = new ProxyPersonal();
         initController();
     }
 
@@ -41,7 +42,7 @@ public class ControladorLogin {
             return;
         }
 
-        Personal usuario =Hospital.getInstance().loginPersonal(username, password);
+        Personal usuario = proxyPersonal.login(username,password);
 
         if (usuario != null) {
             // autenticación OK -> delegar al controlador general
@@ -80,10 +81,11 @@ public class ControladorLogin {
 
             if (pass1.equals(pass2) && !pass1.isEmpty()) {
                 // Aquí actualizas en Hospital o en el modelo
-                Personal usuario= hospi.getPersonal().getPersonalPorID(id);
-                usuario.setClave(pass1);
-                hospi.guradarPersonal();
-                JOptionPane.showMessageDialog(vista, "Contraseña cambiada con éxito.");
+                boolean ok = proxyPersonal.cambiarClave(id, pass1);
+                if (ok)
+                    JOptionPane.showMessageDialog(vista, "Contraseña cambiada con éxito.");
+                else
+                    JOptionPane.showMessageDialog(vista, "Error al cambiar la contraseña.");
             } else {
                 JOptionPane.showMessageDialog(vista, "Las contraseñas no coinciden o están vacías.");
             }
