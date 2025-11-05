@@ -1,0 +1,53 @@
+package Vista;
+
+import javax.swing.*;
+
+public class MedicoVista {
+    private JPanel panel1;
+    private JTabbedPane tabbedPane1;
+    private JPanel PanelPreescribir;
+    private JPanel Control;
+    private JLabel controlLabel;
+    private JButton buscarPacienteButton;
+    private JButton agregarMedicamentoButton;
+    private JComboBox Opciones_Fecha_de_Retiro;
+    private JButton guardarButton;
+    private JButton limpiarButton;
+    private JButton descartarMedicamentoButton;
+    private JButton detallesButton;
+    private JScrollPane ScrollPaneMedicamentos;
+    private JTable tablaMedicamentos;
+    private JLabel Nombre_del_doctor;
+    private JLabel FechaRetiro;
+    private JPanel PanelDashboard;
+    private JPanel Datos;
+    private JLabel Desde;
+    private JComboBox cmbDesdeAnnio;
+    private JComboBox cmbDesdeMes;
+    private JLabel Hasta;
+    private JComboBox cmbHastaAnio;
+    private JComboBox cmbHastaMes;
+    private JComboBox cmbMedicamento;
+    private JButton btnGenerarRango;
+    private JButton btnLimpiar;
+    private JPanel Recetas;
+    private JPanel graficoReceta;
+    private JButton btnAgregarMesButton;
+    private JButton btnQuitarMesButton;
+    private JScrollPane ScrollPaneDashBoard;
+    private JTable tblDatos;
+    private JPanel GraficoMedicamento;
+    private JPanel PestanaHistorico;
+    private JScrollPane ScrollPaneHistoricoRecetas;
+    private JTable tableHistoricoRecetas;
+    private JButton ButtonBuscarHistorico;
+    private JComboBox cmbBuscarRecetasHistorico;
+    private JScrollPane ScrollPaneHistoricoMedicamentos;
+    private JTable tableHistoricoMedicamentos;
+    private JPanel PestanaAcercaDe;
+    private JPanel Principal;
+    private JPanel Panelcito;
+    private JLabel Nombre;
+    private JLabel Vicente;
+    private JLabel Numero;
+}

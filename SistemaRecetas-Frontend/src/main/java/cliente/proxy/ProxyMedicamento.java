@@ -53,7 +53,7 @@ public class ProxyMedicamento {
         return null;
     }
 
-    // Consultar una receta por ID → devuelve la receta encontrada
+
     public Medicamento consultarMedicamento(String nombreMedicamento) {
         try {
             // Convertimos el ID a JSON para mantener coherencia

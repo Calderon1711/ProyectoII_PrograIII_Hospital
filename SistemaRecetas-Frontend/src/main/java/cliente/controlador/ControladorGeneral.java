@@ -1,8 +1,10 @@
 package cliente.controlador;
 
 // ControladorGeneral.java
+import cliente.Vista.AdminVista.AdminVista;
+import cliente.Vista.FarmaVista.FarmaceuticoVista;
+import cliente.Vista.MedicoVista.MedicoVista;
 import cliente.modelo.*;
-import cliente.Vista.*;
 
 
 public class ControladorGeneral {

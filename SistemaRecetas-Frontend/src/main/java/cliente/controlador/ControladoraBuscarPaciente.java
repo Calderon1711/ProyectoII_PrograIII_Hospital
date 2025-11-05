@@ -1,7 +1,7 @@
 package cliente.controlador;
 
 import cliente.modelo.Paciente;
-import cliente.Vista.Buscar_Paciente;
+import cliente.Vista.PacienteVista.Buscar_Paciente;
 import cliente.proxy.ProxyPaciente;
 import cliente.util.Alerta;
 import cliente.util.ConfiguracionCliente;
@@ -24,7 +24,7 @@ public class ControladoraBuscarPaciente {
 
     // Variables para control de caché
     private long ultimaActualizacionPacientes = 0;
-    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimedeCache(); // 5 minutos de caché
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTiempoCache();// 5 minutos de caché
 
     public ControladoraBuscarPaciente() {
         this.proxyPaciente = new ProxyPaciente();

@@ -1,7 +1,7 @@
 package cliente.controlador;
 
+import cliente.Vista.FarmaVista.FarmaceuticoVista;
 import cliente.modelo.*;
-import cliente.Vista.*;
 import cliente.proxy.*;
 import cliente.util.Alerta;
 import cliente.util.ConfiguracionCliente;
@@ -33,7 +33,7 @@ public class ControladorFarmaceutico {
 
     //Control de tiempo
     private long ultimaActualizacionRecetas = 0;
-    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTimedeCache();
+    private static final long TIEMPO_CACHE_MS = ConfiguracionCliente.getTiempoCache();
 
 
     public ControladorFarmaceutico(FarmaceuticoVista vista, Personal personalFarma) {

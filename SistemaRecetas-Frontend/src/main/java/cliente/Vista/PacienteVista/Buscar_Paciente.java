@@ -1,7 +1,4 @@
-package cliente.Vista;
-
-import cliente.modelo.*;
-import javafx.collections.ObservableList;
+package cliente.Vista.PacienteVista;
 
 import javax.swing.*;
 

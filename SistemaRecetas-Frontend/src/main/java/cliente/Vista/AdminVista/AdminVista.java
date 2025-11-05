@@ -1,4 +1,4 @@
-package cliente.Vista;
+package cliente.Vista.AdminVista;
 
 import cliente.modelo.*;
 import javax.swing.*;

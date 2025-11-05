@@ -1,14 +1,14 @@
 package cliente.controlador;
 
+import cliente.Vista.AdminVista.AdminVista;
 import cliente.modelo.*;
-import cliente.Vista.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
-
+import cliente.proxy.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -22,15 +22,24 @@ import java.util.List;
 
 
 public class ControladoraAdmin implements ActionListener {
-    private AdminVista vista;
-    private Personal modelo;
-    private static Hospital hospi=Hospital.getInstance();
+    private final AdminVista vista;
+    private final Personal usuarioAdmin;
+    private final ProxyPersonal proxyPersonal;
+    private final ProxyPaciente proxyPaciente;
+    private final ProxyMedicamento proxyMedicamento;
+    private final ProxyReceta proxyReceta;
 
-    public ControladoraAdmin(AdminVista vista, Personal modelo) {
+    public ControladoraAdmin(AdminVista vista, Personal usuarioAdmin) {
         this.vista = vista;
-        this.modelo = modelo;
+        this.usuarioAdmin = usuarioAdmin;
 
-        // ======= Asignar acciones a los botones =======
+        // Inicializar proxies
+        this.proxyPersonal = new ProxyPersonal();
+        this.proxyPaciente = new ProxyPaciente();
+        this.proxyMedicamento = new ProxyMedicamento();
+        this.proxyReceta = new ProxyReceta();
+
+        // Asignar eventos a botones principales (sin duplicar)
         vista.getBotonGuardar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonBorrar().addActionListener(this);
@@ -49,31 +58,34 @@ public class ControladoraAdmin implements ActionListener {
         vista.getBotonBuscarMedicamento().addActionListener(this);
         vista.getReporteMedicamento().addActionListener(this);
 
-        vista.getBotonBuscar().addActionListener(this);
         vista.getBtnGuardarPaciente().addActionListener(this);
-        vista.getBtnLimpiar().addActionListener(this);
+        vista.getBtnLimpiarPaciente().addActionListener(this);
         vista.getBorrarPAciente().addActionListener(this);
+        vista.getBotonBuscarPaciente().addActionListener(this);
 
+        // Cargar datos iniciales
         actualizarTablaMedicos();
         actualizarTablaFarma();
         actualizarTablaPaciente();
         actualizarTablaMedicamentos();
+
+        // Configurar dashboard e histórico
         initController();
+
+        System.out.println("Administrador logueado: " + usuarioAdmin.getNombre());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        // ==== Médicos ====
+        // ==== MÉDICOS ====
         if (source == vista.getBotonGuardar()) {
             guardarMedico();
-            hospi.guradarPersonal();
         } else if (source == vista.getBotonLimpiar()) {
             limpiarMedico();
         } else if (source == vista.getBotonBorrar()) {
             borrarMedico();
-            hospi.guradarPersonal();
         } else if (source == vista.getBuscarBoton()) {
             buscarMedico();
         } else if (source == vista.getBotonReporte()) {
@@ -81,54 +93,46 @@ public class ControladoraAdmin implements ActionListener {
             actualizarTablaMedicos();
         }
 
-        // ==== Farmacéuticos ====
+        // ==== FARMACÉUTICOS ====
         else if (source == vista.getGuardarButton()) {
             guardarFarma();
-            hospi.guradarPersonal();
         } else if (source == vista.getLimpiarButton()) {
             limpiarFarma();
         } else if (source == vista.getBorrarButton()) {
             borrarFarma();
-            hospi.guradarPersonal();
         } else if (source == vista.getBuscarButton()) {
             buscarFarma();
         } else if (source == vista.getReporteButton()) {
             reporteFarma();
-            actualizarTablaMedicos();
+            actualizarTablaFarma();
         }
 
-        // ==== Pacientes ====
-          else if (source == vista.getBtnGuardarPaciente()) {
+        // ==== PACIENTES ====
+        else if (source == vista.getBtnGuardarPaciente()) {
             guardarPaciente();
-            hospi.guardarPacientes();
         } else if (source == vista.getBtnLimpiarPaciente()) {
             limpiarPaciente();
         } else if (source == vista.getBorrarPAciente()) {
             borrarPaciente();
-            hospi.guardarPacientes();
         } else if (source == vista.getBotonBuscarPaciente()) {
             buscarPaciente();
         }
 
-             // ==== Medicamentos ====
+        // ==== MEDICAMENTOS ====
         else if (source == vista.getBtnGuardarMedicamento()) {
             guardarMedicamento();
-            hospi.guardarMedicamentos();
         } else if (source == vista.getBoton_LimpiarMedicamento()) {
             limpiarMedicamento();
         } else if (source == vista.getBTNBorrarMedicamento()) {
             borrarMedicamento();
-            hospi.guardarMedicamentos();
         } else if (source == vista.getBotonBuscarMedicamento()) {
             buscarMedicamento();
         } else if (source == vista.getReporteMedicamento()) {
             reporteMedicamento();
             actualizarTablaMedicamentos();
         }
-
-
-
     }
+
 
 
     public void initController() {
@@ -160,17 +164,28 @@ public class ControladoraAdmin implements ActionListener {
             return;
         }
 
-        Medico medicoNuevo = new Medico(nombre,id,id,especialidad,Rol.MEDICO);
-        boolean verificador = hospi.getPersonal().existePersonalConEseID(medicoNuevo.getId());
-        if( hospi.getPersonal().insertarPersonal(medicoNuevo,verificador)==true) {
-            JOptionPane.showMessageDialog(null, "Médico guardado correctamente.");
-        }else{
-            JOptionPane.showMessageDialog(null, "Médico No se puede guardar.");
-        }
+        Medico medicoNuevo = new Medico(nombre, id, id, especialidad, Rol.MEDICO);
 
-        limpiarMedico();
-        actualizarTablaMedicos();
+        try {
+            // Llamamos al proxy para insertar
+            Personal resultado = proxyPersonal.agregarPersonal(medicoNuevo);
+
+            if (resultado != null) {
+                JOptionPane.showMessageDialog(null, "Médico guardado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Médico no se pudo guardar (puede que ya exista o haya un error).");
+            }
+
+            limpiarMedico();
+            actualizarTablaMedicos();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el médico: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
     }
+
 
     private void limpiarMedico() {
         vista.getCampoIDMEdico().setText("");
@@ -183,97 +198,120 @@ public class ControladoraAdmin implements ActionListener {
         int fila = vista.getTablaListado().getSelectedRow();
         if (fila >= 0) {
             String id = (String) vista.getTablaListado().getValueAt(fila, 0);
-            hospi.getPersonal().eliminar(id);
+            Personal eliminado = proxyPersonal.eliminarPersonal(Integer.parseInt(id));
+
+            if (eliminado != null)
+                JOptionPane.showMessageDialog(null, "Médico eliminado");
+            else
+                JOptionPane.showMessageDialog(null, "Error al eliminar médico");
+
             actualizarTablaMedicos();
-            JOptionPane.showMessageDialog(null, "Médico eliminado.");
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un médico para borrar.");
+            JOptionPane.showMessageDialog(null, "Seleccione un médico para borrar");
         }
     }
 
-    private void actualizarTablaMedicos() {
-        DefaultTableModel tableModel = vista.getModeloMedicos();
-        tableModel.setRowCount(0);
 
-        // Traemos solo los médicos de la lista general
-        for (Personal p : hospi.getPersonal().obtenerPersonalPorTipo("Medico")) {
-            if (p instanceof Medico) {
-                Medico m = (Medico) p;
-                tableModel.addRow(new Object[]{
-                        m.getId(),
-                        m.getNombre(),
-                        m.getEspecialidad()
-                });
-            }
-        }
+
+
+    private void actualizarTablaMedicos() {
+        List<Personal> lista = proxyPersonal.obtenerPersonal()
+                .stream()
+                .filter(p -> p instanceof Medico)
+                .toList();
+
+        DefaultTableModel model = vista.getModeloMedicos();
+        model.setRowCount(0);
+        lista.forEach(p -> {
+            Medico m = (Medico) p;
+            model.addRow(new Object[]{m.getId(), m.getNombre(), m.getEspecialidad()});
+        });
     }
 
     private void buscarMedico() {
         String nombre = vista.getCampoNombreBusquedaMedico().getText().trim();
-
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese un nombre para buscar.");
+            JOptionPane.showMessageDialog(null, "Ingrese un nombre");
             return;
         }
 
-        DefaultTableModel modelo = vista.getModeloMedicos();
-        modelo.setRowCount(0); // limpiar tabla
+        List<Personal> lista = proxyPersonal.obtenerPersonal()
+                .stream()
+                .filter(p -> p instanceof Medico && p.getNombre().equalsIgnoreCase(nombre))
+                .toList();
 
-        for (Personal p : hospi.getPersonal().obtenerPersonalPorTipo("Medico")) {
-            if (p instanceof Medico) {
-                Medico m = (Medico) p;
-                if (m.getNombre().equalsIgnoreCase(nombre)) {
-                    modelo.addRow(new Object[]{
-                            m.getId(),
-                            m.getNombre(),
-                            m.getEspecialidad()
-                    });
-                }
-            }
-        }
-
-        if (modelo.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "No se encontró un médico con ese nombre.");
-        }
+        DefaultTableModel model = vista.getModeloMedicos();
+        model.setRowCount(0);
+        lista.forEach(p -> {
+            Medico m = (Medico) p;
+            model.addRow(new Object[]{m.getId(), m.getNombre(), m.getEspecialidad()});
+        });
     }
 
     private void reporteMedico() {
         int fila = vista.getTablaListado().getSelectedRow();
-        if (fila >= 0) {
-            String id = (String) vista.getTablaListado().getValueAt(fila, 0);
-            Personal p = hospi.getPersonal().getPersonalPorID(id);
 
+        if (fila >= 0) {
+            // Obtiene el ID del médico seleccionado
+            String idStr = (String) vista.getTablaListado().getValueAt(fila, 0);
+            int id;
+
+            try {
+                id = Integer.parseInt(idStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista, "El ID debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Consulta el médico usando el proxy
+            Personal p = proxyPersonal.consultarPersonal(id);
+
+            // Verifica y muestra la información
             if (p != null && p instanceof Medico) {
-                JOptionPane.showMessageDialog(null, p.toString());
+                Medico m = (Medico) p;
+                JOptionPane.showMessageDialog(
+                        vista,
+                        "=== REPORTE DE MÉDICO ===\n" +
+                                "ID: " + m.getId() + "\n" +
+                                "Nombre: " + m.getNombre() + "\n" +
+                                "Especialidad: " + m.getEspecialidad() + "\n" +
+                                "Rol: " + m.getRol(),
+                        "Reporte de Médico",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             } else {
-                JOptionPane.showMessageDialog(null, "El elemento seleccionado no es un médico.");
+                JOptionPane.showMessageDialog(vista, "El elemento seleccionado no es un médico.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un médico de la tabla para generar reporte.");
+            JOptionPane.showMessageDialog(vista, "Seleccione un médico de la tabla para generar reporte.");
         }
     }
+
+
 
     //=============================Logica Farma============================================//
     private void guardarFarma() {
         String idF = vista.getCampoIdFarma().getText();
         String nombreF = vista.getCampoNombreFarma().getText();
 
-
-        if (idF.isEmpty() || nombreF.isEmpty() ) {
+        if (idF.isEmpty() || nombreF.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
             return;
         }
 
-        Farmaceuta farmaNuevo = new Farmaceuta(nombreF,idF,idF,Rol.FARMACEUTICO);
-        boolean verificador = hospi.getPersonal().existePersonalConEseID(farmaNuevo.getId());
-        if( hospi.getPersonal().insertarPersonal(farmaNuevo,verificador)==true) {
-            JOptionPane.showMessageDialog(null, "Farmaceuta guardado correctamente.");
-        }else{
-            JOptionPane.showMessageDialog(null, "Farmaceuta No se puede guardar.");
-        }
+        // Crear nuevo farmacéutico
+        Farmaceuta farmaNuevo = new Farmaceuta(nombreF, idF, idF, Rol.FARMACEUTICO);
 
-        limpiarFarma();
-        actualizarTablaFarma();
+        // Enviar al backend mediante el proxy
+        Personal respuesta = proxyPersonal.agregarPersonal(farmaNuevo);
+
+        if (respuesta != null) {
+            JOptionPane.showMessageDialog(null, "Farmacéutico guardado correctamente.");
+            limpiarFarma();
+            actualizarTablaFarma();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: No se pudo guardar el farmacéutico.");
+        }
     }
 
     private void limpiarFarma() {
@@ -284,31 +322,50 @@ public class ControladoraAdmin implements ActionListener {
 
     private void borrarFarma() {
         int fila = vista.getTablaFarmaceuticos().getSelectedRow();
+
         if (fila >= 0) {
-            String id = (String) vista.getTablaFarmaceuticos().getValueAt(fila, 0);
-            hospi.getPersonal().eliminar(id);
+            String idStr = (String) vista.getTablaFarmaceuticos().getValueAt(fila, 0);
+            int id;
+
+            try {
+                id = Integer.parseInt(idStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista, "El ID debe ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Llamada al proxy (no devuelve boolean)
+            proxyPersonal.eliminarPersonal(id);
+
+            // Mensaje y actualización de la vista
+            JOptionPane.showMessageDialog(vista, "Farmacéutico eliminado correctamente.");
             actualizarTablaFarma();
-            JOptionPane.showMessageDialog(null, "Farmacéutico eliminado.");
+
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un Farmacéutico para borrar.");
+            JOptionPane.showMessageDialog(vista, "Seleccione un farmacéutico para borrar.");
         }
     }
 
-    private void  actualizarTablaFarma() {
+
+    private void actualizarTablaFarma() {
         DefaultTableModel tableModel = vista.getModeloFarmaceuticos();
         tableModel.setRowCount(0);
 
-        // Traemos solo los médicos de la lista general
-        for (Personal p : hospi.getPersonal().obtenerPersonalPorTipo("Farmaceuta")) {
-            if (p instanceof Farmaceuta) {
-                Farmaceuta f = (Farmaceuta) p;
-                tableModel.addRow(new Object[]{
-                        f.getId(),
-                        f.getNombre()
-                });
+        // Traer todos los farmacéuticos desde el backend
+        List<Personal> lista = proxyPersonal.obtenerPersonal();
+        if (lista != null) {
+            for (Personal p : lista) {
+                if (p instanceof Farmaceuta) {
+                    Farmaceuta f = (Farmaceuta) p;
+                    tableModel.addRow(new Object[]{
+                            f.getId(),
+                            f.getNombre()
+                    });
+                }
             }
         }
     }
+
 
     private void buscarFarma() {
         String nombre = vista.getCampoBusquedaFarma().getText().trim();
@@ -321,86 +378,125 @@ public class ControladoraAdmin implements ActionListener {
         DefaultTableModel modelo = vista.getModeloFarmaceuticos();
         modelo.setRowCount(0); // limpiar tabla
 
-        for (Personal p : hospi.getPersonal().obtenerPersonalPorTipo("Farmaceuta")) {
-            if (p instanceof Farmaceuta) {
-                Farmaceuta f = (Farmaceuta) p;
-                if (f.getNombre().equalsIgnoreCase(nombre)) {
-                    modelo.addRow(new Object[]{
-                            f.getId(),
-                            f.getNombre()
-                    });
+        List<Personal> lista = proxyPersonal.obtenerPersonal();
+        boolean encontrado = false;
+
+        if (lista != null) {
+            for (Personal p : lista) {
+                if (p instanceof Farmaceuta) {
+                    Farmaceuta f = (Farmaceuta) p;
+                    if (f.getNombre().equalsIgnoreCase(nombre)) {
+                        modelo.addRow(new Object[]{
+                                f.getId(),
+                                f.getNombre()
+                        });
+                        encontrado = true;
+                    }
                 }
             }
         }
 
-        if (modelo.getRowCount() == 0) {
+        if (!encontrado) {
             JOptionPane.showMessageDialog(null, "No se encontró un farmacéutico con ese nombre.");
         }
     }
 
+
     private void reporteFarma() {
         int fila = vista.getTablaFarmaceuticos().getSelectedRow();
+
         if (fila >= 0) {
-            String id = (String) vista.getTablaFarmaceuticos().getValueAt(fila, 0);
-            Personal p = hospi.getPersonal().getPersonalPorID(id);
+            String idStr = (String) vista.getTablaFarmaceuticos().getValueAt(fila, 0);
+            int id;
+
+            try {
+                id = Integer.parseInt(idStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista, "El ID debe ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Personal p = proxyPersonal.consultarPersonal(id);
 
             if (p != null && p instanceof Farmaceuta) {
-                JOptionPane.showMessageDialog(null, p.toString());
+                Farmaceuta f = (Farmaceuta) p;
+                JOptionPane.showMessageDialog(
+                        vista,
+                        "=== REPORTE DE FARMACÉUTICO ===\n" +
+                                "ID: " + f.getId() + "\n" +
+                                "Nombre: " + f.getNombre() + "\n" +
+                                "Rol: " + f.getRol(),
+                        "Reporte de Farmacéutico",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             } else {
-                JOptionPane.showMessageDialog(null, "El elemento seleccionado no es un Farmaceuta.");
+                JOptionPane.showMessageDialog(vista, "El elemento seleccionado no es un farmacéutico.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un Farmaceuta de la tabla para generar reporte.");
+            JOptionPane.showMessageDialog(vista, "Seleccione un farmacéutico de la tabla para generar reporte.");
         }
     }
+
 //=============================================Logica PAciente============================
 
     private void guardarPaciente() {
-        String id = vista.getCampoIdPAciente().getText();
-        String nombre = vista.getCampoNombrePaciente().getText();
-        String fechaStr = vista.getCampoFechaNacimiento().getText();
-        LocalDate fechaNacimiento = null;
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String id = vista.getCampoIdPAciente().getText().trim();
+        String nombre = vista.getCampoNombrePaciente().getText().trim();
+        String fechaStr = vista.getCampoFechaNacimiento().getText().trim();
+        String telStr = vista.getCampoTelefonoPaciente().getText().trim();
 
-        try {
-            fechaNacimiento = LocalDate.parse(fechaStr, formato);
-        } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(null,
-                    "La fecha debe tener formato yyyy-MM-dd",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return; // salir o manejar error
-        }
-
-        String telStr = vista.getCampoTelefonoPaciente().getText();
-        int telefono = 0;
-        try {
-            telefono = Integer.parseInt(telStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null,
-                    "El teléfono debe ser un número",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return; // salir o manejar error
-        }
-
-
-        if (id.isEmpty() || nombre.isEmpty() || fechaNacimiento==null||telefono==0) {
-            JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
+        // Validar campos vacíos
+        if (id.isEmpty() || nombre.isEmpty() || fechaStr.isEmpty() || telStr.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Por favor complete todos los campos.");
             return;
         }
 
-        Paciente paciente = new Paciente(telefono,fechaNacimiento,nombre,id);
-        boolean verificador = hospi.getPacientes().existeAlguienConEseID(paciente.getId());
-        if( hospi.getPacientes().insertarPaciente(paciente,verificador)==true) {
-            JOptionPane.showMessageDialog(null, "Paciente guardado correctamente.");
-        }else{
-            JOptionPane.showMessageDialog(null, "Paciente No se puede guardar.");
+        // Validar formato de fecha
+        LocalDate fechaNacimiento;
+        try {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            fechaNacimiento = LocalDate.parse(fechaStr, formato);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(vista,
+                    "La fecha debe tener formato yyyy-MM-dd",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        limpiarPaciente();
-        actualizarTablaPaciente();
+        // Validar teléfono
+        int telefono;
+        try {
+            telefono = Integer.parseInt(telStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(vista,
+                    "El teléfono debe ser un número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear objeto Paciente
+        Paciente paciente = new Paciente(telefono, fechaNacimiento, nombre, id);
+
+        try {
+            // Enviar al backend por proxy
+            proxyPaciente.agregarPaciente(paciente);
+
+            // Si no lanza excepción, consideramos éxito
+            JOptionPane.showMessageDialog(vista, "Paciente guardado correctamente.");
+            limpiarPaciente();
+            actualizarTablaPaciente();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista,
+                    "No se pudo guardar el paciente: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
+
 
     private void limpiarPaciente() {
     vista.getCampoIdPAciente().setText("");
@@ -409,87 +505,129 @@ public class ControladoraAdmin implements ActionListener {
     vista.getCampoTelefonoPaciente().setText("");
     }
 
+    // =================== ELIMINAR PACIENTE ===================
     private void borrarPaciente() {
         int fila = vista.getTablaPacientes().getSelectedRow();
-        if (fila >= 0) {
-            String id = (String) vista.getTablaPacientes().getValueAt(fila, 0);
-            hospi.getPacientes().eliminar(id);
+
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(vista, "Seleccione un paciente para eliminar.");
+            return;
+        }
+
+        try {
+            // obtener el id desde la tabla y convertirlo a int
+            String idStr = vista.getTablaPacientes().getValueAt(fila, 0).toString();
+            int id = Integer.parseInt(idStr);
+
+            // llamar al proxy (no devuelve nada)
+            proxyPaciente.eliminarPaciente(id);
+
+            // actualizar interfaz
+            JOptionPane.showMessageDialog(vista, "Paciente eliminado correctamente.");
             actualizarTablaPaciente();
-            JOptionPane.showMessageDialog(null, "Paciente eliminado.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un paciente para borrar.");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(vista, "El ID del paciente no es un número válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista, "Error al eliminar el paciente: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
+
+
+    // =================== ACTUALIZAR TABLA ===================
     private void actualizarTablaPaciente() {
         DefaultTableModel tableModel = vista.getModeloPacientes();
-        tableModel.setRowCount(0); // Limpiamos la tabla
+        tableModel.setRowCount(0);
 
-        // Recorremos la lista de pacientes
-        for (Paciente p : hospi.getPacientes().getPacientes()) {
-            tableModel.addRow(new Object[]{
-                    p.getId(),
-                    p.getNombre(),
-                    p.getFechaNacimiento(),
-                    p.getTelefono()
-            });
+        List<Paciente> pacientes = proxyPaciente.obtenerPacientes();
+        if (pacientes != null) {
+            for (Paciente p : pacientes) {
+                tableModel.addRow(new Object[]{
+                        p.getId(),
+                        p.getNombre(),
+                        p.getFechaNacimiento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        p.getTelefono()
+                });
+            }
         }
     }
 
 
+
+    // =================== BUSCAR PACIENTE ===================
     private void buscarPaciente() {
         String nombre = vista.getCampoBuscarPaciente().getText().trim();
 
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese un nombre para buscar.");
+            JOptionPane.showMessageDialog(vista, "Ingrese un nombre para buscar.");
             return;
         }
 
         DefaultTableModel modelo = vista.getModeloPacientes();
-        modelo.setRowCount(0); // limpiar tabla
+        modelo.setRowCount(0);
 
+        List<Paciente> lista = proxyPaciente.obtenerPacientes();
         boolean encontrado = false;
 
-        for (Paciente p : hospi.getPacientes().getPacientes()) {
-            if (p.getNombre().equalsIgnoreCase(nombre)) {
-                modelo.addRow(new Object[]{
-                        p.getId(),
-                        p.getNombre(),
-                        p.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        p.getTelefono(),
-                });
-                encontrado = true;
+        if (lista != null) {
+            for (Paciente p : lista) {
+                if (p.getNombre().equalsIgnoreCase(nombre)) {
+                    modelo.addRow(new Object[]{
+                            p.getId(),
+                            p.getNombre(),
+                            p.getFechaNacimiento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                            p.getTelefono()
+                    });
+                    encontrado = true;
+                }
             }
         }
 
         if (!encontrado) {
-            JOptionPane.showMessageDialog(null, "No se encontró un paciente con ese nombre.");
+            JOptionPane.showMessageDialog(vista, "No se encontró un paciente con ese nombre.");
         }
     }
+
 
     //======================================logica medicamento ==============================================//
 
+    // =================== GUARDAR MEDICAMENTO ===================
     private void guardarMedicamento() {
-        String id = vista.getCampoCodigoMedicamento().getText();
-        String nombre = vista.getCampoNombreMedicamento().getText();
-        String presentacion = vista.getCampoPresentacionMedicamento().getText();
+        String idStr = vista.getCampoCodigoMedicamento().getText().trim();
+        String nombre = vista.getCampoNombreMedicamento().getText().trim();
+        String presentacion = vista.getCampoPresentacionMedicamento().getText().trim();
 
-        if (id.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
+        if (idStr.isEmpty() || nombre.isEmpty() || presentacion.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Por favor complete todos los campos.");
             return;
         }
 
-       Medicamento medicamento = new Medicamento(nombre, presentacion, id);
+        try {
+            int id = Integer.parseInt(idStr); // Si el código es numérico
+            Medicamento medicamento = new Medicamento(nombre, presentacion, String.valueOf(id));
 
-        if( hospi.getMedicamentos().insertarMedicamento(medicamento)==true) {
-            JOptionPane.showMessageDialog(null, "Medicamento guardado correctamente.");
-        }else{
-            JOptionPane.showMessageDialog(null, "Medicamento No se puede guardar.");
+            proxyMedicamento.agregarMedicamento(medicamento); // No retorna nada
+
+            JOptionPane.showMessageDialog(vista, "Medicamento guardado correctamente.");
+            limpiarMedicamento();
+            actualizarTablaMedicamentos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(vista,
+                    "El código del medicamento debe ser numérico.",
+                    "Error de formato",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista,
+                    "Error al guardar el medicamento: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
-
-        limpiarMedicamento();
-        actualizarTablaMedicamentos();
     }
+
+
 
     private void limpiarMedicamento() {
         vista.getCampoCodigoMedicamento().setText("");
@@ -498,78 +636,126 @@ public class ControladoraAdmin implements ActionListener {
         vista.getCampoNombreMEdicamento().setText("");
     }
 
+    // =================== ELIMINAR MEDICAMENTO ===================
     private void borrarMedicamento() {
         int fila = vista.getTablaMedicamento().getSelectedRow();
+
         if (fila >= 0) {
-            String id = (String) vista.getTablaMedicamento().getValueAt(fila, 0);
-            hospi.getMedicamentos().eliminar(id);
-            actualizarTablaMedicamentos();
-            JOptionPane.showMessageDialog(null, "Medicamento eliminado.");
+            String idStr = (String) vista.getTablaMedicamento().getValueAt(fila, 0);
+
+            try {
+                int id = Integer.parseInt(idStr);
+                proxyMedicamento.eliminarMedicamento(id); // No retorna nada
+
+                JOptionPane.showMessageDialog(vista, "Medicamento eliminado correctamente.");
+                actualizarTablaMedicamentos();
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista,
+                        "El código del medicamento debe ser numérico.",
+                        "Error de formato",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(vista,
+                        "Error al eliminar el medicamento: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un Medicamento para borrar.");
+            JOptionPane.showMessageDialog(vista, "Seleccione un medicamento para borrar.");
         }
     }
 
+
+
+
+    // =================== ACTUALIZAR TABLA ===================
     private void actualizarTablaMedicamentos() {
         DefaultTableModel tableModel = vista.getModeloMedicamentos();
-        tableModel.setRowCount(0); // limpiar tabla
+        tableModel.setRowCount(0);
 
-        // Recorremos la lista de medicamentos del hospital
-        for (Medicamento med : hospi.getMedicamentos().getMedicamentos()) {
-            tableModel.addRow(new Object[]{
-                    med.getCodigo(),
-                    med.getNombre(),
-                    med.getPresentacion()
-            });
-        }
-    }
-
-    private void buscarMedicamento() {
-        String codigo = vista.getCampoCodigoMedicamento().getText().trim();
-
-        if (codigo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese un nombre de medicamento para buscar.");
-            return;
-        }
-
-        DefaultTableModel modelo = vista.getModeloMedicamentos();
-        modelo.setRowCount(0); // limpiar tabla
-
-        boolean encontrado = false;
-
-        for (Medicamento med : hospi.getMedicamentos().getMedicamentos()) {
-            if (med.getNombre().equalsIgnoreCase(codigo)) {
-                modelo.addRow(new Object[]{
+        List<Medicamento> lista = proxyMedicamento.obtenerMedicamentos();
+        if (lista != null) {
+            for (Medicamento med : lista) {
+                tableModel.addRow(new Object[]{
                         med.getCodigo(),
                         med.getNombre(),
                         med.getPresentacion()
                 });
-                encontrado = true;
             }
-        }
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(null, "No se encontró un medicamento con ese nombre.");
         }
     }
 
 
+    // =================== BUSCAR MEDICAMENTO ===================
+    private void buscarMedicamento() {
+        String codigo = vista.getCampoCodigoMedicamento().getText().trim();
+
+        if (codigo.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Ingrese un código o nombre de medicamento para buscar.");
+            return;
+        }
+
+        DefaultTableModel modelo = vista.getModeloMedicamentos();
+        modelo.setRowCount(0);
+
+        List<Medicamento> lista = proxyMedicamento.obtenerMedicamentos();
+        boolean encontrado = false;
+
+        if (lista != null) {
+            for (Medicamento med : lista) {
+                if (med.getNombre().equalsIgnoreCase(codigo) || med.getCodigo().equalsIgnoreCase(codigo)) {
+                    modelo.addRow(new Object[]{
+                            med.getCodigo(),
+                            med.getNombre(),
+                            med.getPresentacion()
+                    });
+                    encontrado = true;
+                }
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(vista, "No se encontró un medicamento con ese nombre o código.");
+        }
+    }
+
+
+
+    // =================== REPORTE DE MEDICAMENTO ===================
     private void reporteMedicamento() {
         int fila = vista.getTablaMedicamento().getSelectedRow();
+
         if (fila >= 0) {
-            String id = (String) vista.getTablaMedicamento().getValueAt(fila, 0);
-            Medicamento med = hospi.getMedicamentos().getMedicamento(id);
+            // Obtenemos el nombre desde la tabla (columna 1, según tu tabla)
+            String nombre = (String) vista.getTablaMedicamento().getValueAt(fila, 1);
+
+            // Consultamos el medicamento usando su nombre
+            Medicamento med = proxyMedicamento.consultarMedicamento(nombre);
 
             if (med != null) {
-                JOptionPane.showMessageDialog(null, med.toString(),
+                JOptionPane.showMessageDialog(vista,
+                        "Código: " + med.getCodigo() + "\n" +
+                                "Nombre: " + med.getNombre() + "\n" +
+                                "Presentación: " + med.getPresentacion(),
                         "Reporte de Medicamento",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el medicamento con ID " + id);
+                JOptionPane.showMessageDialog(vista,
+                        "No se encontró el medicamento con nombre " + nombre,
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un medicamento de la tabla para generar reporte.");
+            JOptionPane.showMessageDialog(vista,
+                    "Seleccione un medicamento de la tabla para generar reporte.",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+
 
     //========================================================================
     //Pestana Dasboard
@@ -603,15 +789,15 @@ public class ControladoraAdmin implements ActionListener {
             vista.getCmbHastaMes().addItem(mes);
         }
 
-        // Inicializar combobox de medicamentos
-
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
-
-        for (Medicamento med : lista) {
-            vista.getCmbMedicamento().addItem(med.getNombre());
+        // ======= Inicializar combobox de medicamentos =======
+        List<Medicamento> lista = proxyMedicamento.obtenerMedicamentos();
+        if (lista != null) {
+            for (Medicamento med : lista) {
+                vista.getCmbMedicamento().addItem(med.getNombre());
+            }
         }
 
-        // Configurar año y mes actual por defecto
+        // ======= Configurar año y mes actual por defecto =======
         Calendar cal = Calendar.getInstance();
         int añoActual = cal.get(Calendar.YEAR);
         int mesActual = cal.get(Calendar.MONTH); // 0-11
@@ -622,42 +808,48 @@ public class ControladoraAdmin implements ActionListener {
         vista.getCmbHastaMes().setSelectedIndex(mesActual);
     }
 
+
     public void modificarTablaDashBoard() {
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
-        String[] columnas = {"Nombre", "Presentacion", "Codigo"};
+        List<Medicamento> lista = proxyMedicamento.obtenerMedicamentos();
+        String[] columnas = {"Nombre", "Presentación", "Código"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-        // Agregar cada medicamento al modelo
-        for (Medicamento med : lista) {
-            Object[] fila = {
-                    med.getNombre(),
-                    med.getPresentacion(),
-                    med.getCodigo()
-            };
-            modelo.addRow(fila);
+        if (lista != null) {
+            // Agregar cada medicamento al modelo
+            for (Medicamento med : lista) {
+                Object[] fila = {
+                        med.getNombre(),
+                        med.getPresentacion(),
+                        med.getCodigo()
+                };
+                modelo.addRow(fila);
+            }
         }
 
         vista.getTblDatos().setModel(modelo);
         vista.getScrollPaneDashBoard().setViewportView(vista.getTblDatos());
     }
 
+
     public void crearGraficoMedicamentos(JPanel panel) {
-        List<Medicamento> listaMedicamentos = hospi.getMedicamentos().getMedicamentos();
+
+        List<Medicamento> listaMedicamentos = proxyMedicamento.obtenerMedicamentos();
 
         // Contar medicamentos por nombre
         Map<String, Integer> conteoPorNombre = new HashMap<>();
-        for (Medicamento med : listaMedicamentos) {
-            String nombre = med.getNombre();
-            conteoPorNombre.put(nombre, conteoPorNombre.getOrDefault(nombre, 0) + 1);
+        if (listaMedicamentos != null) {
+            for (Medicamento med : listaMedicamentos) {
+                String nombre = med.getNombre();
+                conteoPorNombre.put(nombre, conteoPorNombre.getOrDefault(nombre, 0) + 1);
+            }
         }
 
-        // Crear dataset para gráfico de pastel
+        // Todo lo demás del gráfico queda igual...
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (Map.Entry<String, Integer> entry : conteoPorNombre.entrySet()) {
             dataset.setValue(entry.getKey(), entry.getValue());
         }
 
-        // Crear gráfico de pastel
         JFreeChart chart = ChartFactory.createPieChart(
                 "Distribución de Medicamentos por Nombre",
                 dataset,
@@ -666,10 +858,8 @@ public class ControladoraAdmin implements ActionListener {
                 false
         );
 
-        // Mostrar porcentaje en etiquetas
         PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}")); // Ej: Paracetamol: 25%
-
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
         chart.setBackgroundPaint(Color.WHITE);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -682,24 +872,26 @@ public class ControladoraAdmin implements ActionListener {
         panel.repaint();
     }
 
-    public void crearGraficoRecetas(JPanel panel) {
-        List<Receta> recetas = hospi.getRecetas().getRecetas();
 
-        // Contar recetas por estado (usando nombre legible)
+    public void crearGraficoRecetas(JPanel panel) {
+
+        List<Receta> recetas = proxyReceta.obtenerRecetas();
+
         Map<String, Integer> conteoPorEstado = new HashMap<>();
-        for (Receta r1 : recetas) {
-            int estadoInt = r1.getEstado(); // Suponiendo que esto devuelve el int
-            String estadoNombre = obtenerNombreEstado(estadoInt);
-            conteoPorEstado.put(estadoNombre, conteoPorEstado.getOrDefault(estadoNombre, 0) + 1);
+        if (recetas != null) {
+            for (Receta r1 : recetas) {
+                int estadoInt = r1.getEstado();
+                String estadoNombre = obtenerNombreEstado(estadoInt);
+                conteoPorEstado.put(estadoNombre, conteoPorEstado.getOrDefault(estadoNombre, 0) + 1);
+            }
         }
 
-        // Crear dataset
+
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (Map.Entry<String, Integer> entry : conteoPorEstado.entrySet()) {
             dataset.setValue(entry.getKey(), entry.getValue());
         }
 
-        // Crear gráfico
         JFreeChart chart = ChartFactory.createPieChart(
                 "Distribución de Recetas por Estado",
                 dataset,
@@ -707,10 +899,9 @@ public class ControladoraAdmin implements ActionListener {
                 true,
                 false
         );
+
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
-
-
         chart.setBackgroundPaint(Color.WHITE);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -722,6 +913,7 @@ public class ControladoraAdmin implements ActionListener {
         panel.revalidate();
         panel.repaint();
     }
+
 
     private String obtenerNombreEstado(int estado) {
         switch (estado) {
@@ -813,30 +1005,33 @@ public class ControladoraAdmin implements ActionListener {
     }
 
     public void modificarTablaRecetaHistorico() {
-        List<Receta> lista = hospi.getRecetas().getRecetas();
-        String[] columnas = {"Receta por paciente", "Receta por Medico", "Estado de la receta"};
+        // Ahora obtenemos las recetas desde el proxy
+        List<Receta> lista = proxyReceta.obtenerRecetas();
+
+        String[] columnas = {"Receta por Paciente", "Receta por Médico", "Estado de la Receta"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-        // Agregar cada medicamento al modelo
-        for (Receta med : lista) {
-            Object[] fila = {
-
-                    med.getPaciente(),
-                    med.getPersonal(),
-                    obtenerNombreEstado(med.getEstado())
-            };
-            modelo.addRow(fila);
+        if (lista != null) {
+            for (Receta receta : lista) {
+                Object[] fila = {
+                        receta.getPaciente().getNombre(),
+                        receta.getPersonal().getNombre(),
+                        obtenerNombreEstado(receta.getEstado())
+                };
+                modelo.addRow(fila);
+            }
         }
 
-        // Asignar modelo a la tabla
         vista.getTableHistoricoRecetas().setModel(modelo);
         vista.getScrollPaneHistoricoRecetas().setViewportView(vista.getTableHistoricoRecetas());
     }
 
+
     public void modificarTablaMedicamentosHistorico() {
-        List<Medicamento> lista = hospi.getMedicamentos().getMedicamentos();
+        // Obtener medicamentos desde el proxy
+        List<Medicamento> lista = proxyMedicamento.obtenerMedicamentos();
         int contador = 1;
-        String[] columnas = {"Numero", "Nombre", "Presentación", "Codigo"};
+        String[] columnas = {"Número", "Nombre", "Presentación", "Código"};
 
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
@@ -844,16 +1039,17 @@ public class ControladoraAdmin implements ActionListener {
                 return false;
             }
         };
-        for (Medicamento med : lista) {
-            Object[] fila = {
-                    contador,
-                    med.getNombre(),
-                    med.getPresentacion(),
-                    med.getCodigo(),
-            };
 
-            modelo.addRow(fila);
-            contador++;
+        if (lista != null) {
+            for (Medicamento med : lista) {
+                Object[] fila = {
+                        contador++,
+                        med.getNombre(),
+                        med.getPresentacion(),
+                        med.getCodigo(),
+                };
+                modelo.addRow(fila);
+            }
         }
 
         JTable tabla = vista.getTableHistoricoMedicamentos();
@@ -861,39 +1057,53 @@ public class ControladoraAdmin implements ActionListener {
         vista.getScrollPaneHistoricoMedicamentos().setViewportView(tabla);
     }
 
+
     private void poblarComboMedicos() {
-        List<Receta> listaRecetas = hospi.getRecetas().getRecetas();
-        Set<Personal> medicosUnicos = new HashSet<>();
-        for (Receta r : listaRecetas) {
-            medicosUnicos.add(r.getPersonal());
+        // Obtener recetas desde el proxy
+        List<Receta> listaRecetas = proxyReceta.obtenerRecetas();
+        Set<String> medicosUnicos = new HashSet<>();
+
+        if (listaRecetas != null) {
+            for (Receta r : listaRecetas) {
+                medicosUnicos.add(r.getPersonal().getNombre());
+            }
         }
 
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<>();
-        for (Personal medico : medicosUnicos) {
-            modeloCombo.addElement(medico.getNombre());
+        for (String nombreMedico : medicosUnicos) {
+            modeloCombo.addElement(nombreMedico);
         }
 
         vista.getCmbBuscarRecetasHistorico().setModel(modeloCombo);
     }
 
+
     public void actualizarTablaRecetasPorMedico() {
         vista.getCmbBuscarRecetasHistorico().addActionListener(e -> {
-            String nombreSeleccionado = vista.getCmbBuscarRecetasHistorico().getSelectedItem().toString().toLowerCase();
+            String nombreSeleccionado = vista.getCmbBuscarRecetasHistorico()
+                    .getSelectedItem()
+                    .toString()
+                    .toLowerCase();
+
             DefaultTableModel modelo = (DefaultTableModel) vista.getTableHistoricoRecetas().getModel();
             modelo.setRowCount(0); // Limpiar tabla
 
-            for (Receta r : hospi.getRecetas().getRecetas()) {
-                String nombreMedico = r.getPersonal().getNombre().toLowerCase();
-                if (nombreMedico.equals(nombreSeleccionado)) {
-                    modelo.addRow(new Object[]{
-                            r.getPaciente().getNombre(),
-                            r.getPersonal().getNombre(),
-                            r.getEstado()
-                    });
+            List<Receta> recetas = proxyReceta.obtenerRecetas();
+            if (recetas != null) {
+                for (Receta r : recetas) {
+                    String nombreMedico = r.getPersonal().getNombre().toLowerCase();
+                    if (nombreMedico.equals(nombreSeleccionado)) {
+                        modelo.addRow(new Object[]{
+                                r.getPaciente().getNombre(),
+                                r.getPersonal().getNombre(),
+                                obtenerNombreEstado(r.getEstado())
+                        });
+                    }
                 }
             }
         });
     }
+
 
 
 

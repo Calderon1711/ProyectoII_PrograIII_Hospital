@@ -1,21 +1,43 @@
 package cliente;
 
-import cliente.controlador.ControladorDetalleMedicamento;
+import cliente.Vista.LoginVista.LoginVista1;
+import cliente.controlador.*;
+import cliente.red.*;
+import cliente.util.ConfiguracionCliente;
+
+import javax.swing.*;
 
 public class MainCliente {
+
     public static void main(String[] args) {
-        try {
-            System.out.println("Iniciando aplicación...");
 
-            // Crea e inicia el controlador
-            ControladorDetalleMedicamento controlador = new ControladorDetalleMedicamento();
-            controlador.mostrarVentana();
+        ConfiguracionCliente.cargarConfiguracion();
 
-            System.out.println("Ventana de detalle de medicamento abierta correctamente.");
+        SwingUtilities.invokeLater(() -> {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error al iniciar la aplicación: " + e.getMessage());
-        }
+            // Inicializar vista
+            LoginVista1 vistaLogin = new LoginVista1(); // Debe heredar JFrame
+
+            try {
+                // Inicializar socket y conectarse
+                ClienteSocket clienteSocket = ClienteSocket.getInstance();
+                clienteSocket.connect(ConfiguracionCliente.getHost(), ConfiguracionCliente.getPuerto());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "No se pudo conectar con el servidor.",
+                        "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Inicializar app/controlador general
+            ControladorGeneral app = new ControladorGeneral();
+            ControladorLogin controladoraLogin = new ControladorLogin(vistaLogin, app);
+
+            // Mostrar ventana
+            vistaLogin.setVisible(true);
+            System.out.println("Cliente iniciado correctamente.");
+        });
     }
 }

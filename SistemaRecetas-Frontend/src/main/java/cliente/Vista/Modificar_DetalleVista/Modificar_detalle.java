@@ -1,6 +1,4 @@
-package cliente.Vista;
-
-import cliente.modelo.*;
+package cliente.Vista.Modificar_DetalleVista;
 
 import javax.swing.*;
 

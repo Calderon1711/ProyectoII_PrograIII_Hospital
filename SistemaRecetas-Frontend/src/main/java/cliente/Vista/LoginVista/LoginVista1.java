@@ -1,4 +1,4 @@
-package cliente.Vista;
+package cliente.Vista.LoginVista;
 
 import javax.swing.*;
 import java.awt.Color;
@@ -27,7 +27,7 @@ public class LoginVista1 extends JFrame {
 
     public LoginVista1() {
         setContentPane(PanelPrincipal);// llamo al pane para q sirva todo slos atributos de arriba
-        setTitle("Login");// le pongo titulo
+        setTitle("Login");// le pongoA titulo
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //para q cuando la aplicacion cierre el programa tambnien
         setSize(1000, 800);// tamanno de la ventana
         setLocationRelativeTo(null);
