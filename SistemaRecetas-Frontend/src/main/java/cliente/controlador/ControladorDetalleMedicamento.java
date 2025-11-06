@@ -2,7 +2,7 @@ package cliente.controlador;
 
 import cliente.modelo.*;
 import cliente.proxy.*;
-import cliente.Vista.Modificar_DetalleVista.Modificar_detalle;
+import cliente.Vista.*;
 import cliente.util.Alerta;
 import javafx.collections.ObservableList;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package cliente.controlador;
 
 // ControladorLogin.java
-import cliente.Vista.LoginVista.LoginVista1;
+import cliente.Vista.*;
 import cliente.modelo.*;
 import cliente.proxy.ProxyPersonal;
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package cliente.controlador;
 
-import cliente.Vista.MedicoVista.MedicoVista;
+import cliente.Vista.*;
 import cliente.modelo.*;
 import cliente.util.Alerta;
 import cliente.util.ConfiguracionCliente;

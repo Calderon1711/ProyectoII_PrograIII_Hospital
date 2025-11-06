@@ -1,10 +1,12 @@
-package cliente.Vista.AdminVista;
+package cliente.Vista;
 
+//package cliente.Vista.AdminVista;
 import cliente.modelo.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+
 
 public class AdminVista extends JFrame {
 
@@ -131,6 +133,7 @@ public class AdminVista extends JFrame {
     private DefaultTableModel modeloPacientes;
     private DefaultTableModel modeloMedicamentos;
 
+
     public AdminVista(Personal u) {
         setContentPane(JPanelPrincipal);
         setTitle("Login");// le pongo titulo
@@ -224,12 +227,7 @@ public class AdminVista extends JFrame {
     public JTable getTablaFarmaceuticos() {return TablaListadofarma;}
     public DefaultTableModel getModeloFarmaceuticos() {return modeloFarmaceuticos;}
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            AdminVista ventana = new AdminVista(null);
-            ventana.setVisible(true);
-        });
-    }
+
 
     //gets y sets
     public JPanel getJPanelPrincipal() { return JPanelPrincipal; }
@@ -646,3 +644,6 @@ public class AdminVista extends JFrame {
         // TODO: place custom component creation code here
     }
 }
+
+
+

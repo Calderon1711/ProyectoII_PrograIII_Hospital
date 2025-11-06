@@ -1,6 +1,6 @@
 package cliente;
 
-import cliente.Vista.LoginVista.LoginVista1;
+import cliente.Vista.*;
 import cliente.controlador.*;
 import cliente.red.*;
 import cliente.util.ConfiguracionCliente;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Vista.FarmaceuticoVista">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="cliente.Vista.FarmaceuticoVista">
   <grid id="27dc6" binding="rootPanel1" layout-manager="BorderLayout" hgap="-1" vgap="-1">
     <constraints>
       <xy x="19" y="17" width="929" height="493"/>

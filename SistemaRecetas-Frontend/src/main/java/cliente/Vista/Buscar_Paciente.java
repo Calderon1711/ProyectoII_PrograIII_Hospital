@@ -1,5 +1,5 @@
-package cliente.Vista.PacienteVista;
-
+package cliente.Vista;
+//package cliente.Vista.PacienteVista;
 import javax.swing.*;
 
 public class Buscar_Paciente extends JFrame{

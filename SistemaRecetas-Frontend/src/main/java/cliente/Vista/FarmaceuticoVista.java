@@ -1,4 +1,4 @@
-package cliente.Vista.FarmaVista;
+package cliente.Vista;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

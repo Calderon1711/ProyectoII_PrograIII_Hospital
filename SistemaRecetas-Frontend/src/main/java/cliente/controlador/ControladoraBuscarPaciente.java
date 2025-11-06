@@ -1,7 +1,7 @@
 package cliente.controlador;
 
 import cliente.modelo.Paciente;
-import cliente.Vista.PacienteVista.Buscar_Paciente;
+import cliente.Vista.*;
 import cliente.proxy.ProxyPaciente;
 import cliente.util.Alerta;
 import cliente.util.ConfiguracionCliente;

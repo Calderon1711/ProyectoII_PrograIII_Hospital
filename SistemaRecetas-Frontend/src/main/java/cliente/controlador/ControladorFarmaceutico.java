@@ -1,6 +1,7 @@
 package cliente.controlador;
 
-import cliente.Vista.FarmaVista.FarmaceuticoVista;
+import cliente.Vista.FarmaceuticoVista;
+import cliente.Vista.FarmaceuticoVista;
 import cliente.modelo.*;
 import cliente.proxy.*;
 import cliente.util.Alerta;

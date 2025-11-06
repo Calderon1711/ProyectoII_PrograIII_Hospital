@@ -1,5 +1,5 @@
-package cliente.Vista.Modificar_DetalleVista;
-
+package cliente.Vista;
+//package cliente.Vista.Modificar_DetalleVista;
 import javax.swing.*;
 
 public class Modificar_detalle extends JFrame {
@@ -94,7 +94,7 @@ public class Modificar_detalle extends JFrame {
 
     }
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Modificar_detalle vista = new Modificar_detalle();
             vista.setVisible(true);

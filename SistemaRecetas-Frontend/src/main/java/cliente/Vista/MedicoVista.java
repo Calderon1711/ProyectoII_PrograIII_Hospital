@@ -1,4 +1,5 @@
-package cliente.Vista.MedicoVista;
+package cliente.Vista;
+//package cliente.Vista.MedicoVista;
 import javax.swing.*;
 
 import cliente.modelo.*;

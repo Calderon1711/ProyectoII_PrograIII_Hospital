@@ -1,5 +1,5 @@
-package cliente.Vista.LoginVista;
-
+package cliente.Vista;
+//package cliente.Vista.LoginVista;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
@@ -49,7 +49,7 @@ public class LoginVista1 extends JFrame {
 
             @Override
             public void focusLost(FocusEvent e) {                       //focusLost se llama cuando el usuario sale del campo (por ejemplo, hace clic en otro lugar).
-                                                                            // Si el campo quedó vacío, vuelve a poner el placeholder en gris.
+                // Si el campo quedó vacío, vuelve a poner el placeholder en gris.
                 if (CampoUsuario.getText().isEmpty()) {
                     CampoUsuario.setText("Ingrese su usuario");
                     CampoUsuario.setForeground(Color.GRAY);
