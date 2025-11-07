@@ -1,29 +1,33 @@
 package cliente.red;
 
-import java.io.ObjectInputStream;
-
-//Escucha mensajes entrantes del servidor en un hilo independiente.
+import cliente.util.ConversorJSON;
+import java.io.BufferedReader;
 
 public class ListenerMensajes implements Runnable {
 
-    private final ClienteSocket cliente;
-    private final ObjectInputStream entrada;
+    private final ClienteSocket clienteSocket;
+    private final BufferedReader entrada;
 
-    public ListenerMensajes(ClienteSocket cliente, ObjectInputStream entrada) {
-        this.cliente = cliente;
+    public ListenerMensajes(ClienteSocket clienteSocket, BufferedReader entrada) {
+        this.clienteSocket = clienteSocket;
         this.entrada = entrada;
     }
 
     @Override
     public void run() {
         try {
-            while (true) {
-                // Escucha indefinidamente mensajes del servidor
-                Mensaje respuesta = (Mensaje) entrada.readObject();
-                cliente.entregarRespuesta(respuesta);
+            String linea;
+            while ((linea = entrada.readLine()) != null) {
+                // System.out.println("← Recibido del servidor: " + linea);
+                Mensaje respuesta = ConversorJSON.deserializar(linea, Mensaje.class);
+                if (respuesta != null) {
+                    clienteSocket.entregarRespuesta(respuesta); // 👈 AQUÍ EL CAMBIO
+                }
             }
+            System.out.println("Conexión cerrada por el servidor.");
         } catch (Exception e) {
-            System.err.println("Error en ListenerMensajes: " + e.getMessage());
+            System.out.println("❌ Error en ListenerMensajes: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

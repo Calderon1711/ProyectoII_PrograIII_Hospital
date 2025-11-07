@@ -75,14 +75,8 @@ public class HiloCliente implements Runnable {
 
                 // ========== LOGIN ==========
                 case Comandos.LOGIN_PERSONAL -> {
-                    String jsonDatos = (String) mensaje.getDatos();
-                    String[] datos = ConversorJSON.deserializar(jsonDatos, String[].class);
-
-                    if (datos == null || datos.length < 2) {
-                        resp.setExito(false);
-                        resp.setMensaje("Datos de login inválidos");
-                        return resp;
-                    }
+                    String[] datos = ConversorJSON.deserializar(
+                            mensaje.getDatos().toString(), String[].class);
 
                     String id = datos[0];
                     String clave = datos[1];
@@ -94,44 +88,33 @@ public class HiloCliente implements Runnable {
                             .findFirst()
                             .orElse(null);
 
+                    Mensaje r;
                     if (usuario != null) {
-                        resp.setExito(true);
-                        resp.setMensaje("Login exitoso");
-                        resp.setResultado(ConversorJSON.serializar(usuario));
-                        System.out.println("✅ Login OK para: " + id);
+                        r = new Mensaje(true, "Login exitoso",
+                                ConversorJSON.serializar(usuario));
                     } else {
-                        resp.setExito(false);
-                        resp.setMensaje("Usuario o contraseña incorrectos");
-                        resp.setResultado(null);
-                        System.out.println("❌ Login falló para: " + id);
+                        r = new Mensaje(false, "Usuario o contraseña incorrectos", null);
                     }
+                    r.setId(mensaje.getId()); // 👈 importantísimo para que enviarYEsperar lo encuentre
+                    return r;
                 }
 
                 // ========== CAMBIAR CLAVE ==========
                 case Comandos.CAMBIAR_CLAVE -> {
-                    String jsonDatos = (String) mensaje.getDatos();
-                    String[] datos = ConversorJSON.deserializar(jsonDatos, String[].class);
-
-                    if (datos == null || datos.length < 2) {
-                        resp.setExito(false);
-                        resp.setMensaje("Datos inválidos para cambiar clave");
-                        return resp;
-                    }
+                    String[] datos = ConversorJSON.deserializar(
+                            mensaje.getDatos().toString(), String[].class);
 
                     String id = datos[0];
                     String nuevaClave = datos[1];
 
                     boolean ok = personalService.actualizarClave(id, nuevaClave);
 
-                    if (ok) {
-                        resp.setExito(true);
-                        resp.setMensaje("Contraseña actualizada con éxito");
-                        System.out.println("✅ Clave actualizada para: " + id);
-                    } else {
-                        resp.setExito(false);
-                        resp.setMensaje("No se pudo actualizar la contraseña");
-                        System.out.println("❌ Error actualizando clave para: " + id);
-                    }
+                    Mensaje r = new Mensaje(ok,
+                            ok ? "Contraseña actualizada con éxito"
+                                    : "No se encontró el usuario o no se pudo actualizar",
+                            null);
+                    r.setId(mensaje.getId());
+                    return r;
                 }
 
                 // ========== EJEMPLOS (ajusta igual que antes) ==========

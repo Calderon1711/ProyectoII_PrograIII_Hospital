@@ -1,70 +1,59 @@
 package cliente.red;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Mensaje implements Serializable {
-
+    private String id;
     private String comando;
-    private Object objeto;
+    private Object datos;
     private boolean exito;
-    private String mensaje;
     private Object resultado;
+    private String mensaje;
 
     public Mensaje() {
+        this.id = UUID.randomUUID().toString();
     }
 
-    public Mensaje(String comando, Object objeto) {
+    public Mensaje(String comando, Object datos) {
+        this();
         this.comando = comando;
-        this.objeto = objeto;
+        this.datos = datos;
     }
 
-    public String getComando() {
-        return comando;
-    }
-
-    public void setComando(String comando) {
-        this.comando = comando;
-    }
-
-    public Object getObjeto() {
-        return objeto;
-    }
-
-    public void setObjeto(Object objeto) {
-        this.objeto = objeto;
-    }
-
-    public boolean isExito() {
-        return exito;
-    }
-
-    public void setExito(boolean exito) {
+    public Mensaje(boolean exito, String mensaje, Object resultado) {
+        this();
         this.exito = exito;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
-    }
-
-    public Object getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(Object resultado) {
         this.resultado = resultado;
     }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getComando() { return comando; }
+    public void setComando(String comando) { this.comando = comando; }
+
+    public Object getDatos() { return datos; }
+    public void setDatos(Object datos) { this.datos = datos; }
+
+    public boolean isExito() { return exito; }
+    public void setExito(boolean exito) { this.exito = exito; }
+
+    public Object getResultado() { return resultado; }
+    public void setResultado(Object resultado) { this.resultado = resultado; }
+
+    public String getMensaje() { return mensaje; }
+    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
 
     @Override
     public String toString() {
         return "Mensaje{" +
-                "comando='" + comando + '\'' +
+                "id='" + id + '\'' +
+                ", comando='" + comando + '\'' +
                 ", exito=" + exito +
                 ", mensaje='" + mensaje + '\'' +
-                ", objeto=" + objeto +
+                ", datos=" + datos +
                 ", resultado=" + resultado +
                 '}';
     }
