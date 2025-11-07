@@ -142,16 +142,20 @@ public class ProxyPersonal {
         try {
             String[] datos = {id, clave};
             String json = ConversorJSON.serializar(datos);
+
             Mensaje solicitud = new Mensaje(Comandos.LOGIN_PERSONAL, json);
+
             ClienteSocket cliente = ClienteSocket.getInstance();
             Mensaje respuesta = cliente.enviarYEsperar(solicitud, ConfiguracionCliente.getTimeout());
 
-            if (respuesta != null && respuesta.isExito()) {
+            if (respuesta != null && respuesta.isExito() && respuesta.getResultado() != null) {
                 String jsonUsuario = (String) respuesta.getResultado();
                 return ConversorJSON.deserializar(jsonUsuario, Personal.class);
             }
+
         } catch (Exception e) {
             System.err.println("Error en login: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

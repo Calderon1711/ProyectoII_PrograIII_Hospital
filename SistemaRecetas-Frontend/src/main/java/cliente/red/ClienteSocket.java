@@ -1,72 +1,72 @@
 package cliente.red;
 
 import cliente.util.ConfiguracionCliente;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.concurrent.*;
+import cliente.util.ConversorJSON;
 
-// Maneja la conexión del cliente con el servidor.
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class ClienteSocket {
 
     private static ClienteSocket instance;
     private Socket socket;
-    private ObjectOutputStream salida;
-    private ObjectInputStream entrada;
-    private final ConcurrentMap<String, BlockingQueue<Mensaje>> pendientes = new ConcurrentHashMap<>();
+    private PrintWriter salida;
+    private BufferedReader entrada;
 
     private ClienteSocket() {}
 
     public static synchronized ClienteSocket getInstance() {
-        if (instance == null) instance = new ClienteSocket();
+        if (instance == null) {
+            instance = new ClienteSocket();
+        }
         return instance;
     }
 
     public synchronized void connect(String host, int puerto) throws Exception {
-        if (socket != null && socket.isConnected()) return;
+        if (socket != null && socket.isConnected() && !socket.isClosed()) {
+            return;
+        }
+
+        System.out.println("Interfaz cargada correctamente. Intentando conectar al servidor...");
 
         socket = new Socket(host, puerto);
-        salida = new ObjectOutputStream(socket.getOutputStream());
-        entrada = new ObjectInputStream(socket.getInputStream());
+        salida = new PrintWriter(socket.getOutputStream(), true);
+        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        // Crear hilo listener para recibir respuestas
-        GestorHilosCliente.getInstance().ejecutar(new ListenerMensajes(this, entrada));
+        System.out.println("✅ Conectado al servidor correctamente.");
     }
-
-    public synchronized void send(Mensaje mensaje) throws Exception {
-        salida.writeObject(mensaje);
-        salida.flush();
-    }
-
-    // Verifica si el socket está conectado y activo
 
     public synchronized boolean isConnected() {
         return socket != null && socket.isConnected() && !socket.isClosed();
     }
 
-    public void entregarRespuesta(Mensaje respuesta) {
-        BlockingQueue<Mensaje> q = pendientes.get(respuesta.getId());
-        if (q != null) {
-            q.offer(respuesta);
-        } else {
-            System.out.println("Respuesta sin solicitud pendiente: " + respuesta.getComando());
-        }
+    // Enviar sin esperar (por si lo necesitas)
+    public synchronized void send(Mensaje mensaje) throws IOException {
+        String json = ConversorJSON.serializar(mensaje);
+        salida.println(json);
     }
 
-    // Método que envía un mensaje y espera respuesta
-
-    public Mensaje enviarYEsperar(Mensaje solicitud, long timeoutMillis) {
+    // Enviar y esperar respuesta (lo usan tus proxys)
+    public synchronized Mensaje enviarYEsperar(Mensaje solicitud, long timeoutMillis) {
         try {
-            BlockingQueue<Mensaje> queue = new ArrayBlockingQueue<>(1);
-            pendientes.put(solicitud.getId(), queue);
+            // enviar
+            String json = ConversorJSON.serializar(solicitud);
+            salida.println(json);
 
-            // Enviar el mensaje
-            send(solicitud);
+            // timeout opcional
+            socket.setSoTimeout((int) timeoutMillis);
 
-            // Esperar la respuesta (hasta timeout)
-            Mensaje respuesta = queue.poll(timeoutMillis, TimeUnit.MILLISECONDS);
-            pendientes.remove(solicitud.getId());
-            return respuesta;
+            // leer respuesta
+            String respJson = entrada.readLine();
+            if (respJson == null) {
+                System.err.println("Respuesta nula del servidor.");
+                return null;
+            }
+
+            return ConversorJSON.deserializar(respJson, Mensaje.class);
 
         } catch (Exception e) {
             e.printStackTrace();

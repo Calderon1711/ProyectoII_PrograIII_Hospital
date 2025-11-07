@@ -1,48 +1,38 @@
 package servidor.red;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-//esta clases es el objeto que viaja entre el fronted y el backend
+/**
+ * Mensaje que viaja entre cliente y servidor (DEBE ser igual al del cliente).
+ */
 public class Mensaje implements Serializable {
-    //Comando o accion que se desea ejecutar por ejemplo "Listar_paciente" o cosas asi
+
+    private String id;
     private String comando;
-
-    //objeto asociado al comando en este caso el ejemplo seria un paciente a agregar
-    private Object objeto;
-
-    //esto solo indica si la operacion fue existosa o no
+    private Object datos;
     private boolean exito;
-
-    // mensaje descriptivo en este caso el ejemplo seria Paciente agregado correctamenre
+    private Object resultado;
     private String mensaje;
 
-    //Este es el resultado devuelto en este caso el ejkmplo seria una lista de pacientes
-    private Object resultado;
-
-    //constructores
-
-    /**
-     * Constructor usado por el servidor para responder al cliente.
-     * @param exito   Indica si la operación fue exitosa
-     * @param mensaje Mensaje de respuesta
-     * @param resultado Resultado de la operación (puede ser null)
-     */
-
-    public Mensaje(boolean exito, String mensaje, Object resultado) {
-        this.exito = exito;
-        this.mensaje = mensaje;
-        this.resultado = resultado;
+    public Mensaje() {
+        this.id = UUID.randomUUID().toString();
     }
 
-    //getters y setters
-
-
-    public Object getObjeto() {
-        return objeto;
+    public Mensaje(String comando, Object datos) {
+        this();
+        this.comando = comando;
+        this.datos = datos;
     }
 
-    public void setObjeto(Object objeto) {
-        this.objeto = objeto;
+    // Getters & setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getComando() {
@@ -51,6 +41,14 @@ public class Mensaje implements Serializable {
 
     public void setComando(String comando) {
         this.comando = comando;
+    }
+
+    public Object getDatos() {
+        return datos;
+    }
+
+    public void setDatos(Object datos) {
+        this.datos = datos;
     }
 
     public boolean isExito() {
@@ -76,13 +74,15 @@ public class Mensaje implements Serializable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
     @Override
     public String toString() {
-        return  "Mensaje{" +
-                "comando='" + comando + '\'' +
+        return "Mensaje{" +
+                "id='" + id + '\'' +
+                ", comando='" + comando + '\'' +
                 ", exito=" + exito +
                 ", mensaje='" + mensaje + '\'' +
-                ", objeto=" + objeto +
+                ", datos=" + datos +
                 ", resultado=" + resultado +
                 '}';
     }
