@@ -19,7 +19,7 @@ public class SQLConnector {
                 .getResourceAsStream("db.properties")) {
 
             if (in == null) {
-                throw new IllegalStateException("No se encontró db.properties en resources/");
+                throw new IllegalStateException(" No se encontró db.properties en resources/");
             }
 
             Properties p = new Properties();
@@ -30,9 +30,16 @@ public class SQLConnector {
             pass = p.getProperty("db.password");
             String driver = p.getProperty("db.driver");
 
+            if (url == null || user == null || driver == null) {
+                throw new IllegalStateException(" db.properties está incompleto o mal configurado.");
+            }
+
+            // Registrar el driver JDBC
             Class.forName(driver);
+            System.out.println(" Conector JDBC inicializado correctamente");
 
         } catch (Exception e) {
+            System.err.println("️ Error inicializando SQLConnector:");
             e.printStackTrace();
             throw new RuntimeException("No se pudo inicializar SQLConnector", e);
         }
@@ -46,6 +53,12 @@ public class SQLConnector {
     }
 
     public Connection newConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, pass);
+        Connection conn = DriverManager.getConnection(url, user, pass);
+        if (conn != null) {
+            System.out.println(" Conexión establecida con la base de datos");
+        } else {
+            System.err.println(" Falló la conexión a la base de datos");
+        }
+        return conn;
     }
 }

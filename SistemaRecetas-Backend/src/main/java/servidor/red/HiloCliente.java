@@ -90,14 +90,20 @@ public class HiloCliente implements Runnable {
 
                     Mensaje r;
                     if (usuario != null) {
+                        // 🪄 Agregar el tipo concreto de clase
+                        var jsonObj = new com.google.gson.JsonObject();
+                        jsonObj.addProperty("tipo", usuario.getClass().getSimpleName());
+                        jsonObj.add("data", new com.google.gson.Gson().toJsonTree(usuario));
+
                         r = new Mensaje(true, "Login exitoso",
-                                ConversorJSON.serializar(usuario));
+                                jsonObj.toString());
                     } else {
                         r = new Mensaje(false, "Usuario o contraseña incorrectos", null);
                     }
-                    r.setId(mensaje.getId()); // 👈 importantísimo para que enviarYEsperar lo encuentre
+                    r.setId(mensaje.getId());
                     return r;
                 }
+
 
                 // ========== CAMBIAR CLAVE ==========
                 case Comandos.CAMBIAR_CLAVE -> {
