@@ -115,23 +115,65 @@ public class HiloCliente implements Runnable {
                     return new Mensaje(true, "Detalle actualizado", null);
                 }
                 //------------------Login---------------------
+                // ------------------Login---------------------
                 case Comandos.LOGIN_PERSONAL -> {
-                    String[] datos = ConversorJSON.deserializar(mensaje.getObjeto().toString(), String[].class);
-                    String id = datos[0];
-                    String clave = datos[1];
-                    Personal usuario = personalService.obtenerTodoPersonal()
-                            .stream()
-                            .filter(p -> p.getId().equals(id) && p.getClave().equals(clave))
-                            .findFirst().orElse(null);
-                    return new Mensaje(usuario != null, usuario != null ? "Login exitoso" : "Credenciales incorrectas",
-                            usuario != null ? ConversorJSON.serializar(usuario) : null);
+                    try {
+                        String json = mensaje.getObjeto().toString();
+                        String[] datos = ConversorJSON.deserializar(json, String[].class);
+
+                        if (datos == null || datos.length < 2) {
+                            return new Mensaje(false, "Formato de datos inválido para login", null);
+                        }
+
+                        String id = datos[0];
+                        String clave = datos[1];
+
+                        Personal usuario = personalService.obtenerTodoPersonal()
+                                .stream()
+                                .filter(p -> p.getId().equalsIgnoreCase(id.trim()) && p.getClave().equals(clave))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (usuario != null) {
+                            System.out.println(" Login exitoso: " + usuario.getNombre());
+                            return new Mensaje(true, "Login exitoso", ConversorJSON.serializar(usuario));
+                        } else {
+                            System.out.println(" Credenciales incorrectas para ID: " + id);
+                            return new Mensaje(false, "Usuario o contraseña incorrectos", null);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        return new Mensaje(false, "Error procesando login: " + ex.getMessage(), null);
+                    }
                 }
 
+// ------------------Cambiar Clave---------------------
                 case Comandos.CAMBIAR_CLAVE -> {
-                    String[] datos = ConversorJSON.deserializar(mensaje.getObjeto().toString(), String[].class);
-                    boolean ok = personalService.actualizarClave(datos[0], datos[1]);
-                    return new Mensaje(ok, ok ? "Contraseña actualizada" : "Error al actualizar", null);
+                    try {
+                        String json = mensaje.getObjeto().toString();
+                        String[] datos = ConversorJSON.deserializar(json, String[].class);
+
+                        if (datos == null || datos.length < 2) {
+                            return new Mensaje(false, "Formato inválido para cambiar clave", null);
+                        }
+
+                        String id = datos[0];
+                        String nuevaClave = datos[1];
+
+                        boolean ok = personalService.actualizarClave(id, nuevaClave);
+
+                        if (ok) {
+                            System.out.println(" Clave actualizada correctamente para ID: " + id);
+                            return new Mensaje(true, "Contraseña actualizada con éxito", null);
+                        } else {
+                            return new Mensaje(false, "No se encontró el usuario o no se pudo actualizar", null);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        return new Mensaje(false, "Error cambiando clave: " + ex.getMessage(), null);
+                    }
                 }
+
 
                 // ----------------- Recetas -----------------
                 case Comandos.LISTAR_RECETAS -> {
@@ -160,10 +202,11 @@ public class HiloCliente implements Runnable {
                 }
 
                 // ----------------- Personal -----------------
-                case Comandos.Listar_Personal -> {
+                case Comandos.LISTAR_PERSONAL -> {
                     return new Mensaje(true, "Lista de personal",
                             ConversorJSON.serializar(personalService.obtenerTodoPersonal()));
                 }
+
 
                 // ----------------- Pacientes -----------------
                 case Comandos.LISTAR_PACIENTES -> {

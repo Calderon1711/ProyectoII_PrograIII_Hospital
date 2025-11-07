@@ -64,7 +64,7 @@ public class Comandos {
     public static final String ACTUALIZAR_PACIENTE = "actualizar_paciente";
 
     //Mesnaje de proxyPersonal
-    public static final String Listar_Personal = "listar_personal";
+    public static final String LISTAR_PERSONAL = "listar_personal";
 
     //Mensaje de ProxyUsuario
     public static final String LOGIN = "login_usuario";

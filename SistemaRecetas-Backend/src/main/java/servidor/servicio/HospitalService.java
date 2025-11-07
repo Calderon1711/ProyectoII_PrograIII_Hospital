@@ -27,10 +27,7 @@ public class HospitalService {
         return hospital.getRecetas();
     }
 
-    // guradar y cargar
-    public void guardarPersonal() {
-        hospital.guradarPersonal();
-    }
+
 
     public void cargarPersonal() {
         hospital.cargarPersonal();

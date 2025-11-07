@@ -5,7 +5,7 @@ package cliente.constantes;
 //Esta clase lo que hace es asegurar el mismo mensaje que se envia y se recibe
 //Se debe implementar en el backend
 
-public class Comandos {
+public class    Comandos {
 
     //Mensaje de ProxyMedicamento
     public static final String LISTAR_MEDICAMENTOS = "listar_medicamento";
