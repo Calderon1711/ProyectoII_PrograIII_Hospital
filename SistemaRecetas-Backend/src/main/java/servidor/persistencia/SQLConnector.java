@@ -7,29 +7,41 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class SQLConnector {
+
     private static SQLConnector instance;
-    private final String url;
-    private final String user;
-    private final String pass;
+    private String url;
+    private String user;
+    private String pass;
 
     private SQLConnector() {
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            if (in == null) throw new IllegalStateException("No se encontró db.properties en resources/");
+        try (InputStream in = SQLConnector.class
+                .getClassLoader()
+                .getResourceAsStream("db.properties")) {
+
+            if (in == null) {
+                throw new IllegalStateException("No se encontró db.properties en resources/");
+            }
+
             Properties p = new Properties();
             p.load(in);
-            Class.forName(p.getProperty("db.driver")); // com.mysql.cj.jdbc.Driver
-            this.url  = p.getProperty("db.url")
-                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-                    + "&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=250&prepStmtCacheSqlLimit=2048";
-            this.user = p.getProperty("db.user");
-            this.pass = p.getProperty("db.password");
+
+            url = p.getProperty("db.url");
+            user = p.getProperty("db.user");
+            pass = p.getProperty("db.password");
+            String driver = p.getProperty("db.driver");
+
+            Class.forName(driver);
+
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("No se pudo inicializar SQLConnector", e);
         }
     }
 
     public static synchronized SQLConnector getInstance() {
-        if (instance == null) instance = new SQLConnector();
+        if (instance == null) {
+            instance = new SQLConnector();
+        }
         return instance;
     }
 
